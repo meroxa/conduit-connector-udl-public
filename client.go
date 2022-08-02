@@ -20,7 +20,7 @@ type Client struct {
 	rateLimiter *rate.Limiter
 }
 
-func New(baseURL string) (Client, error) {
+func NewClient(baseURL string) (Client, error) {
 	u, err := url.Parse(baseURL)
 	if err != nil {
 		return Client{}, err

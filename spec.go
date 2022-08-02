@@ -25,6 +25,11 @@ func Specification() sdk.Specification {
 				Required:    false,
 				Description: "The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.",
 			},
+			BaseURL: {
+				Default:     "https://unifieddatalibrary.com",
+				Required:    false,
+				Description: "The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.",
+			},
 		},
 	}
 }
