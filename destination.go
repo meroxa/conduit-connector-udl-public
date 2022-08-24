@@ -69,8 +69,16 @@ func (d *Destination) Open(ctx context.Context) error {
 	return nil
 }
 
-func (d *Destination) Write(ctx context.Context, record []sdk.Record) (int, error) {
-
+func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
+	var elsets []udl.ElsetIngest
+	for _, r := range records {
+		elset, err := toUDLElset(r.Payload.After.Bytes())
+		if err != nil {
+			return 0, err
+		}
+		elsets = append(elsets, elset)
+	}
+	d.client.FiledropUdlElsetPostId(ctx, elsets)
 	return 0, nil
 }
 
