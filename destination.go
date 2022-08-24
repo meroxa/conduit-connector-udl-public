@@ -10,7 +10,7 @@ import (
 type Destination struct {
 	sdk.UnimplementedDestination
 	config Config
-	client *udl.Client
+	client udl.ClientInterface
 }
 
 func NewDestination() sdk.Destination {
@@ -78,8 +78,11 @@ func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, err
 		}
 		elsets = append(elsets, elset)
 	}
-	d.client.FiledropUdlElsetPostId(ctx, elsets)
-	return 0, nil
+	resp, err := d.client.FiledropUdlElsetPostId(ctx, elsets)
+	if err != nil || resp.StatusCode > 300 {
+		return 0, err
+	}
+	return len(elsets), nil
 }
 
 func generateBasicAuth(username, password string) (*securityprovider.SecurityProviderBasicAuth, error) {
