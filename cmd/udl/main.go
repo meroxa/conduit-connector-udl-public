@@ -6,9 +6,5 @@ import (
 )
 
 func main() {
-	sdk.Serve(
-		udl.Specification,
-		nil,
-		udl.NewDestination,
-	)
+	sdk.Serve(udl.Connector)
 }

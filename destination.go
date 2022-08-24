@@ -1,22 +1,54 @@
-package udl
+package connector
 
 import (
 	"context"
 	sdk "github.com/conduitio/conduit-connector-sdk"
+	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
+	"github.com/meroxa/conduit-connector-udl/udl"
 )
 
 type Destination struct {
 	sdk.UnimplementedDestination
 	config Config
-	client Client
+	client *udl.Client
 }
 
 func NewDestination() sdk.Destination {
-	return &Destination{}
+	return sdk.DestinationWithMiddleware(&Destination{}, sdk.DefaultDestinationMiddleware()...)
+}
+
+func (d *Destination) Parameters() map[string]sdk.Parameter {
+	return map[string]sdk.Parameter{
+		HTTPBasicAuthUsername: {
+			Default:     "",
+			Required:    true,
+			Description: "The HTTP Basic Auth Username to use when accessing the UDL.",
+		},
+		HTTPBasicAuthPassword: {
+			Default:     "",
+			Required:    true,
+			Description: "The HTTP Basic Auth Password to use when accessing the UDL.",
+		},
+		DataMode: {
+			Default:     "TEST",
+			Required:    false,
+			Description: "The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.",
+		},
+		BaseURL: {
+			Default:     "https://unifieddatalibrary.com",
+			Required:    false,
+			Description: "The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.",
+		},
+		Endpoint: {
+			Default:     "",
+			Required:    true,
+			Description: "The target UDL endpoint.",
+		},
+	}
 }
 
 func (d *Destination) Configure(ctx context.Context, cfg map[string]string) error {
-	parsedCfg, err := Parse(cfg)
+	parsedCfg, err := d.ParseDestinationConfig(cfg)
 	if err != nil {
 		return err
 	}
@@ -25,7 +57,11 @@ func (d *Destination) Configure(ctx context.Context, cfg map[string]string) erro
 }
 
 func (d *Destination) Open(ctx context.Context) error {
-	c, err := NewClient(d.config.BaseURL)
+	authProvider, err := generateBasicAuth(d.config.HTTPBasicAuthUsername, d.config.HTTPBasicAuthPassword)
+	if err != nil {
+		return err
+	}
+	c, err := udl.NewClient(d.config.BaseURL, udl.WithRequestEditorFn(authProvider.Intercept))
 	if err != nil {
 		return err
 	}
@@ -33,6 +69,11 @@ func (d *Destination) Open(ctx context.Context) error {
 	return nil
 }
 
-func (d *Destination) WriteAsync(ctx context.Context, record sdk.Record, ackFunc sdk.AckFunc) error {
-	return nil
+func (d *Destination) Write(ctx context.Context, record []sdk.Record) (int, error) {
+
+	return 0, nil
+}
+
+func generateBasicAuth(username, password string) (*securityprovider.SecurityProviderBasicAuth, error) {
+	return securityprovider.NewSecurityProviderBasicAuth(username, password)
 }

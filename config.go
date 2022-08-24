@@ -1,4 +1,4 @@
-package udl
+package connector
 
 import (
 	"errors"
@@ -12,6 +12,7 @@ const (
 	HTTPBasicAuthPassword = "password"
 	DataMode              = "dataMode"
 	BaseURL               = "baseurl"
+	Endpoint              = "endpoint"
 )
 
 var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
@@ -21,9 +22,10 @@ type Config struct {
 	HTTPBasicAuthPassword string
 	DataMode              string
 	BaseURL               string
+	Endpoint              UDLEndpoint
 }
 
-func Parse(cfg map[string]string) (Config, error) {
+func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, error) {
 	// validate supported data mode
 	dm, ok := cfg[DataMode]
 	if ok {
@@ -31,7 +33,7 @@ func Parse(cfg map[string]string) (Config, error) {
 			return Config{}, errors.New(fmt.Sprintf("unsupported data mode (%s)", dm))
 		}
 	} else {
-		dm = Specification().DestinationParams[DataMode].Default
+		dm = c.Parameters()[DataMode].Default
 	}
 
 	// validate/parse base URL
@@ -42,7 +44,7 @@ func Parse(cfg map[string]string) (Config, error) {
 			return Config{}, errors.New(fmt.Sprintf("invalid base URL (%s); err: %s", u, err))
 		}
 	} else {
-		u = Specification().DestinationParams[BaseURL].Default
+		u = c.Parameters()[BaseURL].Default
 	}
 
 	// validate HTTP Basic Auth credentials
