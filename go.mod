@@ -5,12 +5,12 @@ go 1.18
 require (
 	github.com/conduitio/conduit-connector-sdk v0.2.1-0.20220823112121-47067cda967a
 	github.com/deepmap/oapi-codegen v1.11.0
+	github.com/golang/mock v1.6.0
 )
 
 require (
 	github.com/conduitio/conduit-connector-protocol v0.2.1-0.20220802135043-4b89a6c94401 // indirect
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/go-hclog v1.2.2 // indirect
@@ -24,11 +24,10 @@ require (
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/rs/zerolog v1.27.0 // indirect
 	go.buf.build/grpc/go/conduitio/conduit-connector-protocol v1.4.3 // indirect
-	go.buf.build/library/go-grpc/conduitio/conduit-connector-protocol v1.4.3 // indirect
 	go.uber.org/goleak v1.1.12 // indirect
 	golang.org/x/net v0.0.0-20220822230855-b0a4917ee28c // indirect
 	golang.org/x/sys v0.0.0-20220823224334-20c2bfdbfe24 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc // indirect
 	google.golang.org/grpc v1.49.0 // indirect
