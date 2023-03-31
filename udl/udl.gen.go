@@ -22,6 +22,30 @@ const (
 	BasicAuthScopes = "BasicAuth.Scopes"
 )
 
+// Defines values for AISAbridgedDataMode.
+const (
+	AISAbridgedDataModeEXERCISE  AISAbridgedDataMode = "EXERCISE"
+	AISAbridgedDataModeREAL      AISAbridgedDataMode = "REAL"
+	AISAbridgedDataModeSIMULATED AISAbridgedDataMode = "SIMULATED"
+	AISAbridgedDataModeTEST      AISAbridgedDataMode = "TEST"
+)
+
+// Defines values for AISFullDataMode.
+const (
+	AISFullDataModeEXERCISE  AISFullDataMode = "EXERCISE"
+	AISFullDataModeREAL      AISFullDataMode = "REAL"
+	AISFullDataModeSIMULATED AISFullDataMode = "SIMULATED"
+	AISFullDataModeTEST      AISFullDataMode = "TEST"
+)
+
+// Defines values for AISIngestDataMode.
+const (
+	AISIngestDataModeEXERCISE  AISIngestDataMode = "EXERCISE"
+	AISIngestDataModeREAL      AISIngestDataMode = "REAL"
+	AISIngestDataModeSIMULATED AISIngestDataMode = "SIMULATED"
+	AISIngestDataModeTEST      AISIngestDataMode = "TEST"
+)
+
 // Defines values for AntennaDetailsFullDataMode.
 const (
 	AntennaDetailsFullDataModeEXERCISE  AntennaDetailsFullDataMode = "EXERCISE"
@@ -42,6 +66,54 @@ const (
 	AntennaFullDataModeREAL      AntennaFullDataMode = "REAL"
 	AntennaFullDataModeSIMULATED AntennaFullDataMode = "SIMULATED"
 	AntennaFullDataModeTEST      AntennaFullDataMode = "TEST"
+)
+
+// Defines values for AttitudeDataAbridgedDataMode.
+const (
+	AttitudeDataAbridgedDataModeEXERCISE  AttitudeDataAbridgedDataMode = "EXERCISE"
+	AttitudeDataAbridgedDataModeREAL      AttitudeDataAbridgedDataMode = "REAL"
+	AttitudeDataAbridgedDataModeSIMULATED AttitudeDataAbridgedDataMode = "SIMULATED"
+	AttitudeDataAbridgedDataModeTEST      AttitudeDataAbridgedDataMode = "TEST"
+)
+
+// Defines values for AttitudeDataFullDataMode.
+const (
+	AttitudeDataFullDataModeEXERCISE  AttitudeDataFullDataMode = "EXERCISE"
+	AttitudeDataFullDataModeREAL      AttitudeDataFullDataMode = "REAL"
+	AttitudeDataFullDataModeSIMULATED AttitudeDataFullDataMode = "SIMULATED"
+	AttitudeDataFullDataModeTEST      AttitudeDataFullDataMode = "TEST"
+)
+
+// Defines values for AttitudeDataIngestDataMode.
+const (
+	AttitudeDataIngestDataModeEXERCISE  AttitudeDataIngestDataMode = "EXERCISE"
+	AttitudeDataIngestDataModeREAL      AttitudeDataIngestDataMode = "REAL"
+	AttitudeDataIngestDataModeSIMULATED AttitudeDataIngestDataMode = "SIMULATED"
+	AttitudeDataIngestDataModeTEST      AttitudeDataIngestDataMode = "TEST"
+)
+
+// Defines values for AttitudeSetAbridgedDataMode.
+const (
+	AttitudeSetAbridgedDataModeEXERCISE  AttitudeSetAbridgedDataMode = "EXERCISE"
+	AttitudeSetAbridgedDataModeREAL      AttitudeSetAbridgedDataMode = "REAL"
+	AttitudeSetAbridgedDataModeSIMULATED AttitudeSetAbridgedDataMode = "SIMULATED"
+	AttitudeSetAbridgedDataModeTEST      AttitudeSetAbridgedDataMode = "TEST"
+)
+
+// Defines values for AttitudeSetFullDataMode.
+const (
+	AttitudeSetFullDataModeEXERCISE  AttitudeSetFullDataMode = "EXERCISE"
+	AttitudeSetFullDataModeREAL      AttitudeSetFullDataMode = "REAL"
+	AttitudeSetFullDataModeSIMULATED AttitudeSetFullDataMode = "SIMULATED"
+	AttitudeSetFullDataModeTEST      AttitudeSetFullDataMode = "TEST"
+)
+
+// Defines values for AttitudeSetIngestDataMode.
+const (
+	AttitudeSetIngestDataModeEXERCISE  AttitudeSetIngestDataMode = "EXERCISE"
+	AttitudeSetIngestDataModeREAL      AttitudeSetIngestDataMode = "REAL"
+	AttitudeSetIngestDataModeSIMULATED AttitudeSetIngestDataMode = "SIMULATED"
+	AttitudeSetIngestDataModeTEST      AttitudeSetIngestDataMode = "TEST"
 )
 
 // Defines values for BatteryDetailsFullDataMode.
@@ -640,10 +712,10 @@ const (
 
 // Defines values for SubStatusFullDataMode.
 const (
-	SubStatusFullDataModeEXERCISE  SubStatusFullDataMode = "EXERCISE"
-	SubStatusFullDataModeREAL      SubStatusFullDataMode = "REAL"
-	SubStatusFullDataModeSIMULATED SubStatusFullDataMode = "SIMULATED"
-	SubStatusFullDataModeTEST      SubStatusFullDataMode = "TEST"
+	EXERCISE  SubStatusFullDataMode = "EXERCISE"
+	REAL      SubStatusFullDataMode = "REAL"
+	SIMULATED SubStatusFullDataMode = "SIMULATED"
+	TEST      SubStatusFullDataMode = "TEST"
 )
 
 // Defines values for SubStatusFullStatus.
@@ -661,7 +733,526 @@ const (
 	SsCap SubStatusFullType = "ssCap"
 )
 
-// Model representation of Information on spacecraft communication antennas. An antenna may have multiple details records compiled by various sources.
+// Self-reported information obtained from Automatic Identification System (AIS) equipment. This contains information such as unique identification, status, position, course, and speed. The AIS is an automatic tracking system that uses transceivers on ships and is used by vessel traffic services. Although technically and operationally distinct, the AIS system is analogous to ADS-B that performs a similar function for aircraft. AIS is intended to assist a vessel's watchstanding officers and allow maritime authorities to track and monitor vessel movements. AIS integrates a standardized VHF transceiver with a positioning system such as Global Positioning System receiver, with other electronic navigation sensors, such as gyrocompass or rate of turn indicator. Vessels fitted with AIS transceivers can be tracked by AIS base stations located along coast lines or, when out of range of terrestrial networks, through a growing number of satellites that are fitted with special AIS receivers which are capable of deconflicting a large number of signatures.
+type AISAbridged struct {
+	// The reference dimensions of the vessel, reported as [A, B, C, D], in meters.  Where the array values represent the distance fore (A), aft (B), to port (C), and to starboard (D) of the navigation antenna.  Array with values A = C = 0 and B, D > 0 indicate the length (B) and width (D) of the vessel without antenna position reference.
+	AntennaRefDimensions *[]float64 `json:"antennaRefDimensions,omitempty"`
+
+	// The average speed, in kilometers/hour, calculated for the subject vessel during the latest voyage (port to port)
+	AvgSpeed *float64 `json:"avgSpeed,omitempty"`
+
+	// A uniquely designated identifier for the vessel's transmitter station
+	CallSign *string `json:"callSign,omitempty"`
+
+	// The reported cargo type. Intended as, but not constrained to, the USCG NAVCEN AIS cargo definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with ship and cargo types. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	CargoType *string `json:"cargoType,omitempty"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// The course-over-ground reported by the vessel, in degrees
+	Course *float64 `json:"course,omitempty"`
+
+	// Time the row was created in the database, auto-populated by the system
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The US Geographic Unique Identifier of the current port hosting the vessel
+	CurrentPortGUID *string `json:"currentPortGUID,omitempty"`
+
+	// The UN Location Code of the current port hosting the vessel
+	CurrentPortLOCODE *string `json:"currentPortLOCODE,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AISAbridgedDataMode `json:"dataMode"`
+
+	// The destination of the vessel according to the AIS transmission
+	Destination *string `json:"destination,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination, in ISO 8601 UTC format
+	DestinationETA *time.Time `json:"destinationETA,omitempty"`
+
+	// The remaining distance, in kilometers, for the vessel to reach the reported destination
+	DistanceToGo *float64 `json:"distanceToGo,omitempty"`
+
+	// The distance, in kilometers, that the vessel has travelled since departing the last port
+	DistanceTravelled *float64 `json:"distanceTravelled,omitempty"`
+
+	// The maximum static draught, in meters, of the vessel according to the AIS transmission
+	Draught *float64 `json:"draught,omitempty"`
+
+	// The activity that the vessel is engaged in.  This entry applies only when the shipType = Other
+	EngagedIn *string `json:"engagedIn,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination port, according to MarineTraffic calculations, in ISO 8601 UTC format
+	EtaCalculated *time.Time `json:"etaCalculated,omitempty"`
+
+	// The date and time that the ETA was calculated by MarineTraffic, in ISO 8601 UTC format
+	EtaUpdated *time.Time `json:"etaUpdated,omitempty"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the Track
+	IdTrack *string `json:"idTrack,omitempty"`
+
+	// Unique identifier of the vessel
+	IdVessel *string `json:"idVessel,omitempty"`
+
+	// The International Maritime Organization Number of the vessel.  IMON is a seven-digit number that uniquely identifies the vessel
+	Imon *int64 `json:"imon,omitempty"`
+
+	// The US Geographic Unique Identifier of the last port visited by the vessel
+	LastPortGUID *string `json:"lastPortGUID,omitempty"`
+
+	// The UN Location Code of the last port visited by the vessel
+	LastPortLOCODE *string `json:"lastPortLOCODE,omitempty"`
+
+	// WGS-84 latitude of the vessel position, in degrees.  -90 to 90 degrees (negative values south of equator)
+	Lat *float64 `json:"lat,omitempty"`
+
+	// The overall length of the vessel, in meters.  A value of 511 indicates a vessel length of 511 meters or greater
+	Length *float64 `json:"length,omitempty"`
+
+	// WGS-84 longitude of the vessel position, in degrees.  -180 to 180 degrees (negative values west of Prime Meridian)
+	Lon *float64 `json:"lon,omitempty"`
+
+	// The maximum speed, in kilometers/hour, reported by the subject vessel during the latest voyage (port to port)
+	MaxSpeed *float64 `json:"maxSpeed,omitempty"`
+
+	// The Maritime Mobile Service Identity of the vessel.  MMSI is a nine-digit number that identifies the transmitter station of the vessel
+	Mmsi *int64 `json:"mmsi,omitempty"`
+
+	// The AIS Navigational Status of the vessel (e.g. Underway Using Engine, Moored, Aground, etc.). Intended as, but not constrained to, the USCG NAVCEN navigation status definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with navigation status. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	NavStatus *string `json:"navStatus,omitempty"`
+
+	// The US Geographic Unique Identifier of the next destination port of the vessel
+	NextPortGUID *string `json:"nextPortGUID,omitempty"`
+
+	// The UN  Location Code of the next destination port of the vessel
+	NextPortLOCODE *string `json:"nextPortLOCODE,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// The type of electronic position fixing device (e.g. GPS, GLONASS, etc.). Intended as, but not constrained to, the USCG NAVCEN electronic position fixing device definitions. Users should refer to USCG Navigation Center documentation for specific device type information. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	PosDeviceType *string `json:"posDeviceType,omitempty"`
+
+	// Flag indicating high reported position accuracy (less than or equal to 10 meters).  A value of 0/false indicates low accuracy (greater than 10 meters)
+	PosHiAccuracy *bool `json:"posHiAccuracy,omitempty"`
+
+	// Flag indicating high reported position latency (greater than 5 seconds).  A value of 0/false indicates low latency (less than 5 seconds)
+	PosHiLatency *bool `json:"posHiLatency,omitempty"`
+
+	// The Rate-of-Turn for the vessel, in degrees/minute.  Positive value indicates that the vessel is turning right
+	RateOfTurn *float64 `json:"rateOfTurn,omitempty"`
+
+	// Further description or explanation of the vessel or type
+	ShipDescription *string `json:"shipDescription,omitempty"`
+
+	// The name of the vessel.  Vessel names that exceed the AIS 20 character are shortened (not truncated) to 15 character-spaces, followed by an underscore and the last 4 characters-spaces of the vessel full name
+	ShipName *string `json:"shipName,omitempty"`
+
+	// The reported ship type (e.g. Passenger, Tanker, Cargo, Other, etc.).  See the engagedIn and specialCraft entries for additional information on certain types of vessels
+	ShipType *string `json:"shipType,omitempty"`
+
+	// Source of the data
+	Source string `json:"source"`
+
+	// The type of special craft designation of the vessel.  This entry applies only when the shipType = Special Craft
+	SpecialCraft *string `json:"specialCraft,omitempty"`
+
+	// Flag indicating that the vessel is engaged in a special maneuver (e.g. Waterway Navigation)
+	SpecialManeuver *bool `json:"specialManeuver,omitempty"`
+
+	// The speed-over-ground reported by the vessel, in kilometers/hour
+	Speed *float64 `json:"speed,omitempty"`
+
+	// The true heading reported by the vessel, in degrees
+	TrueHeading *float64 `json:"trueHeading,omitempty"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format
+	Ts time.Time `json:"ts"`
+
+	// The flag of the subject vessel according to AIS transmission
+	VesselFlag *string `json:"vesselFlag,omitempty"`
+
+	// The breadth of the vessel, in meters.  A value of 63 indicates a vessel breadth of 63 meters or greater
+	Width *float64 `json:"width,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AISAbridgedDataMode string
+
+// Self-reported information obtained from Automatic Identification System (AIS) equipment. This contains information such as unique identification, status, position, course, and speed. The AIS is an automatic tracking system that uses transceivers on ships and is used by vessel traffic services. Although technically and operationally distinct, the AIS system is analogous to ADS-B that performs a similar function for aircraft. AIS is intended to assist a vessel's watchstanding officers and allow maritime authorities to track and monitor vessel movements. AIS integrates a standardized VHF transceiver with a positioning system such as Global Positioning System receiver, with other electronic navigation sensors, such as gyrocompass or rate of turn indicator. Vessels fitted with AIS transceivers can be tracked by AIS base stations located along coast lines or, when out of range of terrestrial networks, through a growing number of satellites that are fitted with special AIS receivers which are capable of deconflicting a large number of signatures.
+type AISFull struct {
+	// The reference dimensions of the vessel, reported as [A, B, C, D], in meters.  Where the array values represent the distance fore (A), aft (B), to port (C), and to starboard (D) of the navigation antenna.  Array with values A = C = 0 and B, D > 0 indicate the length (B) and width (D) of the vessel without antenna position reference.
+	AntennaRefDimensions *[]float64 `json:"antennaRefDimensions,omitempty"`
+
+	// The average speed, in kilometers/hour, calculated for the subject vessel during the latest voyage (port to port)
+	AvgSpeed *float64 `json:"avgSpeed,omitempty"`
+
+	// A uniquely designated identifier for the vessel's transmitter station
+	CallSign *string `json:"callSign,omitempty"`
+
+	// The reported cargo type. Intended as, but not constrained to, the USCG NAVCEN AIS cargo definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with ship and cargo types. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	CargoType *string `json:"cargoType,omitempty"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// The course-over-ground reported by the vessel, in degrees
+	Course *float64 `json:"course,omitempty"`
+
+	// Time the row was created in the database, auto-populated by the system
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The US Geographic Unique Identifier of the current port hosting the vessel
+	CurrentPortGUID *string `json:"currentPortGUID,omitempty"`
+
+	// The UN Location Code of the current port hosting the vessel
+	CurrentPortLOCODE *string `json:"currentPortLOCODE,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AISFullDataMode `json:"dataMode"`
+
+	// The destination of the vessel according to the AIS transmission
+	Destination *string `json:"destination,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination, in ISO 8601 UTC format
+	DestinationETA *time.Time `json:"destinationETA,omitempty"`
+
+	// The remaining distance, in kilometers, for the vessel to reach the reported destination
+	DistanceToGo *float64 `json:"distanceToGo,omitempty"`
+
+	// The distance, in kilometers, that the vessel has travelled since departing the last port
+	DistanceTravelled *float64 `json:"distanceTravelled,omitempty"`
+
+	// The maximum static draught, in meters, of the vessel according to the AIS transmission
+	Draught *float64 `json:"draught,omitempty"`
+
+	// The activity that the vessel is engaged in.  This entry applies only when the shipType = Other
+	EngagedIn *string `json:"engagedIn,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination port, according to MarineTraffic calculations, in ISO 8601 UTC format
+	EtaCalculated *time.Time `json:"etaCalculated,omitempty"`
+
+	// The date and time that the ETA was calculated by MarineTraffic, in ISO 8601 UTC format
+	EtaUpdated *time.Time `json:"etaUpdated,omitempty"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the Track
+	IdTrack *string `json:"idTrack,omitempty"`
+
+	// Unique identifier of the vessel
+	IdVessel *string `json:"idVessel,omitempty"`
+
+	// The International Maritime Organization Number of the vessel.  IMON is a seven-digit number that uniquely identifies the vessel
+	Imon *int64 `json:"imon,omitempty"`
+
+	// The US Geographic Unique Identifier of the last port visited by the vessel
+	LastPortGUID *string `json:"lastPortGUID,omitempty"`
+
+	// The UN Location Code of the last port visited by the vessel
+	LastPortLOCODE *string `json:"lastPortLOCODE,omitempty"`
+
+	// WGS-84 latitude of the vessel position, in degrees.  -90 to 90 degrees (negative values south of equator)
+	Lat *float64 `json:"lat,omitempty"`
+
+	// The overall length of the vessel, in meters.  A value of 511 indicates a vessel length of 511 meters or greater
+	Length *float64 `json:"length,omitempty"`
+
+	// WGS-84 longitude of the vessel position, in degrees.  -180 to 180 degrees (negative values west of Prime Meridian)
+	Lon *float64 `json:"lon,omitempty"`
+
+	// The maximum speed, in kilometers/hour, reported by the subject vessel during the latest voyage (port to port)
+	MaxSpeed *float64 `json:"maxSpeed,omitempty"`
+
+	// The Maritime Mobile Service Identity of the vessel.  MMSI is a nine-digit number that identifies the transmitter station of the vessel
+	Mmsi *int64 `json:"mmsi,omitempty"`
+
+	// The AIS Navigational Status of the vessel (e.g. Underway Using Engine, Moored, Aground, etc.). Intended as, but not constrained to, the USCG NAVCEN navigation status definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with navigation status. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	NavStatus *string `json:"navStatus,omitempty"`
+
+	// The US Geographic Unique Identifier of the next destination port of the vessel
+	NextPortGUID *string `json:"nextPortGUID,omitempty"`
+
+	// The UN  Location Code of the next destination port of the vessel
+	NextPortLOCODE *string `json:"nextPortLOCODE,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// The type of electronic position fixing device (e.g. GPS, GLONASS, etc.). Intended as, but not constrained to, the USCG NAVCEN electronic position fixing device definitions. Users should refer to USCG Navigation Center documentation for specific device type information. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	PosDeviceType *string `json:"posDeviceType,omitempty"`
+
+	// Flag indicating high reported position accuracy (less than or equal to 10 meters).  A value of 0/false indicates low accuracy (greater than 10 meters)
+	PosHiAccuracy *bool `json:"posHiAccuracy,omitempty"`
+
+	// Flag indicating high reported position latency (greater than 5 seconds).  A value of 0/false indicates low latency (less than 5 seconds)
+	PosHiLatency *bool `json:"posHiLatency,omitempty"`
+
+	// The Rate-of-Turn for the vessel, in degrees/minute.  Positive value indicates that the vessel is turning right
+	RateOfTurn *float64 `json:"rateOfTurn,omitempty"`
+
+	// Further description or explanation of the vessel or type
+	ShipDescription *string `json:"shipDescription,omitempty"`
+
+	// The name of the vessel.  Vessel names that exceed the AIS 20 character are shortened (not truncated) to 15 character-spaces, followed by an underscore and the last 4 characters-spaces of the vessel full name
+	ShipName *string `json:"shipName,omitempty"`
+
+	// The reported ship type (e.g. Passenger, Tanker, Cargo, Other, etc.).  See the engagedIn and specialCraft entries for additional information on certain types of vessels
+	ShipType *string `json:"shipType,omitempty"`
+
+	// Source of the data
+	Source string `json:"source"`
+
+	// The type of special craft designation of the vessel.  This entry applies only when the shipType = Special Craft
+	SpecialCraft *string `json:"specialCraft,omitempty"`
+
+	// Flag indicating that the vessel is engaged in a special maneuver (e.g. Waterway Navigation)
+	SpecialManeuver *bool `json:"specialManeuver,omitempty"`
+
+	// The speed-over-ground reported by the vessel, in kilometers/hour
+	Speed *float64 `json:"speed,omitempty"`
+
+	// The true heading reported by the vessel, in degrees
+	TrueHeading *float64 `json:"trueHeading,omitempty"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format
+	Ts time.Time `json:"ts"`
+
+	// The flag of the subject vessel according to AIS transmission
+	VesselFlag *string `json:"vesselFlag,omitempty"`
+
+	// The breadth of the vessel, in meters.  A value of 63 indicates a vessel breadth of 63 meters or greater
+	Width *float64 `json:"width,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AISFullDataMode string
+
+// Self-reported information obtained from Automatic Identification System (AIS) equipment. This contains information such as unique identification, status, position, course, and speed. The AIS is an automatic tracking system that uses transceivers on ships and is used by vessel traffic services. Although technically and operationally distinct, the AIS system is analogous to ADS-B that performs a similar function for aircraft. AIS is intended to assist a vessel's watchstanding officers and allow maritime authorities to track and monitor vessel movements. AIS integrates a standardized VHF transceiver with a positioning system such as Global Positioning System receiver, with other electronic navigation sensors, such as gyrocompass or rate of turn indicator. Vessels fitted with AIS transceivers can be tracked by AIS base stations located along coast lines or, when out of range of terrestrial networks, through a growing number of satellites that are fitted with special AIS receivers which are capable of deconflicting a large number of signatures.
+type AISIngest struct {
+	// The reference dimensions of the vessel, reported as [A, B, C, D], in meters.  Where the array values represent the distance fore (A), aft (B), to port (C), and to starboard (D) of the navigation antenna.  Array with values A = C = 0 and B, D > 0 indicate the length (B) and width (D) of the vessel without antenna position reference.
+	AntennaRefDimensions *[]float64 `json:"antennaRefDimensions,omitempty"`
+
+	// The average speed, in kilometers/hour, calculated for the subject vessel during the latest voyage (port to port)
+	AvgSpeed *float64 `json:"avgSpeed,omitempty"`
+
+	// A uniquely designated identifier for the vessel's transmitter station
+	CallSign *string `json:"callSign,omitempty"`
+
+	// The reported cargo type. Intended as, but not constrained to, the USCG NAVCEN AIS cargo definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with ship and cargo types. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	CargoType *string `json:"cargoType,omitempty"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// The course-over-ground reported by the vessel, in degrees
+	Course *float64 `json:"course,omitempty"`
+
+	// Time the row was created in the database, auto-populated by the system
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The US Geographic Unique Identifier of the current port hosting the vessel
+	CurrentPortGUID *string `json:"currentPortGUID,omitempty"`
+
+	// The UN Location Code of the current port hosting the vessel
+	CurrentPortLOCODE *string `json:"currentPortLOCODE,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AISIngestDataMode `json:"dataMode"`
+
+	// The destination of the vessel according to the AIS transmission
+	Destination *string `json:"destination,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination, in ISO 8601 UTC format
+	DestinationETA *time.Time `json:"destinationETA,omitempty"`
+
+	// The remaining distance, in kilometers, for the vessel to reach the reported destination
+	DistanceToGo *float64 `json:"distanceToGo,omitempty"`
+
+	// The distance, in kilometers, that the vessel has travelled since departing the last port
+	DistanceTravelled *float64 `json:"distanceTravelled,omitempty"`
+
+	// The maximum static draught, in meters, of the vessel according to the AIS transmission
+	Draught *float64 `json:"currentVoyage.draught,omitempty"`
+
+	// The activity that the vessel is engaged in.  This entry applies only when the shipType = Other
+	EngagedIn *string `json:"engagedIn,omitempty"`
+
+	// The Estimated Time of Arrival of the vessel at the destination port, according to MarineTraffic calculations, in ISO 8601 UTC format
+	EtaCalculated *time.Time `json:"etaCalculated,omitempty"`
+
+	// The date and time that the ETA was calculated by MarineTraffic, in ISO 8601 UTC format
+	EtaUpdated *time.Time `json:"etaUpdated,omitempty"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the Track
+	IdTrack *string `json:"idTrack,omitempty"`
+
+	// Unique identifier of the vessel
+	IdVessel *string `json:"idVessel,omitempty"`
+
+	// The International Maritime Organization Number of the vessel.  IMON is a seven-digit number that uniquely identifies the vessel
+	Imon *int64 `json:"imon,omitempty"`
+
+	// The US Geographic Unique Identifier of the last port visited by the vessel
+	LastPortGUID *string `json:"lastPortGUID,omitempty"`
+
+	// The UN Location Code of the last port visited by the vessel
+	LastPortLOCODE *string `json:"lastPortLOCODE,omitempty"`
+
+	// WGS-84 latitude of the vessel position, in degrees.  -90 to 90 degrees (negative values south of equator)
+	Lat *float64 `json:"lat,omitempty"`
+
+	// The overall length of the vessel, in meters.  A value of 511 indicates a vessel length of 511 meters or greater
+	Length *float64 `json:"length,omitempty"`
+
+	// WGS-84 longitude of the vessel position, in degrees.  -180 to 180 degrees (negative values west of Prime Meridian)
+	Lon *float64 `json:"lastPositionUpdate.longitude,omitempty"`
+
+	// The maximum speed, in kilometers/hour, reported by the subject vessel during the latest voyage (port to port)
+	MaxSpeed *float64 `json:"maxSpeed,omitempty"`
+
+	// The Maritime Mobile Service Identity of the vessel.  MMSI is a nine-digit number that identifies the transmitter station of the vessel
+	Mmsi *int64 `json:"staticData.mmsi,omitempty"`
+
+	// The AIS Navigational Status of the vessel (e.g. Underway Using Engine, Moored, Aground, etc.). Intended as, but not constrained to, the USCG NAVCEN navigation status definitions. Users should refer to USCG Navigation Center documentation for specific definitions associated with navigation status. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	NavStatus *string `json:"lastPositionUpdate.navigationalStatus,omitempty"`
+
+	// The US Geographic Unique Identifier of the next destination port of the vessel
+	NextPortGUID *string `json:"nextPortGUID,omitempty"`
+
+	// The UN  Location Code of the next destination port of the vessel
+	NextPortLOCODE *string `json:"nextPortLOCODE,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// The type of electronic position fixing device (e.g. GPS, GLONASS, etc.). Intended as, but not constrained to, the USCG NAVCEN electronic position fixing device definitions. Users should refer to USCG Navigation Center documentation for specific device type information. USCG NAVCEN documentation may be found at https://www.navcen.uscg.gov.
+	PosDeviceType *string `json:"posDeviceType,omitempty"`
+
+	// Flag indicating high reported position accuracy (less than or equal to 10 meters).  A value of 0/false indicates low accuracy (greater than 10 meters)
+	PosHiAccuracy *bool `json:"posHiAccuracy,omitempty"`
+
+	// Flag indicating high reported position latency (greater than 5 seconds).  A value of 0/false indicates low latency (less than 5 seconds)
+	PosHiLatency *bool `json:"posHiLatency,omitempty"`
+
+	// The Rate-of-Turn for the vessel, in degrees/minute.  Positive value indicates that the vessel is turning right
+	RateOfTurn *float64 `json:"rateOfTurn,omitempty"`
+
+	// Further description or explanation of the vessel or type
+	ShipDescription *string `json:"shipDescription,omitempty"`
+
+	// The name of the vessel.  Vessel names that exceed the AIS 20 character are shortened (not truncated) to 15 character-spaces, followed by an underscore and the last 4 characters-spaces of the vessel full name
+	ShipName string `json:"staticData.name,omitempty"`
+
+	// The reported ship type (e.g. Passenger, Tanker, Cargo, Other, etc.).  See the engagedIn and specialCraft entries for additional information on certain types of vessels
+	ShipType *string `json:"staticData.shipType,omitempty"`
+
+	// Source of the data
+	Source string `json:"source"`
+
+	// The type of special craft designation of the vessel.  This entry applies only when the shipType = Special Craft
+	SpecialCraft *string `json:"specialCraft,omitempty"`
+
+	// Flag indicating that the vessel is engaged in a special maneuver (e.g. Waterway Navigation)
+	SpecialManeuver *bool `json:"specialManeuver,omitempty"`
+
+	// The speed-over-ground reported by the vessel, in kilometers/hour
+	Speed *float64 `json:"speed,omitempty"`
+
+	// The true heading reported by the vessel, in degrees
+	TrueHeading *float64 `json:"trueHeading,omitempty"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format
+	Ts time.Time `json:"updateTimestamp"`
+
+	// The flag of the subject vessel according to AIS transmission
+	VesselFlag *string `json:"vesselFlag,omitempty"`
+
+	// The breadth of the vessel, in meters.  A value of 63 indicates a vessel breadth of 63 meters or greater
+	Width *float64 `json:"width,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AISIngestDataMode string
+
+// Detailed information for a spacecraft communication antenna. One antenna may have multiple AntennaDetails records, compiled by various sources.
 type AntennaDetailsFull struct {
 	// Boolean indicating if this is a beam forming antenna
 	BeamForming *bool `json:"beamForming,omitempty"`
@@ -827,6 +1418,651 @@ type AntennaFull struct {
 // TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
 type AntennaFullDataMode string
 
+// These services provide operations for posting and querying attitude of on-orbit objects.  Attitude describes the orientation of an object, which can be represented by quaternions or euler angles.  The AttitudeSet ID (asId) identifies the 'AttitudeSet' record which contains details of the underlying data as well as a collection of attitude points. Points must be retrieved by first identifying a desired AttitudeSet and pulling its points by that AttitudeSet ID 'asId.'
+type AttitudeDataAbridged struct {
+	// Unique identifier of the parent AttitudeSet associated with this record.
+	AsId string `json:"asId"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeDataAbridgedDataMode `json:"dataMode"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude record applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude record. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Quaternion vector component 1.
+	Q1 *float64 `json:"q1,omitempty"`
+
+	// Derivative of quaternion vector component 1.
+	Q1Dot *float64 `json:"q1Dot,omitempty"`
+
+	// Quaternion vector component 2.
+	Q2 *float64 `json:"q2,omitempty"`
+
+	// Derivative of quaternion vector component 2.
+	Q2Dot *float64 `json:"q2Dot,omitempty"`
+
+	// Quaternion vector component 3.
+	Q3 *float64 `json:"q3,omitempty"`
+
+	// Derivative of quaternion vector component 3.
+	Q3Dot *float64 `json:"q3Dot,omitempty"`
+
+	// Quaternion scalar component.
+	Qc *float64 `json:"qc,omitempty"`
+
+	// Derivative of quaternion scalar component.
+	QcDot *float64 `json:"qcDot,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude record applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// Time associated with this attitude record, in ISO 8601 UTC format, with microsecond precision.
+	Ts time.Time `json:"ts"`
+
+	// Array of X body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	XAngle *[]float64 `json:"xAngle,omitempty"`
+
+	// Array of X body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	XRate *[]float64 `json:"xRate,omitempty"`
+
+	// Array of Y body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	YAngle *[]float64 `json:"yAngle,omitempty"`
+
+	// Array of Y body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	YRate *[]float64 `json:"yRate,omitempty"`
+
+	// Array of Z body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	ZAngle *[]float64 `json:"zAngle,omitempty"`
+
+	// Array of Z body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence  Attitude rates are expressed in frame1 with respect to frame2.
+	ZRate *[]float64 `json:"zRate,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeDataAbridgedDataMode string
+
+// These services provide operations for posting and querying attitude of on-orbit objects.  Attitude describes the orientation of an object, which can be represented by quaternions or euler angles.  The AttitudeSet ID (asId) identifies the 'AttitudeSet' record which contains details of the underlying data as well as a collection of attitude points. Points must be retrieved by first identifying a desired AttitudeSet and pulling its points by that AttitudeSet ID 'asId.'
+type AttitudeDataFull struct {
+	// Unique identifier of the parent AttitudeSet associated with this record.
+	AsId string `json:"asId"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeDataFullDataMode `json:"dataMode"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude record applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude record. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Quaternion vector component 1.
+	Q1 *float64 `json:"q1,omitempty"`
+
+	// Derivative of quaternion vector component 1.
+	Q1Dot *float64 `json:"q1Dot,omitempty"`
+
+	// Quaternion vector component 2.
+	Q2 *float64 `json:"q2,omitempty"`
+
+	// Derivative of quaternion vector component 2.
+	Q2Dot *float64 `json:"q2Dot,omitempty"`
+
+	// Quaternion vector component 3.
+	Q3 *float64 `json:"q3,omitempty"`
+
+	// Derivative of quaternion vector component 3.
+	Q3Dot *float64 `json:"q3Dot,omitempty"`
+
+	// Quaternion scalar component.
+	Qc *float64 `json:"qc,omitempty"`
+
+	// Derivative of quaternion scalar component.
+	QcDot *float64 `json:"qcDot,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude record applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// Time associated with this attitude record, in ISO 8601 UTC format, with microsecond precision.
+	Ts time.Time `json:"ts"`
+
+	// Array of X body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	XAngle *[]float64 `json:"xAngle,omitempty"`
+
+	// Array of X body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	XRate *[]float64 `json:"xRate,omitempty"`
+
+	// Array of Y body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	YAngle *[]float64 `json:"yAngle,omitempty"`
+
+	// Array of Y body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	YRate *[]float64 `json:"yRate,omitempty"`
+
+	// Array of Z body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	ZAngle *[]float64 `json:"zAngle,omitempty"`
+
+	// Array of Z body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence  Attitude rates are expressed in frame1 with respect to frame2.
+	ZRate *[]float64 `json:"zRate,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeDataFullDataMode string
+
+// These services provide operations for posting and querying attitude of on-orbit objects.  Attitude describes the orientation of an object, which can be represented by quaternions or euler angles.  The AttitudeSet ID (asId) identifies the 'AttitudeSet' record which contains details of the underlying data as well as a collection of attitude points. Points must be retrieved by first identifying a desired AttitudeSet and pulling its points by that AttitudeSet ID 'asId.'
+type AttitudeDataIngest struct {
+	// Unique identifier of the parent AttitudeSet associated with this record.
+	AsId string `json:"asId"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeDataIngestDataMode `json:"dataMode"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude record applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude record. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Quaternion vector component 1.
+	Q1 *float64 `json:"q1,omitempty"`
+
+	// Derivative of quaternion vector component 1.
+	Q1Dot *float64 `json:"q1Dot,omitempty"`
+
+	// Quaternion vector component 2.
+	Q2 *float64 `json:"q2,omitempty"`
+
+	// Derivative of quaternion vector component 2.
+	Q2Dot *float64 `json:"q2Dot,omitempty"`
+
+	// Quaternion vector component 3.
+	Q3 *float64 `json:"q3,omitempty"`
+
+	// Derivative of quaternion vector component 3.
+	Q3Dot *float64 `json:"q3Dot,omitempty"`
+
+	// Quaternion scalar component.
+	Qc *float64 `json:"qc,omitempty"`
+
+	// Derivative of quaternion scalar component.
+	QcDot *float64 `json:"qcDot,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude record applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// Time associated with this attitude record, in ISO 8601 UTC format, with microsecond precision.
+	Ts time.Time `json:"ts"`
+
+	// Array of X body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	XAngle *[]float64 `json:"xAngle,omitempty"`
+
+	// Array of X body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	XRate *[]float64 `json:"xRate,omitempty"`
+
+	// Array of Y body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	YAngle *[]float64 `json:"yAngle,omitempty"`
+
+	// Array of Y body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence.  Attitude rates are expressed in frame1 with respect to frame2.
+	YRate *[]float64 `json:"yRate,omitempty"`
+
+	// Array of Z body rotation Euler angle(s), in degrees (-180 to 180).  For repeated axis rotations, the array elements should be placed in the order that the angles apply in the sequence.
+	ZAngle *[]float64 `json:"zAngle,omitempty"`
+
+	// Array of Z body rotation rate(s), in degrees per second.  For repeated axis rotations, the array elements should be placed in the order that the rates apply in the sequence  Attitude rates are expressed in frame1 with respect to frame2.
+	ZRate *[]float64 `json:"zRate,omitempty"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeDataIngestDataMode string
+
+// AttitudeSet represents a wrapper or collection of Onorbit Attitude 'points' and meta data indicating the specifics of the orientation of an on-orbit object.  Attitude is typically distributed in a flat file containing details of the attitude generation as well as a large collection of individual points at varying time steps. AttitudeSet is analogous to this flat file.
+type AttitudeSetAbridged struct {
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeSetAbridgedDataMode `json:"dataMode"`
+
+	// The end time of the attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single epoch attitude message then endTime should match the startTime.
+	EndTime time.Time `json:"endTime"`
+
+	// Unique identifier of the parent (positional) Ephemeris Set, if this data is correlated with an Ephemeris.
+	EsId *string `json:"esId,omitempty"`
+
+	// The rotation sequence of the Euler angles in which attitude reference frame transformation occurs (from left to right). One, two, or three axis rotations are supported and are represented by one, two, or three characters respectively.  Repeated axis rotations are also supported, however, these rotations should not be sequential.  The numeric sequence values correspond to the body angles/rates as follows: 1 - xAngle/xRate, 2 - yAngle/yRate, and 3 - zAngle/zRate.  Valid sequences are: 123, 132, 213, 231, 312, 321, 121, 131, 212, 232, 313, 323, 12, 13, 21, 23, 31, 32, 1, 2, and 3.
+	//
+	//
+	//
+	// The following represent examples of possible rotation sequences:  A single rotation about the Y-axis can be expressed as '2', a double rotation with X-Z sequence can be expressed as '13', and a triple rotation with Z-X-Y sequence can be expressed as '312'.
+	EulerRotSeq *string `json:"eulerRotSeq,omitempty"`
+
+	// Reference frame 1 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame1 string `json:"frame1"`
+
+	// Reference frame 2 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame2 string `json:"frame2"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude set applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// Unique identifier of the sensor to which this attitude set applies IF this set is reporting a single sensor orientation.
+	IdSensor *string `json:"idSensor,omitempty"`
+
+	// Recommended interpolation method for estimating attitude ephemeris data.
+	Interpolator *string `json:"interpolator,omitempty"`
+
+	// Recommended polynomial interpolation degree.
+	InterpolatorDegree *int32 `json:"interpolatorDegree,omitempty"`
+
+	// Optional notes/comments for this attitude set.
+	Notes *string `json:"notes,omitempty"`
+
+	// Number of attitude records contained in this set.
+	NumPoints int32 `json:"numPoints"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude set. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the sensor identifier to which this attitude set applies IF this set is reporting a single sensor orientation. This may be an internal identifier and not necessarily a valid sensor ID.
+	OrigSensorId *string `json:"origSensorId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude set applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch.
+	StartTime time.Time `json:"startTime"`
+
+	// Attitude ephemeris step size, in seconds. This applies to Attitude Ephemeris Messages (AEM) that employ a fixed step size.
+	StepSize *int32 `json:"stepSize,omitempty"`
+
+	// The type of attitude message or messages associated with this set.
+	//
+	// AEM = Attitude Ephemeris Message, specifying the attitude state of a single object at multiple epochs.
+	//
+	// APM = Attitude Parameters Message, specifying the attitude state of a single object at a single epoch.
+	Type string `json:"type"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeSetAbridgedDataMode string
+
+// AttitudeSet represents a wrapper or collection of Onorbit Attitude 'points' and meta data indicating the specifics of the orientation of an on-orbit object.  Attitude is typically distributed in a flat file containing details of the attitude generation as well as a large collection of individual points at varying time steps. AttitudeSet is analogous to this flat file.
+type AttitudeSetFull struct {
+	// Array of UDL UUIDs of one or more AttitudeSet records associated with this set.  For example, a spacecraft Attitude Ephemeris Set might include a reference to an Attitude Parameter Message defining the sensor to body frame transformation for a sensor onboard the spacecraft, which allows for calculation of the sensor orientation in frame2 of the attitude ephemeris.
+	AsRef *[]string `json:"asRef,omitempty"`
+
+	// Collection of attitude data associated with this Attitude Set
+	AttitudeList *[]AttitudeDataFull `json:"attitudeList,omitempty"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeSetFullDataMode `json:"dataMode"`
+
+	// The end time of the attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single epoch attitude message then endTime should match the startTime.
+	EndTime time.Time `json:"endTime"`
+
+	// Unique identifier of the parent (positional) Ephemeris Set, if this data is correlated with an Ephemeris.
+	EsId *string `json:"esId,omitempty"`
+
+	// The rotation sequence of the Euler angles in which attitude reference frame transformation occurs (from left to right). One, two, or three axis rotations are supported and are represented by one, two, or three characters respectively.  Repeated axis rotations are also supported, however, these rotations should not be sequential.  The numeric sequence values correspond to the body angles/rates as follows: 1 - xAngle/xRate, 2 - yAngle/yRate, and 3 - zAngle/zRate.  Valid sequences are: 123, 132, 213, 231, 312, 321, 121, 131, 212, 232, 313, 323, 12, 13, 21, 23, 31, 32, 1, 2, and 3.
+	//
+	//
+	//
+	// The following represent examples of possible rotation sequences:  A single rotation about the Y-axis can be expressed as '2', a double rotation with X-Z sequence can be expressed as '13', and a triple rotation with Z-X-Y sequence can be expressed as '312'.
+	EulerRotSeq *string `json:"eulerRotSeq,omitempty"`
+
+	// Reference frame 1 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame1 string `json:"frame1"`
+
+	// Reference frame 2 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame2 string `json:"frame2"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude set applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// Unique identifier of the sensor to which this attitude set applies IF this set is reporting a single sensor orientation.
+	IdSensor *string `json:"idSensor,omitempty"`
+
+	// Recommended interpolation method for estimating attitude ephemeris data.
+	Interpolator *string `json:"interpolator,omitempty"`
+
+	// Recommended polynomial interpolation degree.
+	InterpolatorDegree *int32 `json:"interpolatorDegree,omitempty"`
+
+	// Optional notes/comments for this attitude set.
+	Notes *string `json:"notes,omitempty"`
+
+	// Number of attitude records contained in this set.
+	NumPoints int32 `json:"numPoints"`
+
+	// Model object representing on-orbit objects or satellites in the system.
+	OnOrbit *OnorbitFull `json:"onOrbit,omitempty"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude set. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the sensor identifier to which this attitude set applies IF this set is reporting a single sensor orientation. This may be an internal identifier and not necessarily a valid sensor ID.
+	OrigSensorId *string `json:"origSensorId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude set applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch.
+	StartTime time.Time `json:"startTime"`
+
+	// Attitude ephemeris step size, in seconds. This applies to Attitude Ephemeris Messages (AEM) that employ a fixed step size.
+	StepSize *int32 `json:"stepSize,omitempty"`
+
+	// The type of attitude message or messages associated with this set.
+	//
+	// AEM = Attitude Ephemeris Message, specifying the attitude state of a single object at multiple epochs.
+	//
+	// APM = Attitude Parameters Message, specifying the attitude state of a single object at a single epoch.
+	Type string `json:"type"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeSetFullDataMode string
+
+// AttitudeSet represents a wrapper or collection of Onorbit Attitude 'points' and meta data indicating the specifics of the orientation of an on-orbit object.  Attitude is typically distributed in a flat file containing details of the attitude generation as well as a large collection of individual points at varying time steps. AttitudeSet is analogous to this flat file.
+type AttitudeSetIngest struct {
+	// Array of UDL UUIDs of one or more AttitudeSet records associated with this set.  For example, a spacecraft Attitude Ephemeris Set might include a reference to an Attitude Parameter Message defining the sensor to body frame transformation for a sensor onboard the spacecraft, which allows for calculation of the sensor orientation in frame2 of the attitude ephemeris.
+	AsRef *[]string `json:"asRef,omitempty"`
+
+	// Collection of attitude data associated with this Attitude Set
+	AttitudeList *[]AttitudeDataIngest `json:"attitudeList,omitempty"`
+
+	// Classification marking of the data in IC/CAPCO Portion-marked format
+	ClassificationMarking string `json:"classificationMarking"`
+
+	// Time the row was created in the database, auto-populated by the system.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// Application user who created the row in the database, auto-populated by the system.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+	//
+	// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+	//
+	// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+	//
+	// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+	//
+	// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+	//
+	DataMode AttitudeSetIngestDataMode `json:"dataMode"`
+
+	// The end time of the attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single epoch attitude message then endTime should match the startTime.
+	EndTime time.Time `json:"endTime"`
+
+	// Unique identifier of the parent (positional) Ephemeris Set, if this data is correlated with an Ephemeris.
+	EsId *string `json:"esId,omitempty"`
+
+	// The rotation sequence of the Euler angles in which attitude reference frame transformation occurs (from left to right). One, two, or three axis rotations are supported and are represented by one, two, or three characters respectively.  Repeated axis rotations are also supported, however, these rotations should not be sequential.  The numeric sequence values correspond to the body angles/rates as follows: 1 - xAngle/xRate, 2 - yAngle/yRate, and 3 - zAngle/zRate.  Valid sequences are: 123, 132, 213, 231, 312, 321, 121, 131, 212, 232, 313, 323, 12, 13, 21, 23, 31, 32, 1, 2, and 3.
+	//
+	//
+	//
+	// The following represent examples of possible rotation sequences:  A single rotation about the Y-axis can be expressed as '2', a double rotation with X-Z sequence can be expressed as '13', and a triple rotation with Z-X-Y sequence can be expressed as '312'.
+	EulerRotSeq *string `json:"eulerRotSeq,omitempty"`
+
+	// Reference frame 1 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame1 string `json:"frame1"`
+
+	// Reference frame 2 of the quaternion or Euler angle transformation utilized in this attitude parameter or attitude ephemeris.  The UDL convention is that transformations occur FROM frame1 TO frame2.  A specific spacecraft frame or instrument name may be provided with the assumption the consumer understands the location of these frames (ex. SC BODY, J2000, LVLH, ICRF, INSTRUMENTx, THRUSTERx, etc.).
+	Frame2 string `json:"frame2"`
+
+	// Unique identifier of the record, auto-generated by the system
+	Id *string `json:"id,omitempty"`
+
+	// Unique identifier of the on-orbit satellite to which this attitude set applies.
+	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
+
+	// Unique identifier of the sensor to which this attitude set applies IF this set is reporting a single sensor orientation.
+	IdSensor *string `json:"idSensor,omitempty"`
+
+	// Recommended interpolation method for estimating attitude ephemeris data.
+	Interpolator *string `json:"interpolator,omitempty"`
+
+	// Recommended polynomial interpolation degree.
+	InterpolatorDegree *int32 `json:"interpolatorDegree,omitempty"`
+
+	// Optional notes/comments for this attitude set.
+	Notes *string `json:"notes,omitempty"`
+
+	// Number of attitude records contained in this set.
+	NumPoints int32 `json:"numPoints"`
+
+	// The originating source network on which this record was created, auto-populated by the system.
+	OrigNetwork *string `json:"origNetwork,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the target object of this attitude set. This may be an internal identifier and not necessarily map to a valid satellite number.
+	OrigObjectId *string `json:"origObjectId,omitempty"`
+
+	// Optional identifier provided by the record source to indicate the sensor identifier to which this attitude set applies IF this set is reporting a single sensor orientation. This may be an internal identifier and not necessarily a valid sensor ID.
+	OrigSensorId *string `json:"origSensorId,omitempty"`
+
+	// Originating system or organization which produced the data, if different from the source. The origin may be different than the source if the source was a mediating system which forwarded the data on behalf of the origin system. If null, the source may be assumed to be the origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// Satellite/catalog number of the on-orbit object to which this attitude set applies.
+	SatNo *int32 `json:"satNo,omitempty"`
+
+	// Source of the data.
+	Source string `json:"source"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch.
+	StartTime time.Time `json:"startTime"`
+
+	// Attitude ephemeris step size, in seconds. This applies to Attitude Ephemeris Messages (AEM) that employ a fixed step size.
+	StepSize *int32 `json:"stepSize,omitempty"`
+
+	// The type of attitude message or messages associated with this set.
+	//
+	// AEM = Attitude Ephemeris Message, specifying the attitude state of a single object at multiple epochs.
+	//
+	// APM = Attitude Parameters Message, specifying the attitude state of a single object at a single epoch.
+	Type string `json:"type"`
+}
+
+// Indicator of whether the data is EXERCISE, REAL, SIMULATED, or TEST data:
+//
+// EXERCISE:&nbsp;Data pertaining to a government or military exercise. The data may include both real and simulated data.
+//
+// REAL:&nbsp;Data collected or produced that pertains to real-world objects, events, and analysis.
+//
+// SIMULATED:&nbsp;Synthetic data generated by a model to mimic real-world datasets.
+//
+// TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
+type AttitudeSetIngestDataMode string
+
 // Detailed information on a spacecraft battery type compiled by a particular source. A Battery record may have multiple details records from several sources.
 type BatteryDetailsFull struct {
 	// Battery capacity in Ah
@@ -966,7 +2202,7 @@ type BatteryFullDataMode string
 // DataMode defines model for DataMode.
 type DataMode string
 
-// Keplerian orbital elements describing an orbit for a particular on-orbit satellite. The backing table contains historical element sets and current element sets (current elsets have a reference from the Currentelset table).
+// An element set is a collection of Keplerian orbital elements describing an orbit of a particular satellite. The data is used along with an orbit propagator in order to predict the motion of a satellite. The element set, or elset for short, consists of identification data, the classical elements and drag parameters.
 type ElsetAbridged struct {
 	// AGOM, expressed in m^2/kg, is the value of the (averaged) object Area times the solar radiation pressure coefficient(Gamma) over the object Mass. Applicable only with ephemType4
 	Agom *float64 `json:"agom,omitempty"`
@@ -1029,7 +2265,7 @@ type ElsetAbridged struct {
 	//
 	EphemType *int32 `json:"ephemType,omitempty"`
 
-	// Elset epoch time in ISO 8601 UTC with microsecond precision
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision
 	Epoch time.Time `json:"epoch"`
 
 	// Unique identifier of the record, auto-generated by the system
@@ -1107,7 +2343,7 @@ type ElsetAbridged struct {
 // TEST:&nbsp;Specific datasets used to evaluate compliance with specifications and requirements, and for validating technical, functional, and performance characteristics.
 type ElsetAbridgedDataMode string
 
-// Keplerian orbital elements describing an orbit for a particular on-orbit satellite. The backing table contains historical element sets and current element sets (current elsets have a reference from the Currentelset table).
+// An element set is a collection of Keplerian orbital elements describing an orbit of a particular satellite. The data is used along with an orbit propagator in order to predict the motion of a satellite. The element set, or elset for short, consists of identification data, the classical elements and drag parameters.
 type ElsetFull struct {
 	// AGOM, expressed in m^2/kg, is the value of the (averaged) object Area times the solar radiation pressure coefficient(Gamma) over the object Mass. Applicable only with ephemType4
 	Agom *float64 `json:"agom,omitempty"`
@@ -1176,7 +2412,7 @@ type ElsetFull struct {
 	//
 	EphemType *int32 `json:"ephemType,omitempty"`
 
-	// Elset epoch time in ISO 8601 UTC with microsecond precision
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision
 	Epoch time.Time `json:"epoch"`
 
 	// Unique identifier of the record, auto-generated by the system
@@ -1272,7 +2508,7 @@ type ElsetFullDataMode string
 // ElsetFullSourcedDataTypes defines model for ElsetFull.SourcedDataTypes.
 type ElsetFullSourcedDataTypes string
 
-// Keplerian orbital elements describing an orbit for a particular on-orbit satellite. The backing table contains historical element sets and current element sets (current elsets have a reference from the Currentelset table).
+// An element set is a collection of Keplerian orbital elements describing an orbit of a particular satellite. The data is used along with an orbit propagator in order to predict the motion of a satellite. The element set, or elset for short, consists of identification data, the classical elements and drag parameters.
 type ElsetIngest struct {
 	// AGOM, expressed in m^2/kg, is the value of the (averaged) object Area times the solar radiation pressure coefficient(Gamma) over the object Mass. Applicable only with ephemType4
 	Agom *float64 `json:"agom,omitempty"`
@@ -1335,7 +2571,7 @@ type ElsetIngest struct {
 	//
 	EphemType *int32 `json:"ephemType,omitempty"`
 
-	// Elset epoch time in ISO 8601 UTC with microsecond precision
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision
 	Epoch time.Time `json:"epoch"`
 
 	// Unique identifier of the record, auto-generated by the system
@@ -1614,13 +2850,13 @@ type EntityAbridged struct {
 	//
 	DataMode EntityAbridgedDataMode `json:"dataMode"`
 
-	// Unique identifier of the record, auto-generated by the system
+	// Unique identifier of the record
 	IdEntity *string `json:"idEntity,omitempty"`
 
 	// Unique identifier of the entity location, if terrestrial/fixed.
 	IdLocation *string `json:"idLocation,omitempty"`
 
-	// Unique identifier of the target on-orbit object
+	// Onorbit identifier if this entity is part of an on-orbit object. For the public catalog, the idOnOrbit is typically the satellite number as a string, but may be a UUID for analyst or other unknown or untracked satellites.
 	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
 
 	// Unique identifier of the associated operating unit object
@@ -1694,13 +2930,13 @@ type EntityFull struct {
 	//
 	DataMode EntityFullDataMode `json:"dataMode"`
 
-	// Unique identifier of the record, auto-generated by the system
+	// Unique identifier of the record
 	IdEntity *string `json:"idEntity,omitempty"`
 
 	// Unique identifier of the entity location, if terrestrial/fixed.
 	IdLocation *string `json:"idLocation,omitempty"`
 
-	// Unique identifier of the target on-orbit object
+	// Onorbit identifier if this entity is part of an on-orbit object. For the public catalog, the idOnOrbit is typically the satellite number as a string, but may be a UUID for analyst or other unknown or untracked satellites.
 	IdOnOrbit *string `json:"idOnOrbit,omitempty"`
 
 	// Unique identifier of the associated operating unit object
@@ -3478,7 +4714,7 @@ type OrganizationFullDataMode string
 
 // Details on a particular Radio Frequency (RF) band, also known as a carrier, which may be in use by any type of Entity for communications or operations.
 type RFBandFull struct {
-	// Name of the band of this RF range (e.g. X,K,Ku,L,S,C,UHF,VHF). See RFBandType for more details and descriptions of each band name.
+	// Name of the band of this RF range (e.g. X,K,Ku,Ka,L,S,C,UHF,VHF,EHF,SHF,UNK,VLF,HF,E,Q,V,W). See RFBandType for more details and descriptions of each band name.
 	Band *string `json:"band,omitempty"`
 
 	// RF Band frequency range bandwidth in Mhz
@@ -5138,7 +6374,16 @@ type FiledropEphemPostIdParams struct {
 
 	// Optional origin of the Ephemeris.
 	Origin *string `form:"origin,omitempty" json:"origin,omitempty"`
+
+	// Source of the Ephemeris data.
+	Source string `form:"source" json:"source"`
 }
+
+// FiledropUdlAisPostIdJSONBody defines parameters for FiledropUdlAisPostId.
+type FiledropUdlAisPostIdJSONBody = []AISIngest
+
+// FiledropUdlAttitudesetPostIdJSONBody defines parameters for FiledropUdlAttitudesetPostId.
+type FiledropUdlAttitudesetPostIdJSONBody = AttitudeSetIngest
 
 // FiledropUdlElsetPostIdJSONBody defines parameters for FiledropUdlElsetPostId.
 type FiledropUdlElsetPostIdJSONBody = []ElsetIngest
@@ -5146,21 +6391,192 @@ type FiledropUdlElsetPostIdJSONBody = []ElsetIngest
 // FiledropUdlEphsetPostIdJSONBody defines parameters for FiledropUdlEphsetPostId.
 type FiledropUdlEphsetPostIdJSONBody = EphemerisSetIngest
 
-// FindAllWithStream6Params defines parameters for FindAllWithStream6.
-type FindAllWithStream6Params struct {
-	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+// FindAllParams defines parameters for FindAll.
+type FindAllParams struct {
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// CreateJSONBody defines parameters for Create.
+type CreateJSONBody = AISIngest
+
+// CountDuplicateParams defines parameters for CountDuplicate.
+type CountDuplicateParams struct {
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// CreateBulksJSONBody defines parameters for CreateBulks.
+type CreateBulksJSONBody = []AISIngest
+
+// FindAllHistoryParams defines parameters for FindAllHistory.
+type FindAllHistoryParams struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// FindAllHistoryAodrParams defines parameters for FindAllHistoryAodr.
+type FindAllHistoryAodrParams struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
+	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
+
+	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
+	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
+
+	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
+	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// CountHistoryParams defines parameters for CountHistory.
+type CountHistoryParams struct {
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// FindAllTuplesParams defines parameters for FindAllTuples.
+type FindAllTuplesParams struct {
+	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
+	Columns string `form:"columns" json:"columns"`
+
+	// The timestamp that the vessel position was recorded, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Ts time.Time `form:"ts" json:"ts"`
+}
+
+// FindAllWithStream1Params defines parameters for FindAllWithStream1.
+type FindAllWithStream1Params struct {
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// CountDuplicate2Params defines parameters for CountDuplicate2.
+type CountDuplicate2Params struct {
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// FindAllHistory4Params defines parameters for FindAllHistory4.
+type FindAllHistory4Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// FindAllHistoryAodr4Params defines parameters for FindAllHistoryAodr4.
+type FindAllHistoryAodr4Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
+	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
+
+	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
+	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
+
+	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
+	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
+
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// CountHistory4Params defines parameters for CountHistory4.
+type CountHistory4Params struct {
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// FindAllTuples7Params defines parameters for FindAllTuples7.
+type FindAllTuples7Params struct {
+	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
+	Columns string `form:"columns" json:"columns"`
+
+	// Unique identifier of the parent AttitudeSet associated with this record. (uuid)
+	AsId string `form:"asId" json:"asId"`
+}
+
+// FindAllWithStream2Params defines parameters for FindAllWithStream2.
+type FindAllWithStream2Params struct {
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// Create7JSONBody defines parameters for Create7.
+type Create7JSONBody = AttitudeSetIngest
+
+// CountREST5Params defines parameters for CountREST5.
+type CountREST5Params struct {
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// FindAllHistory5Params defines parameters for FindAllHistory5.
+type FindAllHistory5Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// FindAllHistoryAodr5Params defines parameters for FindAllHistoryAodr5.
+type FindAllHistoryAodr5Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
+	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
+
+	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
+	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
+
+	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
+	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// CountHistory5Params defines parameters for CountHistory5.
+type CountHistory5Params struct {
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// FindAllTuples8Params defines parameters for FindAllTuples8.
+type FindAllTuples8Params struct {
+	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
+	Columns string `form:"columns" json:"columns"`
+
+	// The epoch or start time of the attitude parameter or attitude ephemeris, in ISO 8601 UTC format, with microsecond precision.  If this set is constituted by a single attitude parameter message then startTime is the epoch. (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	StartTime time.Time `form:"startTime" json:"startTime"`
+}
+
+// FindAllWithStream8Params defines parameters for FindAllWithStream8.
+type FindAllWithStream8Params struct {
+	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	Epoch *time.Time `form:"epoch,omitempty" json:"epoch,omitempty"`
 
 	// (One or more of fields 'epoch, idElset' are required.) UUID of the elset
 	IdElset *string `form:"idElset,omitempty" json:"idElset,omitempty"`
 }
 
-// Create25JSONBody defines parameters for Create25.
-type Create25JSONBody = ElsetIngest
+// Create28JSONBody defines parameters for Create28.
+type Create28JSONBody = ElsetIngest
 
-// CountREST23Params defines parameters for CountREST23.
-type CountREST23Params struct {
-	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+// CountREST24Params defines parameters for CountREST24.
+type CountREST24Params struct {
+	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	Epoch *time.Time `form:"epoch,omitempty" json:"epoch,omitempty"`
 
 	// (One or more of fields 'epoch, idElset' are required.) UUID of the elset
@@ -5206,17 +6622,17 @@ type CurrentTupleParams struct {
 	Columns string `form:"columns" json:"columns"`
 }
 
-// FindAllHistory12Params defines parameters for FindAllHistory12.
-type FindAllHistory12Params struct {
+// FindAllHistory16Params defines parameters for FindAllHistory16.
+type FindAllHistory16Params struct {
 	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
 	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
 
-	// Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	Epoch time.Time `form:"epoch" json:"epoch"`
 }
 
-// FindAllHistoryAodr12Params defines parameters for FindAllHistoryAodr12.
-type FindAllHistoryAodr12Params struct {
+// FindAllHistoryAodr16Params defines parameters for FindAllHistoryAodr16.
+type FindAllHistoryAodr16Params struct {
 	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
 	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
 
@@ -5229,143 +6645,14 @@ type FindAllHistoryAodr12Params struct {
 	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
 	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
 
-	// Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	Epoch time.Time `form:"epoch" json:"epoch"`
 }
 
-// CountHistory12Params defines parameters for CountHistory12.
-type CountHistory12Params struct {
-	// Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+// CountHistory16Params defines parameters for CountHistory16.
+type CountHistory16Params struct {
+	// Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	Epoch time.Time `form:"epoch" json:"epoch"`
-}
-
-// FindAllTuples25Params defines parameters for FindAllTuples25.
-type FindAllTuples25Params struct {
-	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
-	Columns string `form:"columns" json:"columns"`
-
-	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC time, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	Epoch *time.Time `form:"epoch,omitempty" json:"epoch,omitempty"`
-
-	// (One or more of fields 'epoch, idElset' are required.) UUID of the elset
-	IdElset *string `form:"idElset,omitempty" json:"idElset,omitempty"`
-}
-
-// FindAllWithStream7Params defines parameters for FindAllWithStream7.
-type FindAllWithStream7Params struct {
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// CountDuplicate3Params defines parameters for CountDuplicate3.
-type CountDuplicate3Params struct {
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// FindAllHistory13Params defines parameters for FindAllHistory13.
-type FindAllHistory13Params struct {
-	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
-	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
-
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// FindAllHistoryAodr13Params defines parameters for FindAllHistoryAodr13.
-type FindAllHistoryAodr13Params struct {
-	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
-	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
-
-	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
-	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
-
-	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
-	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
-
-	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
-	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
-
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// CountHistory13Params defines parameters for CountHistory13.
-type CountHistory13Params struct {
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// FindAllTuples28Params defines parameters for FindAllTuples28.
-type FindAllTuples28Params struct {
-	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
-	Columns string `form:"columns" json:"columns"`
-
-	// Unique identifier of the parent EphemerisSet (uuid)
-	EsId string `form:"esId" json:"esId"`
-}
-
-// FindAllWithStream8Params defines parameters for FindAllWithStream8.
-type FindAllWithStream8Params struct {
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
-}
-
-// Create29JSONBody defines parameters for Create29.
-type Create29JSONBody = EphemerisSetIngest
-
-// CountREST26Params defines parameters for CountREST26.
-type CountREST26Params struct {
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
-}
-
-// FindAllHistory14Params defines parameters for FindAllHistory14.
-type FindAllHistory14Params struct {
-	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
-	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
-}
-
-// FindAllHistoryAodr14Params defines parameters for FindAllHistoryAodr14.
-type FindAllHistoryAodr14Params struct {
-	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
-	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
-
-	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
-	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
-
-	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
-	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
-
-	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
-	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
-}
-
-// CountHistory14Params defines parameters for CountHistory14.
-type CountHistory14Params struct {
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
-
-	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
-	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
 }
 
 // FindAllTuples29Params defines parameters for FindAllTuples29.
@@ -5373,6 +6660,69 @@ type FindAllTuples29Params struct {
 	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
 	Columns string `form:"columns" json:"columns"`
 
+	// (One or more of fields 'epoch, idElset' are required.) Elset epoch time in ISO 8601 UTC format, with microsecond precision (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	Epoch *time.Time `form:"epoch,omitempty" json:"epoch,omitempty"`
+
+	// (One or more of fields 'epoch, idElset' are required.) UUID of the elset
+	IdElset *string `form:"idElset,omitempty" json:"idElset,omitempty"`
+}
+
+// FindAllWithStream9Params defines parameters for FindAllWithStream9.
+type FindAllWithStream9Params struct {
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// CountDuplicate6Params defines parameters for CountDuplicate6.
+type CountDuplicate6Params struct {
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// FindAllHistory17Params defines parameters for FindAllHistory17.
+type FindAllHistory17Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// FindAllHistoryAodr17Params defines parameters for FindAllHistoryAodr17.
+type FindAllHistoryAodr17Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
+	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
+
+	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
+	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
+
+	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
+	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
+
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// CountHistory17Params defines parameters for CountHistory17.
+type CountHistory17Params struct {
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// FindAllTuples32Params defines parameters for FindAllTuples32.
+type FindAllTuples32Params struct {
+	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
+	Columns string `form:"columns" json:"columns"`
+
+	// Unique identifier of the parent EphemerisSet (uuid)
+	EsId string `form:"esId" json:"esId"`
+}
+
+// FindAllWithStream10Params defines parameters for FindAllWithStream10.
+type FindAllWithStream10Params struct {
 	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
 	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
 
@@ -5380,20 +6730,101 @@ type FindAllTuples29Params struct {
 	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
 }
 
+// Create32JSONBody defines parameters for Create32.
+type Create32JSONBody = EphemerisSetIngest
+
+// CountREST27Params defines parameters for CountREST27.
+type CountREST27Params struct {
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
+}
+
+// FindAllHistory18Params defines parameters for FindAllHistory18.
+type FindAllHistory18Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
+}
+
+// FindAllHistoryAodr18Params defines parameters for FindAllHistoryAodr18.
+type FindAllHistoryAodr18Params struct {
+	// optional, fields for retrieval. When omitted, ALL fields are assumed. See the queryhelp operation (/udl/&lt;datatype&gt;/queryhelp) for more details on valid query fields that can be selected.
+	Columns *string `form:"columns,omitempty" json:"columns,omitempty"`
+
+	// optional, output format for the file. When omitted, JSON is assumed. Current valid values are: JSON and CSV
+	OutputFormat *string `form:"outputFormat,omitempty" json:"outputFormat,omitempty"`
+
+	// optional, field delimiter when the created file is not JSON. When omitted, "," is assumed. It is strongly encouraged that your field delimiter be a character unlikely to occur within the data
+	OutputDelimiter *string `form:"outputDelimiter,omitempty" json:"outputDelimiter,omitempty"`
+
+	// optional, notification method for the created file link. When omitted, EMAIL is assumed. Current valid values are: EMAIL, SMS
+	Notification *string `form:"notification,omitempty" json:"notification,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
+}
+
+// CountHistory18Params defines parameters for CountHistory18.
+type CountHistory18Params struct {
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
+}
+
+// FindAllTuples33Params defines parameters for FindAllTuples33.
+type FindAllTuples33Params struct {
+	// Comma-separated list of valid field names for this data type to be returned in the response. Only the fields specified will be returned as well as the classification marking of the data, if applicable. See the ‘queryhelp’ operation for a complete list of possible fields.
+	Columns string `form:"columns" json:"columns"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) End time/last time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointEndTime *time.Time `form:"pointEndTime,omitempty" json:"pointEndTime,omitempty"`
+
+	// (One or more of fields 'pointEndTime, pointStartTime' are required.) Start time/first time point of the ephemeris, in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SS.ssssssZ)
+	PointStartTime *time.Time `form:"pointStartTime,omitempty" json:"pointStartTime,omitempty"`
+}
+
+// FiledropUdlAisPostIdJSONRequestBody defines body for FiledropUdlAisPostId for application/json ContentType.
+type FiledropUdlAisPostIdJSONRequestBody = FiledropUdlAisPostIdJSONBody
+
+// FiledropUdlAttitudesetPostIdJSONRequestBody defines body for FiledropUdlAttitudesetPostId for application/json ContentType.
+type FiledropUdlAttitudesetPostIdJSONRequestBody = FiledropUdlAttitudesetPostIdJSONBody
+
 // FiledropUdlElsetPostIdJSONRequestBody defines body for FiledropUdlElsetPostId for application/json ContentType.
 type FiledropUdlElsetPostIdJSONRequestBody = FiledropUdlElsetPostIdJSONBody
 
 // FiledropUdlEphsetPostIdJSONRequestBody defines body for FiledropUdlEphsetPostId for application/json ContentType.
 type FiledropUdlEphsetPostIdJSONRequestBody = FiledropUdlEphsetPostIdJSONBody
 
-// Create25JSONRequestBody defines body for Create25 for application/json ContentType.
-type Create25JSONRequestBody = Create25JSONBody
+// CreateJSONRequestBody defines body for Create for application/json ContentType.
+type CreateJSONRequestBody = CreateJSONBody
+
+// CreateBulksJSONRequestBody defines body for CreateBulks for application/json ContentType.
+type CreateBulksJSONRequestBody = CreateBulksJSONBody
+
+// Create7JSONRequestBody defines body for Create7 for application/json ContentType.
+type Create7JSONRequestBody = Create7JSONBody
+
+// Create28JSONRequestBody defines body for Create28 for application/json ContentType.
+type Create28JSONRequestBody = Create28JSONBody
 
 // CreateBulks8JSONRequestBody defines body for CreateBulks8 for application/json ContentType.
 type CreateBulks8JSONRequestBody = CreateBulks8JSONBody
 
-// Create29JSONRequestBody defines body for Create29 for application/json ContentType.
-type Create29JSONRequestBody = Create29JSONBody
+// Create32JSONRequestBody defines body for Create32 for application/json ContentType.
+type Create32JSONRequestBody = Create32JSONBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -5471,6 +6902,16 @@ type ClientInterface interface {
 	// FiledropEphemPostId request with any body
 	FiledropEphemPostIdWithBody(ctx context.Context, params *FiledropEphemPostIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FiledropUdlAisPostId request with any body
+	FiledropUdlAisPostIdWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FiledropUdlAisPostId(ctx context.Context, body FiledropUdlAisPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FiledropUdlAttitudesetPostId request with any body
+	FiledropUdlAttitudesetPostIdWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FiledropUdlAttitudesetPostId(ctx context.Context, body FiledropUdlAttitudesetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// FiledropUdlElsetPostId request with any body
 	FiledropUdlElsetPostIdWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -5481,16 +6922,103 @@ type ClientInterface interface {
 
 	FiledropUdlEphsetPostId(ctx context.Context, body FiledropUdlEphsetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FindAllWithStream6 request
-	FindAllWithStream6(ctx context.Context, params *FindAllWithStream6Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FindAll request
+	FindAll(ctx context.Context, params *FindAllParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// Create25 request with any body
-	Create25WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// Create request with any body
+	CreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	Create25(ctx context.Context, body Create25JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	Create(ctx context.Context, body CreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CountREST23 request
-	CountREST23(ctx context.Context, params *CountREST23Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CountDuplicate request
+	CountDuplicate(ctx context.Context, params *CountDuplicateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateBulks request with any body
+	CreateBulksWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateBulks(ctx context.Context, body CreateBulksJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistory request
+	FindAllHistory(ctx context.Context, params *FindAllHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistoryAodr request
+	FindAllHistoryAodr(ctx context.Context, params *FindAllHistoryAodrParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountHistory request
+	CountHistory(ctx context.Context, params *CountHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp request
+	Queryhelp(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllTuples request
+	FindAllTuples(ctx context.Context, params *FindAllTuplesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllWithStream1 request
+	FindAllWithStream1(ctx context.Context, params *FindAllWithStream1Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountDuplicate2 request
+	CountDuplicate2(ctx context.Context, params *CountDuplicate2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistory4 request
+	FindAllHistory4(ctx context.Context, params *FindAllHistory4Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistoryAodr4 request
+	FindAllHistoryAodr4(ctx context.Context, params *FindAllHistoryAodr4Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountHistory4 request
+	CountHistory4(ctx context.Context, params *CountHistory4Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp7 request
+	Queryhelp7(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllTuples7 request
+	FindAllTuples7(ctx context.Context, params *FindAllTuples7Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllWithStream2 request
+	FindAllWithStream2(ctx context.Context, params *FindAllWithStream2Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Create7 request with any body
+	Create7WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	Create7(ctx context.Context, body Create7JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountREST5 request
+	CountREST5(ctx context.Context, params *CountREST5Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistory5 request
+	FindAllHistory5(ctx context.Context, params *FindAllHistory5Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistoryAodr5 request
+	FindAllHistoryAodr5(ctx context.Context, params *FindAllHistoryAodr5Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountHistory5 request
+	CountHistory5(ctx context.Context, params *CountHistory5Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp8 request
+	Queryhelp8(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllTuples8 request
+	FindAllTuples8(ctx context.Context, params *FindAllTuples8Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Find6 request
+	Find6(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Current request
+	Current(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp21 request
+	Queryhelp21(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllWithStream8 request
+	FindAllWithStream8(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Create28 request with any body
+	Create28WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	Create28(ctx context.Context, body Create28JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountREST24 request
+	CountREST24(ctx context.Context, params *CountREST24Params, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateBulks8 request with any body
 	CreateBulks8WithBody(ctx context.Context, params *CreateBulks8Params, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5500,86 +7028,141 @@ type ClientInterface interface {
 	// CreateBulkFromTLE request with any body
 	CreateBulkFromTLEWithBody(ctx context.Context, params *CreateBulkFromTLEParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// Current request
-	Current(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// Current1 request
+	Current1(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CurrentTuple request
 	CurrentTuple(ctx context.Context, params *CurrentTupleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FindAllHistory12 request
-	FindAllHistory12(ctx context.Context, params *FindAllHistory12Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FindAllHistory16 request
+	FindAllHistory16(ctx context.Context, params *FindAllHistory16Params, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FindAllHistoryAodr12 request
-	FindAllHistoryAodr12(ctx context.Context, params *FindAllHistoryAodr12Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FindAllHistoryAodr16 request
+	FindAllHistoryAodr16(ctx context.Context, params *FindAllHistoryAodr16Params, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CountHistory12 request
-	CountHistory12(ctx context.Context, params *CountHistory12Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CountHistory16 request
+	CountHistory16(ctx context.Context, params *CountHistory16Params, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// Queryhelp26 request
-	Queryhelp26(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllTuples25 request
-	FindAllTuples25(ctx context.Context, params *FindAllTuples25Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// Find24 request
-	Find24(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllWithStream7 request
-	FindAllWithStream7(ctx context.Context, params *FindAllWithStream7Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CountDuplicate3 request
-	CountDuplicate3(ctx context.Context, params *CountDuplicate3Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllHistory13 request
-	FindAllHistory13(ctx context.Context, params *FindAllHistory13Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllHistoryAodr13 request
-	FindAllHistoryAodr13(ctx context.Context, params *FindAllHistoryAodr13Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CountHistory13 request
-	CountHistory13(ctx context.Context, params *CountHistory13Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// Queryhelp29 request
-	Queryhelp29(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllTuples28 request
-	FindAllTuples28(ctx context.Context, params *FindAllTuples28Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllWithStream8 request
-	FindAllWithStream8(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// Create29 request with any body
-	Create29WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	Create29(ctx context.Context, body Create29JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CountREST26 request
-	CountREST26(ctx context.Context, params *CountREST26Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetFile1 request
-	GetFile1(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllHistory14 request
-	FindAllHistory14(ctx context.Context, params *FindAllHistory14Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FindAllHistoryAodr14 request
-	FindAllHistoryAodr14(ctx context.Context, params *FindAllHistoryAodr14Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CountHistory14 request
-	CountHistory14(ctx context.Context, params *CountHistory14Params, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// Queryhelp30 request
-	Queryhelp30(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// Queryhelp31 request
+	Queryhelp31(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FindAllTuples29 request
 	FindAllTuples29(ctx context.Context, params *FindAllTuples29Params, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// Find28 request
-	Find28(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// Find25 request
+	Find25(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllWithStream9 request
+	FindAllWithStream9(ctx context.Context, params *FindAllWithStream9Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountDuplicate6 request
+	CountDuplicate6(ctx context.Context, params *CountDuplicate6Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistory17 request
+	FindAllHistory17(ctx context.Context, params *FindAllHistory17Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistoryAodr17 request
+	FindAllHistoryAodr17(ctx context.Context, params *FindAllHistoryAodr17Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountHistory17 request
+	CountHistory17(ctx context.Context, params *CountHistory17Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp34 request
+	Queryhelp34(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllTuples32 request
+	FindAllTuples32(ctx context.Context, params *FindAllTuples32Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllWithStream10 request
+	FindAllWithStream10(ctx context.Context, params *FindAllWithStream10Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Create32 request with any body
+	Create32WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	Create32(ctx context.Context, body Create32JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountREST27 request
+	CountREST27(ctx context.Context, params *CountREST27Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetFile1 request
+	GetFile1(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistory18 request
+	FindAllHistory18(ctx context.Context, params *FindAllHistory18Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllHistoryAodr18 request
+	FindAllHistoryAodr18(ctx context.Context, params *FindAllHistoryAodr18Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CountHistory18 request
+	CountHistory18(ctx context.Context, params *CountHistory18Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Queryhelp35 request
+	Queryhelp35(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FindAllTuples33 request
+	FindAllTuples33(ctx context.Context, params *FindAllTuples33Params, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// Find29 request
+	Find29(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) FiledropEphemPostIdWithBody(ctx context.Context, params *FiledropEphemPostIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFiledropEphemPostIdRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FiledropUdlAisPostIdWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	
+	req, err := NewFiledropUdlAisPostIdRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FiledropUdlAisPostId(ctx context.Context, body FiledropUdlAisPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	fmt.Println(fmt.Sprintf("client.server: %s", c.Server))
+	// fmt.Println(fmt.Sprintf("body: %w", body[0]))
+	fmt.Println("request.body:")
+	fmt.Println(body[0])
+	req, err := NewFiledropUdlAisPostIdRequest(c.Server, body)
+	fmt.Println(fmt.Sprintf("client.req: %s", req.URL))
+	fmt.Println(fmt.Sprintf("client.body: %s", req.Body))
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FiledropUdlAttitudesetPostIdWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFiledropUdlAttitudesetPostIdRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FiledropUdlAttitudesetPostId(ctx context.Context, body FiledropUdlAttitudesetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFiledropUdlAttitudesetPostIdRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5638,8 +7221,8 @@ func (c *Client) FiledropUdlEphsetPostId(ctx context.Context, body FiledropUdlEp
 	return c.Client.Do(req)
 }
 
-func (c *Client) FindAllWithStream6(ctx context.Context, params *FindAllWithStream6Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllWithStream6Request(c.Server, params)
+func (c *Client) FindAll(ctx context.Context, params *FindAllParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5650,8 +7233,8 @@ func (c *Client) FindAllWithStream6(ctx context.Context, params *FindAllWithStre
 	return c.Client.Do(req)
 }
 
-func (c *Client) Create25WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreate25RequestWithBody(c.Server, contentType, body)
+func (c *Client) CreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5662,8 +7245,8 @@ func (c *Client) Create25WithBody(ctx context.Context, contentType string, body 
 	return c.Client.Do(req)
 }
 
-func (c *Client) Create25(ctx context.Context, body Create25JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreate25Request(c.Server, body)
+func (c *Client) Create(ctx context.Context, body CreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5674,8 +7257,368 @@ func (c *Client) Create25(ctx context.Context, body Create25JSONRequestBody, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) CountREST23(ctx context.Context, params *CountREST23Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountREST23Request(c.Server, params)
+func (c *Client) CountDuplicate(ctx context.Context, params *CountDuplicateParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountDuplicateRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateBulksWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBulksRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateBulks(ctx context.Context, body CreateBulksJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBulksRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistory(ctx context.Context, params *FindAllHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistoryAodr(ctx context.Context, params *FindAllHistoryAodrParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodrRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountHistory(ctx context.Context, params *CountHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistoryRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelpRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllTuples(ctx context.Context, params *FindAllTuplesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllTuplesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllWithStream1(ctx context.Context, params *FindAllWithStream1Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllWithStream1Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountDuplicate2(ctx context.Context, params *CountDuplicate2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountDuplicate2Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistory4(ctx context.Context, params *FindAllHistory4Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistory4Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistoryAodr4(ctx context.Context, params *FindAllHistoryAodr4Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodr4Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountHistory4(ctx context.Context, params *CountHistory4Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistory4Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp7(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp7Request(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllTuples7(ctx context.Context, params *FindAllTuples7Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllTuples7Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllWithStream2(ctx context.Context, params *FindAllWithStream2Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllWithStream2Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create7WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate7RequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create7(ctx context.Context, body Create7JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate7Request(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountREST5(ctx context.Context, params *CountREST5Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountREST5Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistory5(ctx context.Context, params *FindAllHistory5Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistory5Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistoryAodr5(ctx context.Context, params *FindAllHistoryAodr5Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodr5Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountHistory5(ctx context.Context, params *CountHistory5Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistory5Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp8(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp8Request(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllTuples8(ctx context.Context, params *FindAllTuples8Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllTuples8Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Find6(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFind6Request(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Current(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCurrentRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp21(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp21Request(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllWithStream8(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllWithStream8Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create28WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate28RequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create28(ctx context.Context, body Create28JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate28Request(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountREST24(ctx context.Context, params *CountREST24Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountREST24Request(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5722,8 +7665,8 @@ func (c *Client) CreateBulkFromTLEWithBody(ctx context.Context, params *CreateBu
 	return c.Client.Do(req)
 }
 
-func (c *Client) Current(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCurrentRequest(c.Server)
+func (c *Client) Current1(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCurrent1Request(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -5746,8 +7689,8 @@ func (c *Client) CurrentTuple(ctx context.Context, params *CurrentTupleParams, r
 	return c.Client.Do(req)
 }
 
-func (c *Client) FindAllHistory12(ctx context.Context, params *FindAllHistory12Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistory12Request(c.Server, params)
+func (c *Client) FindAllHistory16(ctx context.Context, params *FindAllHistory16Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistory16Request(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5758,8 +7701,8 @@ func (c *Client) FindAllHistory12(ctx context.Context, params *FindAllHistory12P
 	return c.Client.Do(req)
 }
 
-func (c *Client) FindAllHistoryAodr12(ctx context.Context, params *FindAllHistoryAodr12Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistoryAodr12Request(c.Server, params)
+func (c *Client) FindAllHistoryAodr16(ctx context.Context, params *FindAllHistoryAodr16Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodr16Request(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5770,8 +7713,8 @@ func (c *Client) FindAllHistoryAodr12(ctx context.Context, params *FindAllHistor
 	return c.Client.Do(req)
 }
 
-func (c *Client) CountHistory12(ctx context.Context, params *CountHistory12Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountHistory12Request(c.Server, params)
+func (c *Client) CountHistory16(ctx context.Context, params *CountHistory16Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistory16Request(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5782,224 +7725,8 @@ func (c *Client) CountHistory12(ctx context.Context, params *CountHistory12Param
 	return c.Client.Do(req)
 }
 
-func (c *Client) Queryhelp26(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewQueryhelp26Request(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllTuples25(ctx context.Context, params *FindAllTuples25Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllTuples25Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) Find24(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFind24Request(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllWithStream7(ctx context.Context, params *FindAllWithStream7Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllWithStream7Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CountDuplicate3(ctx context.Context, params *CountDuplicate3Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountDuplicate3Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllHistory13(ctx context.Context, params *FindAllHistory13Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistory13Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllHistoryAodr13(ctx context.Context, params *FindAllHistoryAodr13Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistoryAodr13Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CountHistory13(ctx context.Context, params *CountHistory13Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountHistory13Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) Queryhelp29(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewQueryhelp29Request(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllTuples28(ctx context.Context, params *FindAllTuples28Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllTuples28Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllWithStream8(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllWithStream8Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) Create29WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreate29RequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) Create29(ctx context.Context, body Create29JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreate29Request(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CountREST26(ctx context.Context, params *CountREST26Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountREST26Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetFile1(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetFile1Request(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllHistory14(ctx context.Context, params *FindAllHistory14Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistory14Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FindAllHistoryAodr14(ctx context.Context, params *FindAllHistoryAodr14Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAllHistoryAodr14Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CountHistory14(ctx context.Context, params *CountHistory14Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCountHistory14Request(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) Queryhelp30(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewQueryhelp30Request(c.Server)
+func (c *Client) Queryhelp31(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp31Request(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -6022,8 +7749,224 @@ func (c *Client) FindAllTuples29(ctx context.Context, params *FindAllTuples29Par
 	return c.Client.Do(req)
 }
 
-func (c *Client) Find28(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFind28Request(c.Server, id)
+func (c *Client) Find25(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFind25Request(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllWithStream9(ctx context.Context, params *FindAllWithStream9Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllWithStream9Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountDuplicate6(ctx context.Context, params *CountDuplicate6Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountDuplicate6Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistory17(ctx context.Context, params *FindAllHistory17Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistory17Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistoryAodr17(ctx context.Context, params *FindAllHistoryAodr17Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodr17Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountHistory17(ctx context.Context, params *CountHistory17Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistory17Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp34(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp34Request(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllTuples32(ctx context.Context, params *FindAllTuples32Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllTuples32Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllWithStream10(ctx context.Context, params *FindAllWithStream10Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllWithStream10Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create32WithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate32RequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Create32(ctx context.Context, body Create32JSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreate32Request(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountREST27(ctx context.Context, params *CountREST27Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountREST27Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetFile1(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetFile1Request(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistory18(ctx context.Context, params *FindAllHistory18Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistory18Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllHistoryAodr18(ctx context.Context, params *FindAllHistoryAodr18Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllHistoryAodr18Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CountHistory18(ctx context.Context, params *CountHistory18Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCountHistory18Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Queryhelp35(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryhelp35Request(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FindAllTuples33(ctx context.Context, params *FindAllTuples33Params, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAllTuples33Request(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) Find29(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFind29Request(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -6155,7 +8098,99 @@ func NewFiledropEphemPostIdRequestWithBody(server string, params *FiledropEphemP
 
 	}
 
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "source", runtime.ParamLocationQuery, params.Source); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
 	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFiledropUdlAisPostIdRequest calls the generic FiledropUdlAisPostId builder with application/json body
+func NewFiledropUdlAisPostIdRequest(server string, body FiledropUdlAisPostIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFiledropUdlAisPostIdRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewFiledropUdlAisPostIdRequestWithBody generates requests for FiledropUdlAisPostId with any type of body
+func NewFiledropUdlAisPostIdRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/filedrop/udl-ais")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFiledropUdlAttitudesetPostIdRequest calls the generic FiledropUdlAttitudesetPostId builder with application/json body
+func NewFiledropUdlAttitudesetPostIdRequest(server string, body FiledropUdlAttitudesetPostIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFiledropUdlAttitudesetPostIdRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewFiledropUdlAttitudesetPostIdRequestWithBody generates requests for FiledropUdlAttitudesetPostId with any type of body
+func NewFiledropUdlAttitudesetPostIdRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/filedrop/udl-attitudeset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
@@ -6247,8 +8282,1347 @@ func NewFiledropUdlEphsetPostIdRequestWithBody(server string, contentType string
 	return req, nil
 }
 
-// NewFindAllWithStream6Request generates requests for FindAllWithStream6
-func NewFindAllWithStream6Request(server string, params *FindAllWithStream6Params) (*http.Request, error) {
+// NewFindAllRequest generates requests for FindAll
+func NewFindAllRequest(server string, params *FindAllParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateRequest calls the generic Create builder with application/json body
+func NewCreateRequest(server string, body CreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateRequestWithBody generates requests for Create with any type of body
+func NewCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCountDuplicateRequest generates requests for CountDuplicate
+func NewCountDuplicateRequest(server string, params *CountDuplicateParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateBulksRequest calls the generic CreateBulks builder with application/json body
+func NewCreateBulksRequest(server string, body CreateBulksJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateBulksRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateBulksRequestWithBody generates requests for CreateBulks with any type of body
+func NewCreateBulksRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/createBulk")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFindAllHistoryRequest generates requests for FindAllHistory
+func NewFindAllHistoryRequest(server string, params *FindAllHistoryParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/history")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllHistoryAodrRequest generates requests for FindAllHistoryAodr
+func NewFindAllHistoryAodrRequest(server string, params *FindAllHistoryAodrParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/history/aodr")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputFormat != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputFormat", runtime.ParamLocationQuery, *params.OutputFormat); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputDelimiter != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputDelimiter", runtime.ParamLocationQuery, *params.OutputDelimiter); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.Notification != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "notification", runtime.ParamLocationQuery, *params.Notification); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCountHistoryRequest generates requests for CountHistory
+func NewCountHistoryRequest(server string, params *CountHistoryParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/history/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewQueryhelpRequest generates requests for Queryhelp
+func NewQueryhelpRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/queryhelp")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllTuplesRequest generates requests for FindAllTuples
+func NewFindAllTuplesRequest(server string, params *FindAllTuplesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/ais/tuple")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, params.Columns); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ts", runtime.ParamLocationQuery, params.Ts); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllWithStream1Request generates requests for FindAllWithStream1
+func NewFindAllWithStream1Request(server string, params *FindAllWithStream1Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCountDuplicate2Request generates requests for CountDuplicate2
+func NewCountDuplicate2Request(server string, params *CountDuplicate2Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllHistory4Request generates requests for FindAllHistory4
+func NewFindAllHistory4Request(server string, params *FindAllHistory4Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/history")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllHistoryAodr4Request generates requests for FindAllHistoryAodr4
+func NewFindAllHistoryAodr4Request(server string, params *FindAllHistoryAodr4Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/history/aodr")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputFormat != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputFormat", runtime.ParamLocationQuery, *params.OutputFormat); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputDelimiter != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputDelimiter", runtime.ParamLocationQuery, *params.OutputDelimiter); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.Notification != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "notification", runtime.ParamLocationQuery, *params.Notification); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCountHistory4Request generates requests for CountHistory4
+func NewCountHistory4Request(server string, params *CountHistory4Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/history/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewQueryhelp7Request generates requests for Queryhelp7
+func NewQueryhelp7Request(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/queryhelp")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllTuples7Request generates requests for FindAllTuples7
+func NewFindAllTuples7Request(server string, params *FindAllTuples7Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudedata/tuple")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, params.Columns); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "asId", runtime.ParamLocationQuery, params.AsId); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllWithStream2Request generates requests for FindAllWithStream2
+func NewFindAllWithStream2Request(server string, params *FindAllWithStream2Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreate7Request calls the generic Create7 builder with application/json body
+func NewCreate7Request(server string, body Create7JSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreate7RequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreate7RequestWithBody generates requests for Create7 with any type of body
+func NewCreate7RequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCountREST5Request generates requests for CountREST5
+func NewCountREST5Request(server string, params *CountREST5Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllHistory5Request generates requests for FindAllHistory5
+func NewFindAllHistory5Request(server string, params *FindAllHistory5Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/history")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllHistoryAodr5Request generates requests for FindAllHistoryAodr5
+func NewFindAllHistoryAodr5Request(server string, params *FindAllHistoryAodr5Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/history/aodr")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.Columns != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, *params.Columns); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputFormat != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputFormat", runtime.ParamLocationQuery, *params.OutputFormat); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.OutputDelimiter != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "outputDelimiter", runtime.ParamLocationQuery, *params.OutputDelimiter); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.Notification != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "notification", runtime.ParamLocationQuery, *params.Notification); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCountHistory5Request generates requests for CountHistory5
+func NewCountHistory5Request(server string, params *CountHistory5Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/history/count")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewQueryhelp8Request generates requests for Queryhelp8
+func NewQueryhelp8Request(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/queryhelp")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllTuples8Request generates requests for FindAllTuples8
+func NewFindAllTuples8Request(server string, params *FindAllTuples8Params) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/tuple")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "columns", runtime.ParamLocationQuery, params.Columns); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startTime", runtime.ParamLocationQuery, params.StartTime); err != nil {
+		return nil, err
+	} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+		return nil, err
+	} else {
+		for k, v := range parsed {
+			for _, v2 := range v {
+				queryValues.Add(k, v2)
+			}
+		}
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFind6Request generates requests for Find6
+func NewFind6Request(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/attitudeset/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCurrentRequest generates requests for Current
+func NewCurrentRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/currentelset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewQueryhelp21Request generates requests for Queryhelp21
+func NewQueryhelp21Request(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/udl/currentelset/queryhelp")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFindAllWithStream8Request generates requests for FindAllWithStream8
+func NewFindAllWithStream8Request(server string, params *FindAllWithStream8Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6310,19 +9684,19 @@ func NewFindAllWithStream6Request(server string, params *FindAllWithStream6Param
 	return req, nil
 }
 
-// NewCreate25Request calls the generic Create25 builder with application/json body
-func NewCreate25Request(server string, body Create25JSONRequestBody) (*http.Request, error) {
+// NewCreate28Request calls the generic Create28 builder with application/json body
+func NewCreate28Request(server string, body Create28JSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreate25RequestWithBody(server, "application/json", bodyReader)
+	return NewCreate28RequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreate25RequestWithBody generates requests for Create25 with any type of body
-func NewCreate25RequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreate28RequestWithBody generates requests for Create28 with any type of body
+func NewCreate28RequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6350,8 +9724,8 @@ func NewCreate25RequestWithBody(server string, contentType string, body io.Reade
 	return req, nil
 }
 
-// NewCountREST23Request generates requests for CountREST23
-func NewCountREST23Request(server string, params *CountREST23Params) (*http.Request, error) {
+// NewCountREST24Request generates requests for CountREST24
+func NewCountREST24Request(server string, params *CountREST24Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6606,8 +9980,8 @@ func NewCreateBulkFromTLERequestWithBody(server string, params *CreateBulkFromTL
 	return req, nil
 }
 
-// NewCurrentRequest generates requests for Current
-func NewCurrentRequest(server string) (*http.Request, error) {
+// NewCurrent1Request generates requests for Current1
+func NewCurrent1Request(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6676,8 +10050,8 @@ func NewCurrentTupleRequest(server string, params *CurrentTupleParams) (*http.Re
 	return req, nil
 }
 
-// NewFindAllHistory12Request generates requests for FindAllHistory12
-func NewFindAllHistory12Request(server string, params *FindAllHistory12Params) (*http.Request, error) {
+// NewFindAllHistory16Request generates requests for FindAllHistory16
+func NewFindAllHistory16Request(server string, params *FindAllHistory16Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6735,8 +10109,8 @@ func NewFindAllHistory12Request(server string, params *FindAllHistory12Params) (
 	return req, nil
 }
 
-// NewFindAllHistoryAodr12Request generates requests for FindAllHistoryAodr12
-func NewFindAllHistoryAodr12Request(server string, params *FindAllHistoryAodr12Params) (*http.Request, error) {
+// NewFindAllHistoryAodr16Request generates requests for FindAllHistoryAodr16
+func NewFindAllHistoryAodr16Request(server string, params *FindAllHistoryAodr16Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6842,8 +10216,8 @@ func NewFindAllHistoryAodr12Request(server string, params *FindAllHistoryAodr12P
 	return req, nil
 }
 
-// NewCountHistory12Request generates requests for CountHistory12
-func NewCountHistory12Request(server string, params *CountHistory12Params) (*http.Request, error) {
+// NewCountHistory16Request generates requests for CountHistory16
+func NewCountHistory16Request(server string, params *CountHistory16Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6885,8 +10259,8 @@ func NewCountHistory12Request(server string, params *CountHistory12Params) (*htt
 	return req, nil
 }
 
-// NewQueryhelp26Request generates requests for Queryhelp26
-func NewQueryhelp26Request(server string) (*http.Request, error) {
+// NewQueryhelp31Request generates requests for Queryhelp31
+func NewQueryhelp31Request(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6912,8 +10286,8 @@ func NewQueryhelp26Request(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewFindAllTuples25Request generates requests for FindAllTuples25
-func NewFindAllTuples25Request(server string, params *FindAllTuples25Params) (*http.Request, error) {
+// NewFindAllTuples29Request generates requests for FindAllTuples29
+func NewFindAllTuples29Request(server string, params *FindAllTuples29Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6987,8 +10361,8 @@ func NewFindAllTuples25Request(server string, params *FindAllTuples25Params) (*h
 	return req, nil
 }
 
-// NewFind24Request generates requests for Find24
-func NewFind24Request(server string, id string) (*http.Request, error) {
+// NewFind25Request generates requests for Find25
+func NewFind25Request(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -7021,8 +10395,8 @@ func NewFind24Request(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewFindAllWithStream7Request generates requests for FindAllWithStream7
-func NewFindAllWithStream7Request(server string, params *FindAllWithStream7Params) (*http.Request, error) {
+// NewFindAllWithStream9Request generates requests for FindAllWithStream9
+func NewFindAllWithStream9Request(server string, params *FindAllWithStream9Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7064,8 +10438,8 @@ func NewFindAllWithStream7Request(server string, params *FindAllWithStream7Param
 	return req, nil
 }
 
-// NewCountDuplicate3Request generates requests for CountDuplicate3
-func NewCountDuplicate3Request(server string, params *CountDuplicate3Params) (*http.Request, error) {
+// NewCountDuplicate6Request generates requests for CountDuplicate6
+func NewCountDuplicate6Request(server string, params *CountDuplicate6Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7107,8 +10481,8 @@ func NewCountDuplicate3Request(server string, params *CountDuplicate3Params) (*h
 	return req, nil
 }
 
-// NewFindAllHistory13Request generates requests for FindAllHistory13
-func NewFindAllHistory13Request(server string, params *FindAllHistory13Params) (*http.Request, error) {
+// NewFindAllHistory17Request generates requests for FindAllHistory17
+func NewFindAllHistory17Request(server string, params *FindAllHistory17Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7166,8 +10540,8 @@ func NewFindAllHistory13Request(server string, params *FindAllHistory13Params) (
 	return req, nil
 }
 
-// NewFindAllHistoryAodr13Request generates requests for FindAllHistoryAodr13
-func NewFindAllHistoryAodr13Request(server string, params *FindAllHistoryAodr13Params) (*http.Request, error) {
+// NewFindAllHistoryAodr17Request generates requests for FindAllHistoryAodr17
+func NewFindAllHistoryAodr17Request(server string, params *FindAllHistoryAodr17Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7273,8 +10647,8 @@ func NewFindAllHistoryAodr13Request(server string, params *FindAllHistoryAodr13P
 	return req, nil
 }
 
-// NewCountHistory13Request generates requests for CountHistory13
-func NewCountHistory13Request(server string, params *CountHistory13Params) (*http.Request, error) {
+// NewCountHistory17Request generates requests for CountHistory17
+func NewCountHistory17Request(server string, params *CountHistory17Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7316,8 +10690,8 @@ func NewCountHistory13Request(server string, params *CountHistory13Params) (*htt
 	return req, nil
 }
 
-// NewQueryhelp29Request generates requests for Queryhelp29
-func NewQueryhelp29Request(server string) (*http.Request, error) {
+// NewQueryhelp34Request generates requests for Queryhelp34
+func NewQueryhelp34Request(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7343,8 +10717,8 @@ func NewQueryhelp29Request(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewFindAllTuples28Request generates requests for FindAllTuples28
-func NewFindAllTuples28Request(server string, params *FindAllTuples28Params) (*http.Request, error) {
+// NewFindAllTuples32Request generates requests for FindAllTuples32
+func NewFindAllTuples32Request(server string, params *FindAllTuples32Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7398,8 +10772,8 @@ func NewFindAllTuples28Request(server string, params *FindAllTuples28Params) (*h
 	return req, nil
 }
 
-// NewFindAllWithStream8Request generates requests for FindAllWithStream8
-func NewFindAllWithStream8Request(server string, params *FindAllWithStream8Params) (*http.Request, error) {
+// NewFindAllWithStream10Request generates requests for FindAllWithStream10
+func NewFindAllWithStream10Request(server string, params *FindAllWithStream10Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7461,19 +10835,19 @@ func NewFindAllWithStream8Request(server string, params *FindAllWithStream8Param
 	return req, nil
 }
 
-// NewCreate29Request calls the generic Create29 builder with application/json body
-func NewCreate29Request(server string, body Create29JSONRequestBody) (*http.Request, error) {
+// NewCreate32Request calls the generic Create32 builder with application/json body
+func NewCreate32Request(server string, body Create32JSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreate29RequestWithBody(server, "application/json", bodyReader)
+	return NewCreate32RequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewCreate29RequestWithBody generates requests for Create29 with any type of body
-func NewCreate29RequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreate32RequestWithBody generates requests for Create32 with any type of body
+func NewCreate32RequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7501,8 +10875,8 @@ func NewCreate29RequestWithBody(server string, contentType string, body io.Reade
 	return req, nil
 }
 
-// NewCountREST26Request generates requests for CountREST26
-func NewCountREST26Request(server string, params *CountREST26Params) (*http.Request, error) {
+// NewCountREST27Request generates requests for CountREST27
+func NewCountREST27Request(server string, params *CountREST27Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7598,8 +10972,8 @@ func NewGetFile1Request(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewFindAllHistory14Request generates requests for FindAllHistory14
-func NewFindAllHistory14Request(server string, params *FindAllHistory14Params) (*http.Request, error) {
+// NewFindAllHistory18Request generates requests for FindAllHistory18
+func NewFindAllHistory18Request(server string, params *FindAllHistory18Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7677,8 +11051,8 @@ func NewFindAllHistory14Request(server string, params *FindAllHistory14Params) (
 	return req, nil
 }
 
-// NewFindAllHistoryAodr14Request generates requests for FindAllHistoryAodr14
-func NewFindAllHistoryAodr14Request(server string, params *FindAllHistoryAodr14Params) (*http.Request, error) {
+// NewFindAllHistoryAodr18Request generates requests for FindAllHistoryAodr18
+func NewFindAllHistoryAodr18Request(server string, params *FindAllHistoryAodr18Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7804,8 +11178,8 @@ func NewFindAllHistoryAodr14Request(server string, params *FindAllHistoryAodr14P
 	return req, nil
 }
 
-// NewCountHistory14Request generates requests for CountHistory14
-func NewCountHistory14Request(server string, params *CountHistory14Params) (*http.Request, error) {
+// NewCountHistory18Request generates requests for CountHistory18
+func NewCountHistory18Request(server string, params *CountHistory18Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7867,8 +11241,8 @@ func NewCountHistory14Request(server string, params *CountHistory14Params) (*htt
 	return req, nil
 }
 
-// NewQueryhelp30Request generates requests for Queryhelp30
-func NewQueryhelp30Request(server string) (*http.Request, error) {
+// NewQueryhelp35Request generates requests for Queryhelp35
+func NewQueryhelp35Request(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7894,8 +11268,8 @@ func NewQueryhelp30Request(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewFindAllTuples29Request generates requests for FindAllTuples29
-func NewFindAllTuples29Request(server string, params *FindAllTuples29Params) (*http.Request, error) {
+// NewFindAllTuples33Request generates requests for FindAllTuples33
+func NewFindAllTuples33Request(server string, params *FindAllTuples33Params) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7969,8 +11343,8 @@ func NewFindAllTuples29Request(server string, params *FindAllTuples29Params) (*h
 	return req, nil
 }
 
-// NewFind28Request generates requests for Find28
-func NewFind28Request(server string, id string) (*http.Request, error) {
+// NewFind29Request generates requests for Find29
+func NewFind29Request(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -8049,6 +11423,16 @@ type ClientWithResponsesInterface interface {
 	// FiledropEphemPostId request with any body
 	FiledropEphemPostIdWithBodyWithResponse(ctx context.Context, params *FiledropEphemPostIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropEphemPostIdResponse, error)
 
+	// FiledropUdlAisPostId request with any body
+	FiledropUdlAisPostIdWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropUdlAisPostIdResponse, error)
+
+	FiledropUdlAisPostIdWithResponse(ctx context.Context, body FiledropUdlAisPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FiledropUdlAisPostIdResponse, error)
+
+	// FiledropUdlAttitudesetPostId request with any body
+	FiledropUdlAttitudesetPostIdWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropUdlAttitudesetPostIdResponse, error)
+
+	FiledropUdlAttitudesetPostIdWithResponse(ctx context.Context, body FiledropUdlAttitudesetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FiledropUdlAttitudesetPostIdResponse, error)
+
 	// FiledropUdlElsetPostId request with any body
 	FiledropUdlElsetPostIdWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropUdlElsetPostIdResponse, error)
 
@@ -8059,16 +11443,103 @@ type ClientWithResponsesInterface interface {
 
 	FiledropUdlEphsetPostIdWithResponse(ctx context.Context, body FiledropUdlEphsetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FiledropUdlEphsetPostIdResponse, error)
 
-	// FindAllWithStream6 request
-	FindAllWithStream6WithResponse(ctx context.Context, params *FindAllWithStream6Params, reqEditors ...RequestEditorFn) (*FindAllWithStream6Response, error)
+	// FindAll request
+	FindAllWithResponse(ctx context.Context, params *FindAllParams, reqEditors ...RequestEditorFn) (*FindAllResponse, error)
 
-	// Create25 request with any body
-	Create25WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create25Response, error)
+	// Create request with any body
+	CreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateResponse, error)
 
-	Create25WithResponse(ctx context.Context, body Create25JSONRequestBody, reqEditors ...RequestEditorFn) (*Create25Response, error)
+	CreateWithResponse(ctx context.Context, body CreateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateResponse, error)
 
-	// CountREST23 request
-	CountREST23WithResponse(ctx context.Context, params *CountREST23Params, reqEditors ...RequestEditorFn) (*CountREST23Response, error)
+	// CountDuplicate request
+	CountDuplicateWithResponse(ctx context.Context, params *CountDuplicateParams, reqEditors ...RequestEditorFn) (*CountDuplicateResponse, error)
+
+	// CreateBulks request with any body
+	CreateBulksWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBulksResponse, error)
+
+	CreateBulksWithResponse(ctx context.Context, body CreateBulksJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBulksResponse, error)
+
+	// FindAllHistory request
+	FindAllHistoryWithResponse(ctx context.Context, params *FindAllHistoryParams, reqEditors ...RequestEditorFn) (*FindAllHistoryResponse, error)
+
+	// FindAllHistoryAodr request
+	FindAllHistoryAodrWithResponse(ctx context.Context, params *FindAllHistoryAodrParams, reqEditors ...RequestEditorFn) (*FindAllHistoryAodrResponse, error)
+
+	// CountHistory request
+	CountHistoryWithResponse(ctx context.Context, params *CountHistoryParams, reqEditors ...RequestEditorFn) (*CountHistoryResponse, error)
+
+	// Queryhelp request
+	QueryhelpWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*QueryhelpResponse, error)
+
+	// FindAllTuples request
+	FindAllTuplesWithResponse(ctx context.Context, params *FindAllTuplesParams, reqEditors ...RequestEditorFn) (*FindAllTuplesResponse, error)
+
+	// FindAllWithStream1 request
+	FindAllWithStream1WithResponse(ctx context.Context, params *FindAllWithStream1Params, reqEditors ...RequestEditorFn) (*FindAllWithStream1Response, error)
+
+	// CountDuplicate2 request
+	CountDuplicate2WithResponse(ctx context.Context, params *CountDuplicate2Params, reqEditors ...RequestEditorFn) (*CountDuplicate2Response, error)
+
+	// FindAllHistory4 request
+	FindAllHistory4WithResponse(ctx context.Context, params *FindAllHistory4Params, reqEditors ...RequestEditorFn) (*FindAllHistory4Response, error)
+
+	// FindAllHistoryAodr4 request
+	FindAllHistoryAodr4WithResponse(ctx context.Context, params *FindAllHistoryAodr4Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr4Response, error)
+
+	// CountHistory4 request
+	CountHistory4WithResponse(ctx context.Context, params *CountHistory4Params, reqEditors ...RequestEditorFn) (*CountHistory4Response, error)
+
+	// Queryhelp7 request
+	Queryhelp7WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp7Response, error)
+
+	// FindAllTuples7 request
+	FindAllTuples7WithResponse(ctx context.Context, params *FindAllTuples7Params, reqEditors ...RequestEditorFn) (*FindAllTuples7Response, error)
+
+	// FindAllWithStream2 request
+	FindAllWithStream2WithResponse(ctx context.Context, params *FindAllWithStream2Params, reqEditors ...RequestEditorFn) (*FindAllWithStream2Response, error)
+
+	// Create7 request with any body
+	Create7WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create7Response, error)
+
+	Create7WithResponse(ctx context.Context, body Create7JSONRequestBody, reqEditors ...RequestEditorFn) (*Create7Response, error)
+
+	// CountREST5 request
+	CountREST5WithResponse(ctx context.Context, params *CountREST5Params, reqEditors ...RequestEditorFn) (*CountREST5Response, error)
+
+	// FindAllHistory5 request
+	FindAllHistory5WithResponse(ctx context.Context, params *FindAllHistory5Params, reqEditors ...RequestEditorFn) (*FindAllHistory5Response, error)
+
+	// FindAllHistoryAodr5 request
+	FindAllHistoryAodr5WithResponse(ctx context.Context, params *FindAllHistoryAodr5Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr5Response, error)
+
+	// CountHistory5 request
+	CountHistory5WithResponse(ctx context.Context, params *CountHistory5Params, reqEditors ...RequestEditorFn) (*CountHistory5Response, error)
+
+	// Queryhelp8 request
+	Queryhelp8WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp8Response, error)
+
+	// FindAllTuples8 request
+	FindAllTuples8WithResponse(ctx context.Context, params *FindAllTuples8Params, reqEditors ...RequestEditorFn) (*FindAllTuples8Response, error)
+
+	// Find6 request
+	Find6WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find6Response, error)
+
+	// Current request
+	CurrentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CurrentResponse, error)
+
+	// Queryhelp21 request
+	Queryhelp21WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp21Response, error)
+
+	// FindAllWithStream8 request
+	FindAllWithStream8WithResponse(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*FindAllWithStream8Response, error)
+
+	// Create28 request with any body
+	Create28WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create28Response, error)
+
+	Create28WithResponse(ctx context.Context, body Create28JSONRequestBody, reqEditors ...RequestEditorFn) (*Create28Response, error)
+
+	// CountREST24 request
+	CountREST24WithResponse(ctx context.Context, params *CountREST24Params, reqEditors ...RequestEditorFn) (*CountREST24Response, error)
 
 	// CreateBulks8 request with any body
 	CreateBulks8WithBodyWithResponse(ctx context.Context, params *CreateBulks8Params, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBulks8Response, error)
@@ -8078,82 +11549,82 @@ type ClientWithResponsesInterface interface {
 	// CreateBulkFromTLE request with any body
 	CreateBulkFromTLEWithBodyWithResponse(ctx context.Context, params *CreateBulkFromTLEParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBulkFromTLEResponse, error)
 
-	// Current request
-	CurrentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CurrentResponse, error)
+	// Current1 request
+	Current1WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Current1Response, error)
 
 	// CurrentTuple request
 	CurrentTupleWithResponse(ctx context.Context, params *CurrentTupleParams, reqEditors ...RequestEditorFn) (*CurrentTupleResponse, error)
 
-	// FindAllHistory12 request
-	FindAllHistory12WithResponse(ctx context.Context, params *FindAllHistory12Params, reqEditors ...RequestEditorFn) (*FindAllHistory12Response, error)
+	// FindAllHistory16 request
+	FindAllHistory16WithResponse(ctx context.Context, params *FindAllHistory16Params, reqEditors ...RequestEditorFn) (*FindAllHistory16Response, error)
 
-	// FindAllHistoryAodr12 request
-	FindAllHistoryAodr12WithResponse(ctx context.Context, params *FindAllHistoryAodr12Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr12Response, error)
+	// FindAllHistoryAodr16 request
+	FindAllHistoryAodr16WithResponse(ctx context.Context, params *FindAllHistoryAodr16Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr16Response, error)
 
-	// CountHistory12 request
-	CountHistory12WithResponse(ctx context.Context, params *CountHistory12Params, reqEditors ...RequestEditorFn) (*CountHistory12Response, error)
+	// CountHistory16 request
+	CountHistory16WithResponse(ctx context.Context, params *CountHistory16Params, reqEditors ...RequestEditorFn) (*CountHistory16Response, error)
 
-	// Queryhelp26 request
-	Queryhelp26WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp26Response, error)
-
-	// FindAllTuples25 request
-	FindAllTuples25WithResponse(ctx context.Context, params *FindAllTuples25Params, reqEditors ...RequestEditorFn) (*FindAllTuples25Response, error)
-
-	// Find24 request
-	Find24WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find24Response, error)
-
-	// FindAllWithStream7 request
-	FindAllWithStream7WithResponse(ctx context.Context, params *FindAllWithStream7Params, reqEditors ...RequestEditorFn) (*FindAllWithStream7Response, error)
-
-	// CountDuplicate3 request
-	CountDuplicate3WithResponse(ctx context.Context, params *CountDuplicate3Params, reqEditors ...RequestEditorFn) (*CountDuplicate3Response, error)
-
-	// FindAllHistory13 request
-	FindAllHistory13WithResponse(ctx context.Context, params *FindAllHistory13Params, reqEditors ...RequestEditorFn) (*FindAllHistory13Response, error)
-
-	// FindAllHistoryAodr13 request
-	FindAllHistoryAodr13WithResponse(ctx context.Context, params *FindAllHistoryAodr13Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr13Response, error)
-
-	// CountHistory13 request
-	CountHistory13WithResponse(ctx context.Context, params *CountHistory13Params, reqEditors ...RequestEditorFn) (*CountHistory13Response, error)
-
-	// Queryhelp29 request
-	Queryhelp29WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp29Response, error)
-
-	// FindAllTuples28 request
-	FindAllTuples28WithResponse(ctx context.Context, params *FindAllTuples28Params, reqEditors ...RequestEditorFn) (*FindAllTuples28Response, error)
-
-	// FindAllWithStream8 request
-	FindAllWithStream8WithResponse(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*FindAllWithStream8Response, error)
-
-	// Create29 request with any body
-	Create29WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create29Response, error)
-
-	Create29WithResponse(ctx context.Context, body Create29JSONRequestBody, reqEditors ...RequestEditorFn) (*Create29Response, error)
-
-	// CountREST26 request
-	CountREST26WithResponse(ctx context.Context, params *CountREST26Params, reqEditors ...RequestEditorFn) (*CountREST26Response, error)
-
-	// GetFile1 request
-	GetFile1WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetFile1Response, error)
-
-	// FindAllHistory14 request
-	FindAllHistory14WithResponse(ctx context.Context, params *FindAllHistory14Params, reqEditors ...RequestEditorFn) (*FindAllHistory14Response, error)
-
-	// FindAllHistoryAodr14 request
-	FindAllHistoryAodr14WithResponse(ctx context.Context, params *FindAllHistoryAodr14Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr14Response, error)
-
-	// CountHistory14 request
-	CountHistory14WithResponse(ctx context.Context, params *CountHistory14Params, reqEditors ...RequestEditorFn) (*CountHistory14Response, error)
-
-	// Queryhelp30 request
-	Queryhelp30WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp30Response, error)
+	// Queryhelp31 request
+	Queryhelp31WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp31Response, error)
 
 	// FindAllTuples29 request
 	FindAllTuples29WithResponse(ctx context.Context, params *FindAllTuples29Params, reqEditors ...RequestEditorFn) (*FindAllTuples29Response, error)
 
-	// Find28 request
-	Find28WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find28Response, error)
+	// Find25 request
+	Find25WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find25Response, error)
+
+	// FindAllWithStream9 request
+	FindAllWithStream9WithResponse(ctx context.Context, params *FindAllWithStream9Params, reqEditors ...RequestEditorFn) (*FindAllWithStream9Response, error)
+
+	// CountDuplicate6 request
+	CountDuplicate6WithResponse(ctx context.Context, params *CountDuplicate6Params, reqEditors ...RequestEditorFn) (*CountDuplicate6Response, error)
+
+	// FindAllHistory17 request
+	FindAllHistory17WithResponse(ctx context.Context, params *FindAllHistory17Params, reqEditors ...RequestEditorFn) (*FindAllHistory17Response, error)
+
+	// FindAllHistoryAodr17 request
+	FindAllHistoryAodr17WithResponse(ctx context.Context, params *FindAllHistoryAodr17Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr17Response, error)
+
+	// CountHistory17 request
+	CountHistory17WithResponse(ctx context.Context, params *CountHistory17Params, reqEditors ...RequestEditorFn) (*CountHistory17Response, error)
+
+	// Queryhelp34 request
+	Queryhelp34WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp34Response, error)
+
+	// FindAllTuples32 request
+	FindAllTuples32WithResponse(ctx context.Context, params *FindAllTuples32Params, reqEditors ...RequestEditorFn) (*FindAllTuples32Response, error)
+
+	// FindAllWithStream10 request
+	FindAllWithStream10WithResponse(ctx context.Context, params *FindAllWithStream10Params, reqEditors ...RequestEditorFn) (*FindAllWithStream10Response, error)
+
+	// Create32 request with any body
+	Create32WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create32Response, error)
+
+	Create32WithResponse(ctx context.Context, body Create32JSONRequestBody, reqEditors ...RequestEditorFn) (*Create32Response, error)
+
+	// CountREST27 request
+	CountREST27WithResponse(ctx context.Context, params *CountREST27Params, reqEditors ...RequestEditorFn) (*CountREST27Response, error)
+
+	// GetFile1 request
+	GetFile1WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetFile1Response, error)
+
+	// FindAllHistory18 request
+	FindAllHistory18WithResponse(ctx context.Context, params *FindAllHistory18Params, reqEditors ...RequestEditorFn) (*FindAllHistory18Response, error)
+
+	// FindAllHistoryAodr18 request
+	FindAllHistoryAodr18WithResponse(ctx context.Context, params *FindAllHistoryAodr18Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr18Response, error)
+
+	// CountHistory18 request
+	CountHistory18WithResponse(ctx context.Context, params *CountHistory18Params, reqEditors ...RequestEditorFn) (*CountHistory18Response, error)
+
+	// Queryhelp35 request
+	Queryhelp35WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp35Response, error)
+
+	// FindAllTuples33 request
+	FindAllTuples33WithResponse(ctx context.Context, params *FindAllTuples33Params, reqEditors ...RequestEditorFn) (*FindAllTuples33Response, error)
+
+	// Find29 request
+	Find29WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find29Response, error)
 }
 
 type FiledropEphemPostIdResponse struct {
@@ -8171,6 +11642,48 @@ func (r FiledropEphemPostIdResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r FiledropEphemPostIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FiledropUdlAisPostIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FiledropUdlAisPostIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FiledropUdlAisPostIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FiledropUdlAttitudesetPostIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FiledropUdlAttitudesetPostIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FiledropUdlAttitudesetPostIdResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8219,14 +11732,549 @@ func (r FiledropUdlEphsetPostIdResponse) StatusCode() int {
 	return 0
 }
 
-type FindAllWithStream6Response struct {
+type FindAllResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AISAbridged
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountDuplicateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountDuplicateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountDuplicateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateBulksResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateBulksResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateBulksResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AISFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistoryAodrResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistoryAodrResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistoryAodrResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountHistoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountHistoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountHistoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type QueryhelpResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r QueryhelpResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r QueryhelpResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllTuplesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AISFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllTuplesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllTuplesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllWithStream1Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeDataAbridged
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllWithStream1Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllWithStream1Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountDuplicate2Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountDuplicate2Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountDuplicate2Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistory4Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeDataFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistory4Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistory4Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistoryAodr4Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistoryAodr4Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistoryAodr4Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountHistory4Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountHistory4Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountHistory4Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Queryhelp7Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r Queryhelp7Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Queryhelp7Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllTuples7Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeDataFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllTuples7Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllTuples7Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllWithStream2Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeSetAbridged
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllWithStream2Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllWithStream2Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Create7Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r Create7Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Create7Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountREST5Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountREST5Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountREST5Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistory5Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeSetFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistory5Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistory5Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllHistoryAodr5Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistoryAodr5Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistoryAodr5Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountHistory5Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountHistory5Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountHistory5Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Queryhelp8Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r Queryhelp8Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Queryhelp8Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllTuples8Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]AttitudeSetFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllTuples8Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllTuples8Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Find6Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AttitudeSetFull
+}
+
+// Status returns HTTPResponse.Status
+func (r Find6Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Find6Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CurrentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]ElsetAbridged
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllWithStream6Response) Status() string {
+func (r CurrentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8234,20 +12282,20 @@ func (r FindAllWithStream6Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllWithStream6Response) StatusCode() int {
+func (r CurrentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Create25Response struct {
+type Queryhelp21Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r Create25Response) Status() string {
+func (r Queryhelp21Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8255,20 +12303,21 @@ func (r Create25Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Create25Response) StatusCode() int {
+func (r Queryhelp21Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CountREST23Response struct {
+type FindAllWithStream8Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *[]ElsetAbridged
 }
 
 // Status returns HTTPResponse.Status
-func (r CountREST23Response) Status() string {
+func (r FindAllWithStream8Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8276,7 +12325,49 @@ func (r CountREST23Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CountREST23Response) StatusCode() int {
+func (r FindAllWithStream8Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Create28Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r Create28Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Create28Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountREST24Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountREST24Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountREST24Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8325,14 +12416,14 @@ func (r CreateBulkFromTLEResponse) StatusCode() int {
 	return 0
 }
 
-type CurrentResponse struct {
+type Current1Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]ElsetAbridged
 }
 
 // Status returns HTTPResponse.Status
-func (r CurrentResponse) Status() string {
+func (r Current1Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8340,7 +12431,7 @@ func (r CurrentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CurrentResponse) StatusCode() int {
+func (r Current1Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8369,14 +12460,14 @@ func (r CurrentTupleResponse) StatusCode() int {
 	return 0
 }
 
-type FindAllHistory12Response struct {
+type FindAllHistory16Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]ElsetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllHistory12Response) Status() string {
+func (r FindAllHistory16Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8384,20 +12475,20 @@ func (r FindAllHistory12Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistory12Response) StatusCode() int {
+func (r FindAllHistory16Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllHistoryAodr12Response struct {
+type FindAllHistoryAodr16Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllHistoryAodr12Response) Status() string {
+func (r FindAllHistoryAodr16Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8405,20 +12496,20 @@ func (r FindAllHistoryAodr12Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistoryAodr12Response) StatusCode() int {
+func (r FindAllHistoryAodr16Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CountHistory12Response struct {
+type CountHistory16Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r CountHistory12Response) Status() string {
+func (r CountHistory16Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8426,20 +12517,20 @@ func (r CountHistory12Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CountHistory12Response) StatusCode() int {
+func (r CountHistory16Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Queryhelp26Response struct {
+type Queryhelp31Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r Queryhelp26Response) Status() string {
+func (r Queryhelp31Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8447,21 +12538,21 @@ func (r Queryhelp26Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Queryhelp26Response) StatusCode() int {
+func (r Queryhelp31Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllTuples25Response struct {
+type FindAllTuples29Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]ElsetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllTuples25Response) Status() string {
+func (r FindAllTuples29Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8469,21 +12560,21 @@ func (r FindAllTuples25Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllTuples25Response) StatusCode() int {
+func (r FindAllTuples29Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Find24Response struct {
+type Find25Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ElsetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r Find24Response) Status() string {
+func (r Find25Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8491,21 +12582,21 @@ func (r Find24Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Find24Response) StatusCode() int {
+func (r Find25Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllWithStream7Response struct {
+type FindAllWithStream9Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EphemerisAbridged
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllWithStream7Response) Status() string {
+func (r FindAllWithStream9Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8513,20 +12604,20 @@ func (r FindAllWithStream7Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllWithStream7Response) StatusCode() int {
+func (r FindAllWithStream9Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CountDuplicate3Response struct {
+type CountDuplicate6Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r CountDuplicate3Response) Status() string {
+func (r CountDuplicate6Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8534,106 +12625,21 @@ func (r CountDuplicate3Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CountDuplicate3Response) StatusCode() int {
+func (r CountDuplicate6Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllHistory13Response struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *[]EphemerisFull
-}
-
-// Status returns HTTPResponse.Status
-func (r FindAllHistory13Response) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistory13Response) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FindAllHistoryAodr13Response struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r FindAllHistoryAodr13Response) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistoryAodr13Response) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CountHistory13Response struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r CountHistory13Response) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CountHistory13Response) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type Queryhelp29Response struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r Queryhelp29Response) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r Queryhelp29Response) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FindAllTuples28Response struct {
+type FindAllHistory17Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EphemerisFull
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllTuples28Response) Status() string {
+func (r FindAllHistory17Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8641,21 +12647,106 @@ func (r FindAllTuples28Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllTuples28Response) StatusCode() int {
+func (r FindAllHistory17Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllWithStream8Response struct {
+type FindAllHistoryAodr17Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllHistoryAodr17Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllHistoryAodr17Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CountHistory17Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r CountHistory17Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CountHistory17Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type Queryhelp34Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r Queryhelp34Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r Queryhelp34Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllTuples32Response struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]EphemerisFull
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAllTuples32Response) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAllTuples32Response) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type FindAllWithStream10Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EphemerisSetAbridged
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllWithStream8Response) Status() string {
+func (r FindAllWithStream10Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8663,20 +12754,20 @@ func (r FindAllWithStream8Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllWithStream8Response) StatusCode() int {
+func (r FindAllWithStream10Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Create29Response struct {
+type Create32Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r Create29Response) Status() string {
+func (r Create32Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8684,20 +12775,20 @@ func (r Create29Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Create29Response) StatusCode() int {
+func (r Create32Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CountREST26Response struct {
+type CountREST27Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r CountREST26Response) Status() string {
+func (r CountREST27Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8705,7 +12796,7 @@ func (r CountREST26Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CountREST26Response) StatusCode() int {
+func (r CountREST27Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8733,14 +12824,14 @@ func (r GetFile1Response) StatusCode() int {
 	return 0
 }
 
-type FindAllHistory14Response struct {
+type FindAllHistory18Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EphemerisSetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllHistory14Response) Status() string {
+func (r FindAllHistory18Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8748,20 +12839,20 @@ func (r FindAllHistory14Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistory14Response) StatusCode() int {
+func (r FindAllHistory18Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllHistoryAodr14Response struct {
+type FindAllHistoryAodr18Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllHistoryAodr14Response) Status() string {
+func (r FindAllHistoryAodr18Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8769,20 +12860,20 @@ func (r FindAllHistoryAodr14Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllHistoryAodr14Response) StatusCode() int {
+func (r FindAllHistoryAodr18Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CountHistory14Response struct {
+type CountHistory18Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r CountHistory14Response) Status() string {
+func (r CountHistory18Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8790,20 +12881,20 @@ func (r CountHistory14Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CountHistory14Response) StatusCode() int {
+func (r CountHistory18Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Queryhelp30Response struct {
+type Queryhelp35Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 }
 
 // Status returns HTTPResponse.Status
-func (r Queryhelp30Response) Status() string {
+func (r Queryhelp35Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8811,21 +12902,21 @@ func (r Queryhelp30Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Queryhelp30Response) StatusCode() int {
+func (r Queryhelp35Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type FindAllTuples29Response struct {
+type FindAllTuples33Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]EphemerisSetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r FindAllTuples29Response) Status() string {
+func (r FindAllTuples33Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8833,21 +12924,21 @@ func (r FindAllTuples29Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FindAllTuples29Response) StatusCode() int {
+func (r FindAllTuples33Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type Find28Response struct {
+type Find29Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *EphemerisSetFull
 }
 
 // Status returns HTTPResponse.Status
-func (r Find28Response) Status() string {
+func (r Find29Response) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -8855,7 +12946,7 @@ func (r Find28Response) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r Find28Response) StatusCode() int {
+func (r Find29Response) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8869,6 +12960,40 @@ func (c *ClientWithResponses) FiledropEphemPostIdWithBodyWithResponse(ctx contex
 		return nil, err
 	}
 	return ParseFiledropEphemPostIdResponse(rsp)
+}
+
+// FiledropUdlAisPostIdWithBodyWithResponse request with arbitrary body returning *FiledropUdlAisPostIdResponse
+func (c *ClientWithResponses) FiledropUdlAisPostIdWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropUdlAisPostIdResponse, error) {
+	rsp, err := c.FiledropUdlAisPostIdWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFiledropUdlAisPostIdResponse(rsp)
+}
+
+func (c *ClientWithResponses) FiledropUdlAisPostIdWithResponse(ctx context.Context, body FiledropUdlAisPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FiledropUdlAisPostIdResponse, error) {
+	rsp, err := c.FiledropUdlAisPostId(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFiledropUdlAisPostIdResponse(rsp)
+}
+
+// FiledropUdlAttitudesetPostIdWithBodyWithResponse request with arbitrary body returning *FiledropUdlAttitudesetPostIdResponse
+func (c *ClientWithResponses) FiledropUdlAttitudesetPostIdWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FiledropUdlAttitudesetPostIdResponse, error) {
+	rsp, err := c.FiledropUdlAttitudesetPostIdWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFiledropUdlAttitudesetPostIdResponse(rsp)
+}
+
+func (c *ClientWithResponses) FiledropUdlAttitudesetPostIdWithResponse(ctx context.Context, body FiledropUdlAttitudesetPostIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FiledropUdlAttitudesetPostIdResponse, error) {
+	rsp, err := c.FiledropUdlAttitudesetPostId(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFiledropUdlAttitudesetPostIdResponse(rsp)
 }
 
 // FiledropUdlElsetPostIdWithBodyWithResponse request with arbitrary body returning *FiledropUdlElsetPostIdResponse
@@ -8905,39 +13030,306 @@ func (c *ClientWithResponses) FiledropUdlEphsetPostIdWithResponse(ctx context.Co
 	return ParseFiledropUdlEphsetPostIdResponse(rsp)
 }
 
-// FindAllWithStream6WithResponse request returning *FindAllWithStream6Response
-func (c *ClientWithResponses) FindAllWithStream6WithResponse(ctx context.Context, params *FindAllWithStream6Params, reqEditors ...RequestEditorFn) (*FindAllWithStream6Response, error) {
-	rsp, err := c.FindAllWithStream6(ctx, params, reqEditors...)
+// FindAllWithResponse request returning *FindAllResponse
+func (c *ClientWithResponses) FindAllWithResponse(ctx context.Context, params *FindAllParams, reqEditors ...RequestEditorFn) (*FindAllResponse, error) {
+	rsp, err := c.FindAll(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFindAllWithStream6Response(rsp)
+	return ParseFindAllResponse(rsp)
 }
 
-// Create25WithBodyWithResponse request with arbitrary body returning *Create25Response
-func (c *ClientWithResponses) Create25WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create25Response, error) {
-	rsp, err := c.Create25WithBody(ctx, contentType, body, reqEditors...)
+// CreateWithBodyWithResponse request with arbitrary body returning *CreateResponse
+func (c *ClientWithResponses) CreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateResponse, error) {
+	rsp, err := c.CreateWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreate25Response(rsp)
+	return ParseCreateResponse(rsp)
 }
 
-func (c *ClientWithResponses) Create25WithResponse(ctx context.Context, body Create25JSONRequestBody, reqEditors ...RequestEditorFn) (*Create25Response, error) {
-	rsp, err := c.Create25(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreateWithResponse(ctx context.Context, body CreateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateResponse, error) {
+	rsp, err := c.Create(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreate25Response(rsp)
+	return ParseCreateResponse(rsp)
 }
 
-// CountREST23WithResponse request returning *CountREST23Response
-func (c *ClientWithResponses) CountREST23WithResponse(ctx context.Context, params *CountREST23Params, reqEditors ...RequestEditorFn) (*CountREST23Response, error) {
-	rsp, err := c.CountREST23(ctx, params, reqEditors...)
+// CountDuplicateWithResponse request returning *CountDuplicateResponse
+func (c *ClientWithResponses) CountDuplicateWithResponse(ctx context.Context, params *CountDuplicateParams, reqEditors ...RequestEditorFn) (*CountDuplicateResponse, error) {
+	rsp, err := c.CountDuplicate(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCountREST23Response(rsp)
+	return ParseCountDuplicateResponse(rsp)
+}
+
+// CreateBulksWithBodyWithResponse request with arbitrary body returning *CreateBulksResponse
+func (c *ClientWithResponses) CreateBulksWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBulksResponse, error) {
+	rsp, err := c.CreateBulksWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateBulksResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateBulksWithResponse(ctx context.Context, body CreateBulksJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBulksResponse, error) {
+	rsp, err := c.CreateBulks(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateBulksResponse(rsp)
+}
+
+// FindAllHistoryWithResponse request returning *FindAllHistoryResponse
+func (c *ClientWithResponses) FindAllHistoryWithResponse(ctx context.Context, params *FindAllHistoryParams, reqEditors ...RequestEditorFn) (*FindAllHistoryResponse, error) {
+	rsp, err := c.FindAllHistory(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryResponse(rsp)
+}
+
+// FindAllHistoryAodrWithResponse request returning *FindAllHistoryAodrResponse
+func (c *ClientWithResponses) FindAllHistoryAodrWithResponse(ctx context.Context, params *FindAllHistoryAodrParams, reqEditors ...RequestEditorFn) (*FindAllHistoryAodrResponse, error) {
+	rsp, err := c.FindAllHistoryAodr(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryAodrResponse(rsp)
+}
+
+// CountHistoryWithResponse request returning *CountHistoryResponse
+func (c *ClientWithResponses) CountHistoryWithResponse(ctx context.Context, params *CountHistoryParams, reqEditors ...RequestEditorFn) (*CountHistoryResponse, error) {
+	rsp, err := c.CountHistory(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountHistoryResponse(rsp)
+}
+
+// QueryhelpWithResponse request returning *QueryhelpResponse
+func (c *ClientWithResponses) QueryhelpWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*QueryhelpResponse, error) {
+	rsp, err := c.Queryhelp(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelpResponse(rsp)
+}
+
+// FindAllTuplesWithResponse request returning *FindAllTuplesResponse
+func (c *ClientWithResponses) FindAllTuplesWithResponse(ctx context.Context, params *FindAllTuplesParams, reqEditors ...RequestEditorFn) (*FindAllTuplesResponse, error) {
+	rsp, err := c.FindAllTuples(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllTuplesResponse(rsp)
+}
+
+// FindAllWithStream1WithResponse request returning *FindAllWithStream1Response
+func (c *ClientWithResponses) FindAllWithStream1WithResponse(ctx context.Context, params *FindAllWithStream1Params, reqEditors ...RequestEditorFn) (*FindAllWithStream1Response, error) {
+	rsp, err := c.FindAllWithStream1(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllWithStream1Response(rsp)
+}
+
+// CountDuplicate2WithResponse request returning *CountDuplicate2Response
+func (c *ClientWithResponses) CountDuplicate2WithResponse(ctx context.Context, params *CountDuplicate2Params, reqEditors ...RequestEditorFn) (*CountDuplicate2Response, error) {
+	rsp, err := c.CountDuplicate2(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountDuplicate2Response(rsp)
+}
+
+// FindAllHistory4WithResponse request returning *FindAllHistory4Response
+func (c *ClientWithResponses) FindAllHistory4WithResponse(ctx context.Context, params *FindAllHistory4Params, reqEditors ...RequestEditorFn) (*FindAllHistory4Response, error) {
+	rsp, err := c.FindAllHistory4(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistory4Response(rsp)
+}
+
+// FindAllHistoryAodr4WithResponse request returning *FindAllHistoryAodr4Response
+func (c *ClientWithResponses) FindAllHistoryAodr4WithResponse(ctx context.Context, params *FindAllHistoryAodr4Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr4Response, error) {
+	rsp, err := c.FindAllHistoryAodr4(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryAodr4Response(rsp)
+}
+
+// CountHistory4WithResponse request returning *CountHistory4Response
+func (c *ClientWithResponses) CountHistory4WithResponse(ctx context.Context, params *CountHistory4Params, reqEditors ...RequestEditorFn) (*CountHistory4Response, error) {
+	rsp, err := c.CountHistory4(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountHistory4Response(rsp)
+}
+
+// Queryhelp7WithResponse request returning *Queryhelp7Response
+func (c *ClientWithResponses) Queryhelp7WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp7Response, error) {
+	rsp, err := c.Queryhelp7(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelp7Response(rsp)
+}
+
+// FindAllTuples7WithResponse request returning *FindAllTuples7Response
+func (c *ClientWithResponses) FindAllTuples7WithResponse(ctx context.Context, params *FindAllTuples7Params, reqEditors ...RequestEditorFn) (*FindAllTuples7Response, error) {
+	rsp, err := c.FindAllTuples7(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllTuples7Response(rsp)
+}
+
+// FindAllWithStream2WithResponse request returning *FindAllWithStream2Response
+func (c *ClientWithResponses) FindAllWithStream2WithResponse(ctx context.Context, params *FindAllWithStream2Params, reqEditors ...RequestEditorFn) (*FindAllWithStream2Response, error) {
+	rsp, err := c.FindAllWithStream2(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllWithStream2Response(rsp)
+}
+
+// Create7WithBodyWithResponse request with arbitrary body returning *Create7Response
+func (c *ClientWithResponses) Create7WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create7Response, error) {
+	rsp, err := c.Create7WithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate7Response(rsp)
+}
+
+func (c *ClientWithResponses) Create7WithResponse(ctx context.Context, body Create7JSONRequestBody, reqEditors ...RequestEditorFn) (*Create7Response, error) {
+	rsp, err := c.Create7(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate7Response(rsp)
+}
+
+// CountREST5WithResponse request returning *CountREST5Response
+func (c *ClientWithResponses) CountREST5WithResponse(ctx context.Context, params *CountREST5Params, reqEditors ...RequestEditorFn) (*CountREST5Response, error) {
+	rsp, err := c.CountREST5(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountREST5Response(rsp)
+}
+
+// FindAllHistory5WithResponse request returning *FindAllHistory5Response
+func (c *ClientWithResponses) FindAllHistory5WithResponse(ctx context.Context, params *FindAllHistory5Params, reqEditors ...RequestEditorFn) (*FindAllHistory5Response, error) {
+	rsp, err := c.FindAllHistory5(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistory5Response(rsp)
+}
+
+// FindAllHistoryAodr5WithResponse request returning *FindAllHistoryAodr5Response
+func (c *ClientWithResponses) FindAllHistoryAodr5WithResponse(ctx context.Context, params *FindAllHistoryAodr5Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr5Response, error) {
+	rsp, err := c.FindAllHistoryAodr5(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryAodr5Response(rsp)
+}
+
+// CountHistory5WithResponse request returning *CountHistory5Response
+func (c *ClientWithResponses) CountHistory5WithResponse(ctx context.Context, params *CountHistory5Params, reqEditors ...RequestEditorFn) (*CountHistory5Response, error) {
+	rsp, err := c.CountHistory5(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountHistory5Response(rsp)
+}
+
+// Queryhelp8WithResponse request returning *Queryhelp8Response
+func (c *ClientWithResponses) Queryhelp8WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp8Response, error) {
+	rsp, err := c.Queryhelp8(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelp8Response(rsp)
+}
+
+// FindAllTuples8WithResponse request returning *FindAllTuples8Response
+func (c *ClientWithResponses) FindAllTuples8WithResponse(ctx context.Context, params *FindAllTuples8Params, reqEditors ...RequestEditorFn) (*FindAllTuples8Response, error) {
+	rsp, err := c.FindAllTuples8(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllTuples8Response(rsp)
+}
+
+// Find6WithResponse request returning *Find6Response
+func (c *ClientWithResponses) Find6WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find6Response, error) {
+	rsp, err := c.Find6(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFind6Response(rsp)
+}
+
+// CurrentWithResponse request returning *CurrentResponse
+func (c *ClientWithResponses) CurrentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CurrentResponse, error) {
+	rsp, err := c.Current(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCurrentResponse(rsp)
+}
+
+// Queryhelp21WithResponse request returning *Queryhelp21Response
+func (c *ClientWithResponses) Queryhelp21WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp21Response, error) {
+	rsp, err := c.Queryhelp21(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelp21Response(rsp)
+}
+
+// FindAllWithStream8WithResponse request returning *FindAllWithStream8Response
+func (c *ClientWithResponses) FindAllWithStream8WithResponse(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*FindAllWithStream8Response, error) {
+	rsp, err := c.FindAllWithStream8(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllWithStream8Response(rsp)
+}
+
+// Create28WithBodyWithResponse request with arbitrary body returning *Create28Response
+func (c *ClientWithResponses) Create28WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create28Response, error) {
+	rsp, err := c.Create28WithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate28Response(rsp)
+}
+
+func (c *ClientWithResponses) Create28WithResponse(ctx context.Context, body Create28JSONRequestBody, reqEditors ...RequestEditorFn) (*Create28Response, error) {
+	rsp, err := c.Create28(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate28Response(rsp)
+}
+
+// CountREST24WithResponse request returning *CountREST24Response
+func (c *ClientWithResponses) CountREST24WithResponse(ctx context.Context, params *CountREST24Params, reqEditors ...RequestEditorFn) (*CountREST24Response, error) {
+	rsp, err := c.CountREST24(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountREST24Response(rsp)
 }
 
 // CreateBulks8WithBodyWithResponse request with arbitrary body returning *CreateBulks8Response
@@ -8966,13 +13358,13 @@ func (c *ClientWithResponses) CreateBulkFromTLEWithBodyWithResponse(ctx context.
 	return ParseCreateBulkFromTLEResponse(rsp)
 }
 
-// CurrentWithResponse request returning *CurrentResponse
-func (c *ClientWithResponses) CurrentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CurrentResponse, error) {
-	rsp, err := c.Current(ctx, reqEditors...)
+// Current1WithResponse request returning *Current1Response
+func (c *ClientWithResponses) Current1WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Current1Response, error) {
+	rsp, err := c.Current1(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCurrentResponse(rsp)
+	return ParseCurrent1Response(rsp)
 }
 
 // CurrentTupleWithResponse request returning *CurrentTupleResponse
@@ -8984,201 +13376,40 @@ func (c *ClientWithResponses) CurrentTupleWithResponse(ctx context.Context, para
 	return ParseCurrentTupleResponse(rsp)
 }
 
-// FindAllHistory12WithResponse request returning *FindAllHistory12Response
-func (c *ClientWithResponses) FindAllHistory12WithResponse(ctx context.Context, params *FindAllHistory12Params, reqEditors ...RequestEditorFn) (*FindAllHistory12Response, error) {
-	rsp, err := c.FindAllHistory12(ctx, params, reqEditors...)
+// FindAllHistory16WithResponse request returning *FindAllHistory16Response
+func (c *ClientWithResponses) FindAllHistory16WithResponse(ctx context.Context, params *FindAllHistory16Params, reqEditors ...RequestEditorFn) (*FindAllHistory16Response, error) {
+	rsp, err := c.FindAllHistory16(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFindAllHistory12Response(rsp)
+	return ParseFindAllHistory16Response(rsp)
 }
 
-// FindAllHistoryAodr12WithResponse request returning *FindAllHistoryAodr12Response
-func (c *ClientWithResponses) FindAllHistoryAodr12WithResponse(ctx context.Context, params *FindAllHistoryAodr12Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr12Response, error) {
-	rsp, err := c.FindAllHistoryAodr12(ctx, params, reqEditors...)
+// FindAllHistoryAodr16WithResponse request returning *FindAllHistoryAodr16Response
+func (c *ClientWithResponses) FindAllHistoryAodr16WithResponse(ctx context.Context, params *FindAllHistoryAodr16Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr16Response, error) {
+	rsp, err := c.FindAllHistoryAodr16(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFindAllHistoryAodr12Response(rsp)
+	return ParseFindAllHistoryAodr16Response(rsp)
 }
 
-// CountHistory12WithResponse request returning *CountHistory12Response
-func (c *ClientWithResponses) CountHistory12WithResponse(ctx context.Context, params *CountHistory12Params, reqEditors ...RequestEditorFn) (*CountHistory12Response, error) {
-	rsp, err := c.CountHistory12(ctx, params, reqEditors...)
+// CountHistory16WithResponse request returning *CountHistory16Response
+func (c *ClientWithResponses) CountHistory16WithResponse(ctx context.Context, params *CountHistory16Params, reqEditors ...RequestEditorFn) (*CountHistory16Response, error) {
+	rsp, err := c.CountHistory16(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCountHistory12Response(rsp)
+	return ParseCountHistory16Response(rsp)
 }
 
-// Queryhelp26WithResponse request returning *Queryhelp26Response
-func (c *ClientWithResponses) Queryhelp26WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp26Response, error) {
-	rsp, err := c.Queryhelp26(ctx, reqEditors...)
+// Queryhelp31WithResponse request returning *Queryhelp31Response
+func (c *ClientWithResponses) Queryhelp31WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp31Response, error) {
+	rsp, err := c.Queryhelp31(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseQueryhelp26Response(rsp)
-}
-
-// FindAllTuples25WithResponse request returning *FindAllTuples25Response
-func (c *ClientWithResponses) FindAllTuples25WithResponse(ctx context.Context, params *FindAllTuples25Params, reqEditors ...RequestEditorFn) (*FindAllTuples25Response, error) {
-	rsp, err := c.FindAllTuples25(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllTuples25Response(rsp)
-}
-
-// Find24WithResponse request returning *Find24Response
-func (c *ClientWithResponses) Find24WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find24Response, error) {
-	rsp, err := c.Find24(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFind24Response(rsp)
-}
-
-// FindAllWithStream7WithResponse request returning *FindAllWithStream7Response
-func (c *ClientWithResponses) FindAllWithStream7WithResponse(ctx context.Context, params *FindAllWithStream7Params, reqEditors ...RequestEditorFn) (*FindAllWithStream7Response, error) {
-	rsp, err := c.FindAllWithStream7(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllWithStream7Response(rsp)
-}
-
-// CountDuplicate3WithResponse request returning *CountDuplicate3Response
-func (c *ClientWithResponses) CountDuplicate3WithResponse(ctx context.Context, params *CountDuplicate3Params, reqEditors ...RequestEditorFn) (*CountDuplicate3Response, error) {
-	rsp, err := c.CountDuplicate3(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCountDuplicate3Response(rsp)
-}
-
-// FindAllHistory13WithResponse request returning *FindAllHistory13Response
-func (c *ClientWithResponses) FindAllHistory13WithResponse(ctx context.Context, params *FindAllHistory13Params, reqEditors ...RequestEditorFn) (*FindAllHistory13Response, error) {
-	rsp, err := c.FindAllHistory13(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllHistory13Response(rsp)
-}
-
-// FindAllHistoryAodr13WithResponse request returning *FindAllHistoryAodr13Response
-func (c *ClientWithResponses) FindAllHistoryAodr13WithResponse(ctx context.Context, params *FindAllHistoryAodr13Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr13Response, error) {
-	rsp, err := c.FindAllHistoryAodr13(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllHistoryAodr13Response(rsp)
-}
-
-// CountHistory13WithResponse request returning *CountHistory13Response
-func (c *ClientWithResponses) CountHistory13WithResponse(ctx context.Context, params *CountHistory13Params, reqEditors ...RequestEditorFn) (*CountHistory13Response, error) {
-	rsp, err := c.CountHistory13(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCountHistory13Response(rsp)
-}
-
-// Queryhelp29WithResponse request returning *Queryhelp29Response
-func (c *ClientWithResponses) Queryhelp29WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp29Response, error) {
-	rsp, err := c.Queryhelp29(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseQueryhelp29Response(rsp)
-}
-
-// FindAllTuples28WithResponse request returning *FindAllTuples28Response
-func (c *ClientWithResponses) FindAllTuples28WithResponse(ctx context.Context, params *FindAllTuples28Params, reqEditors ...RequestEditorFn) (*FindAllTuples28Response, error) {
-	rsp, err := c.FindAllTuples28(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllTuples28Response(rsp)
-}
-
-// FindAllWithStream8WithResponse request returning *FindAllWithStream8Response
-func (c *ClientWithResponses) FindAllWithStream8WithResponse(ctx context.Context, params *FindAllWithStream8Params, reqEditors ...RequestEditorFn) (*FindAllWithStream8Response, error) {
-	rsp, err := c.FindAllWithStream8(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllWithStream8Response(rsp)
-}
-
-// Create29WithBodyWithResponse request with arbitrary body returning *Create29Response
-func (c *ClientWithResponses) Create29WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create29Response, error) {
-	rsp, err := c.Create29WithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreate29Response(rsp)
-}
-
-func (c *ClientWithResponses) Create29WithResponse(ctx context.Context, body Create29JSONRequestBody, reqEditors ...RequestEditorFn) (*Create29Response, error) {
-	rsp, err := c.Create29(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreate29Response(rsp)
-}
-
-// CountREST26WithResponse request returning *CountREST26Response
-func (c *ClientWithResponses) CountREST26WithResponse(ctx context.Context, params *CountREST26Params, reqEditors ...RequestEditorFn) (*CountREST26Response, error) {
-	rsp, err := c.CountREST26(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCountREST26Response(rsp)
-}
-
-// GetFile1WithResponse request returning *GetFile1Response
-func (c *ClientWithResponses) GetFile1WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetFile1Response, error) {
-	rsp, err := c.GetFile1(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetFile1Response(rsp)
-}
-
-// FindAllHistory14WithResponse request returning *FindAllHistory14Response
-func (c *ClientWithResponses) FindAllHistory14WithResponse(ctx context.Context, params *FindAllHistory14Params, reqEditors ...RequestEditorFn) (*FindAllHistory14Response, error) {
-	rsp, err := c.FindAllHistory14(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllHistory14Response(rsp)
-}
-
-// FindAllHistoryAodr14WithResponse request returning *FindAllHistoryAodr14Response
-func (c *ClientWithResponses) FindAllHistoryAodr14WithResponse(ctx context.Context, params *FindAllHistoryAodr14Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr14Response, error) {
-	rsp, err := c.FindAllHistoryAodr14(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFindAllHistoryAodr14Response(rsp)
-}
-
-// CountHistory14WithResponse request returning *CountHistory14Response
-func (c *ClientWithResponses) CountHistory14WithResponse(ctx context.Context, params *CountHistory14Params, reqEditors ...RequestEditorFn) (*CountHistory14Response, error) {
-	rsp, err := c.CountHistory14(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCountHistory14Response(rsp)
-}
-
-// Queryhelp30WithResponse request returning *Queryhelp30Response
-func (c *ClientWithResponses) Queryhelp30WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp30Response, error) {
-	rsp, err := c.Queryhelp30(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseQueryhelp30Response(rsp)
+	return ParseQueryhelp31Response(rsp)
 }
 
 // FindAllTuples29WithResponse request returning *FindAllTuples29Response
@@ -9190,13 +13421,174 @@ func (c *ClientWithResponses) FindAllTuples29WithResponse(ctx context.Context, p
 	return ParseFindAllTuples29Response(rsp)
 }
 
-// Find28WithResponse request returning *Find28Response
-func (c *ClientWithResponses) Find28WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find28Response, error) {
-	rsp, err := c.Find28(ctx, id, reqEditors...)
+// Find25WithResponse request returning *Find25Response
+func (c *ClientWithResponses) Find25WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find25Response, error) {
+	rsp, err := c.Find25(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFind28Response(rsp)
+	return ParseFind25Response(rsp)
+}
+
+// FindAllWithStream9WithResponse request returning *FindAllWithStream9Response
+func (c *ClientWithResponses) FindAllWithStream9WithResponse(ctx context.Context, params *FindAllWithStream9Params, reqEditors ...RequestEditorFn) (*FindAllWithStream9Response, error) {
+	rsp, err := c.FindAllWithStream9(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllWithStream9Response(rsp)
+}
+
+// CountDuplicate6WithResponse request returning *CountDuplicate6Response
+func (c *ClientWithResponses) CountDuplicate6WithResponse(ctx context.Context, params *CountDuplicate6Params, reqEditors ...RequestEditorFn) (*CountDuplicate6Response, error) {
+	rsp, err := c.CountDuplicate6(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountDuplicate6Response(rsp)
+}
+
+// FindAllHistory17WithResponse request returning *FindAllHistory17Response
+func (c *ClientWithResponses) FindAllHistory17WithResponse(ctx context.Context, params *FindAllHistory17Params, reqEditors ...RequestEditorFn) (*FindAllHistory17Response, error) {
+	rsp, err := c.FindAllHistory17(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistory17Response(rsp)
+}
+
+// FindAllHistoryAodr17WithResponse request returning *FindAllHistoryAodr17Response
+func (c *ClientWithResponses) FindAllHistoryAodr17WithResponse(ctx context.Context, params *FindAllHistoryAodr17Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr17Response, error) {
+	rsp, err := c.FindAllHistoryAodr17(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryAodr17Response(rsp)
+}
+
+// CountHistory17WithResponse request returning *CountHistory17Response
+func (c *ClientWithResponses) CountHistory17WithResponse(ctx context.Context, params *CountHistory17Params, reqEditors ...RequestEditorFn) (*CountHistory17Response, error) {
+	rsp, err := c.CountHistory17(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountHistory17Response(rsp)
+}
+
+// Queryhelp34WithResponse request returning *Queryhelp34Response
+func (c *ClientWithResponses) Queryhelp34WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp34Response, error) {
+	rsp, err := c.Queryhelp34(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelp34Response(rsp)
+}
+
+// FindAllTuples32WithResponse request returning *FindAllTuples32Response
+func (c *ClientWithResponses) FindAllTuples32WithResponse(ctx context.Context, params *FindAllTuples32Params, reqEditors ...RequestEditorFn) (*FindAllTuples32Response, error) {
+	rsp, err := c.FindAllTuples32(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllTuples32Response(rsp)
+}
+
+// FindAllWithStream10WithResponse request returning *FindAllWithStream10Response
+func (c *ClientWithResponses) FindAllWithStream10WithResponse(ctx context.Context, params *FindAllWithStream10Params, reqEditors ...RequestEditorFn) (*FindAllWithStream10Response, error) {
+	rsp, err := c.FindAllWithStream10(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllWithStream10Response(rsp)
+}
+
+// Create32WithBodyWithResponse request with arbitrary body returning *Create32Response
+func (c *ClientWithResponses) Create32WithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*Create32Response, error) {
+	rsp, err := c.Create32WithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate32Response(rsp)
+}
+
+func (c *ClientWithResponses) Create32WithResponse(ctx context.Context, body Create32JSONRequestBody, reqEditors ...RequestEditorFn) (*Create32Response, error) {
+	rsp, err := c.Create32(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreate32Response(rsp)
+}
+
+// CountREST27WithResponse request returning *CountREST27Response
+func (c *ClientWithResponses) CountREST27WithResponse(ctx context.Context, params *CountREST27Params, reqEditors ...RequestEditorFn) (*CountREST27Response, error) {
+	rsp, err := c.CountREST27(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountREST27Response(rsp)
+}
+
+// GetFile1WithResponse request returning *GetFile1Response
+func (c *ClientWithResponses) GetFile1WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetFile1Response, error) {
+	rsp, err := c.GetFile1(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetFile1Response(rsp)
+}
+
+// FindAllHistory18WithResponse request returning *FindAllHistory18Response
+func (c *ClientWithResponses) FindAllHistory18WithResponse(ctx context.Context, params *FindAllHistory18Params, reqEditors ...RequestEditorFn) (*FindAllHistory18Response, error) {
+	rsp, err := c.FindAllHistory18(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistory18Response(rsp)
+}
+
+// FindAllHistoryAodr18WithResponse request returning *FindAllHistoryAodr18Response
+func (c *ClientWithResponses) FindAllHistoryAodr18WithResponse(ctx context.Context, params *FindAllHistoryAodr18Params, reqEditors ...RequestEditorFn) (*FindAllHistoryAodr18Response, error) {
+	rsp, err := c.FindAllHistoryAodr18(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllHistoryAodr18Response(rsp)
+}
+
+// CountHistory18WithResponse request returning *CountHistory18Response
+func (c *ClientWithResponses) CountHistory18WithResponse(ctx context.Context, params *CountHistory18Params, reqEditors ...RequestEditorFn) (*CountHistory18Response, error) {
+	rsp, err := c.CountHistory18(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCountHistory18Response(rsp)
+}
+
+// Queryhelp35WithResponse request returning *Queryhelp35Response
+func (c *ClientWithResponses) Queryhelp35WithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*Queryhelp35Response, error) {
+	rsp, err := c.Queryhelp35(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryhelp35Response(rsp)
+}
+
+// FindAllTuples33WithResponse request returning *FindAllTuples33Response
+func (c *ClientWithResponses) FindAllTuples33WithResponse(ctx context.Context, params *FindAllTuples33Params, reqEditors ...RequestEditorFn) (*FindAllTuples33Response, error) {
+	rsp, err := c.FindAllTuples33(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAllTuples33Response(rsp)
+}
+
+// Find29WithResponse request returning *Find29Response
+func (c *ClientWithResponses) Find29WithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*Find29Response, error) {
+	rsp, err := c.Find29(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFind29Response(rsp)
 }
 
 // ParseFiledropEphemPostIdResponse parses an HTTP response from a FiledropEphemPostIdWithResponse call
@@ -9208,6 +13600,38 @@ func ParseFiledropEphemPostIdResponse(rsp *http.Response) (*FiledropEphemPostIdR
 	}
 
 	response := &FiledropEphemPostIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFiledropUdlAisPostIdResponse parses an HTTP response from a FiledropUdlAisPostIdWithResponse call
+func ParseFiledropUdlAisPostIdResponse(rsp *http.Response) (*FiledropUdlAisPostIdResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FiledropUdlAisPostIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFiledropUdlAttitudesetPostIdResponse parses an HTTP response from a FiledropUdlAttitudesetPostIdWithResponse call
+func ParseFiledropUdlAttitudesetPostIdResponse(rsp *http.Response) (*FiledropUdlAttitudesetPostIdResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FiledropUdlAttitudesetPostIdResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9247,15 +13671,515 @@ func ParseFiledropUdlEphsetPostIdResponse(rsp *http.Response) (*FiledropUdlEphse
 	return response, nil
 }
 
-// ParseFindAllWithStream6Response parses an HTTP response from a FindAllWithStream6WithResponse call
-func ParseFindAllWithStream6Response(rsp *http.Response) (*FindAllWithStream6Response, error) {
+// ParseFindAllResponse parses an HTTP response from a FindAllWithResponse call
+func ParseFindAllResponse(rsp *http.Response) (*FindAllResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllWithStream6Response{
+	response := &FindAllResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AISAbridged
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateResponse parses an HTTP response from a CreateWithResponse call
+func ParseCreateResponse(rsp *http.Response) (*CreateResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountDuplicateResponse parses an HTTP response from a CountDuplicateWithResponse call
+func ParseCountDuplicateResponse(rsp *http.Response) (*CountDuplicateResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountDuplicateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCreateBulksResponse parses an HTTP response from a CreateBulksWithResponse call
+func ParseCreateBulksResponse(rsp *http.Response) (*CreateBulksResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateBulksResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistoryResponse parses an HTTP response from a FindAllHistoryWithResponse call
+func ParseFindAllHistoryResponse(rsp *http.Response) (*FindAllHistoryResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AISFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistoryAodrResponse parses an HTTP response from a FindAllHistoryAodrWithResponse call
+func ParseFindAllHistoryAodrResponse(rsp *http.Response) (*FindAllHistoryAodrResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistoryAodrResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountHistoryResponse parses an HTTP response from a CountHistoryWithResponse call
+func ParseCountHistoryResponse(rsp *http.Response) (*CountHistoryResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountHistoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseQueryhelpResponse parses an HTTP response from a QueryhelpWithResponse call
+func ParseQueryhelpResponse(rsp *http.Response) (*QueryhelpResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &QueryhelpResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllTuplesResponse parses an HTTP response from a FindAllTuplesWithResponse call
+func ParseFindAllTuplesResponse(rsp *http.Response) (*FindAllTuplesResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllTuplesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AISFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllWithStream1Response parses an HTTP response from a FindAllWithStream1WithResponse call
+func ParseFindAllWithStream1Response(rsp *http.Response) (*FindAllWithStream1Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllWithStream1Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeDataAbridged
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCountDuplicate2Response parses an HTTP response from a CountDuplicate2WithResponse call
+func ParseCountDuplicate2Response(rsp *http.Response) (*CountDuplicate2Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountDuplicate2Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistory4Response parses an HTTP response from a FindAllHistory4WithResponse call
+func ParseFindAllHistory4Response(rsp *http.Response) (*FindAllHistory4Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistory4Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeDataFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistoryAodr4Response parses an HTTP response from a FindAllHistoryAodr4WithResponse call
+func ParseFindAllHistoryAodr4Response(rsp *http.Response) (*FindAllHistoryAodr4Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistoryAodr4Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountHistory4Response parses an HTTP response from a CountHistory4WithResponse call
+func ParseCountHistory4Response(rsp *http.Response) (*CountHistory4Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountHistory4Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseQueryhelp7Response parses an HTTP response from a Queryhelp7WithResponse call
+func ParseQueryhelp7Response(rsp *http.Response) (*Queryhelp7Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Queryhelp7Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllTuples7Response parses an HTTP response from a FindAllTuples7WithResponse call
+func ParseFindAllTuples7Response(rsp *http.Response) (*FindAllTuples7Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllTuples7Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeDataFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllWithStream2Response parses an HTTP response from a FindAllWithStream2WithResponse call
+func ParseFindAllWithStream2Response(rsp *http.Response) (*FindAllWithStream2Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllWithStream2Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeSetAbridged
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreate7Response parses an HTTP response from a Create7WithResponse call
+func ParseCreate7Response(rsp *http.Response) (*Create7Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Create7Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountREST5Response parses an HTTP response from a CountREST5WithResponse call
+func ParseCountREST5Response(rsp *http.Response) (*CountREST5Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountREST5Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistory5Response parses an HTTP response from a FindAllHistory5WithResponse call
+func ParseFindAllHistory5Response(rsp *http.Response) (*FindAllHistory5Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistory5Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeSetFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllHistoryAodr5Response parses an HTTP response from a FindAllHistoryAodr5WithResponse call
+func ParseFindAllHistoryAodr5Response(rsp *http.Response) (*FindAllHistoryAodr5Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllHistoryAodr5Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountHistory5Response parses an HTTP response from a CountHistory5WithResponse call
+func ParseCountHistory5Response(rsp *http.Response) (*CountHistory5Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountHistory5Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseQueryhelp8Response parses an HTTP response from a Queryhelp8WithResponse call
+func ParseQueryhelp8Response(rsp *http.Response) (*Queryhelp8Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Queryhelp8Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllTuples8Response parses an HTTP response from a FindAllTuples8WithResponse call
+func ParseFindAllTuples8Response(rsp *http.Response) (*FindAllTuples8Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllTuples8Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []AttitudeSetFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFind6Response parses an HTTP response from a Find6WithResponse call
+func ParseFind6Response(rsp *http.Response) (*Find6Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Find6Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AttitudeSetFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCurrentResponse parses an HTTP response from a CurrentWithResponse call
+func ParseCurrentResponse(rsp *http.Response) (*CurrentResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CurrentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9273,15 +14197,15 @@ func ParseFindAllWithStream6Response(rsp *http.Response) (*FindAllWithStream6Res
 	return response, nil
 }
 
-// ParseCreate25Response parses an HTTP response from a Create25WithResponse call
-func ParseCreate25Response(rsp *http.Response) (*Create25Response, error) {
+// ParseQueryhelp21Response parses an HTTP response from a Queryhelp21WithResponse call
+func ParseQueryhelp21Response(rsp *http.Response) (*Queryhelp21Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Create25Response{
+	response := &Queryhelp21Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9289,15 +14213,57 @@ func ParseCreate25Response(rsp *http.Response) (*Create25Response, error) {
 	return response, nil
 }
 
-// ParseCountREST23Response parses an HTTP response from a CountREST23WithResponse call
-func ParseCountREST23Response(rsp *http.Response) (*CountREST23Response, error) {
+// ParseFindAllWithStream8Response parses an HTTP response from a FindAllWithStream8WithResponse call
+func ParseFindAllWithStream8Response(rsp *http.Response) (*FindAllWithStream8Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CountREST23Response{
+	response := &FindAllWithStream8Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []ElsetAbridged
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreate28Response parses an HTTP response from a Create28WithResponse call
+func ParseCreate28Response(rsp *http.Response) (*Create28Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Create28Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountREST24Response parses an HTTP response from a CountREST24WithResponse call
+func ParseCountREST24Response(rsp *http.Response) (*CountREST24Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountREST24Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9337,15 +14303,15 @@ func ParseCreateBulkFromTLEResponse(rsp *http.Response) (*CreateBulkFromTLERespo
 	return response, nil
 }
 
-// ParseCurrentResponse parses an HTTP response from a CurrentWithResponse call
-func ParseCurrentResponse(rsp *http.Response) (*CurrentResponse, error) {
+// ParseCurrent1Response parses an HTTP response from a Current1WithResponse call
+func ParseCurrent1Response(rsp *http.Response) (*Current1Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CurrentResponse{
+	response := &Current1Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9389,15 +14355,15 @@ func ParseCurrentTupleResponse(rsp *http.Response) (*CurrentTupleResponse, error
 	return response, nil
 }
 
-// ParseFindAllHistory12Response parses an HTTP response from a FindAllHistory12WithResponse call
-func ParseFindAllHistory12Response(rsp *http.Response) (*FindAllHistory12Response, error) {
+// ParseFindAllHistory16Response parses an HTTP response from a FindAllHistory16WithResponse call
+func ParseFindAllHistory16Response(rsp *http.Response) (*FindAllHistory16Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllHistory12Response{
+	response := &FindAllHistory16Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9415,15 +14381,15 @@ func ParseFindAllHistory12Response(rsp *http.Response) (*FindAllHistory12Respons
 	return response, nil
 }
 
-// ParseFindAllHistoryAodr12Response parses an HTTP response from a FindAllHistoryAodr12WithResponse call
-func ParseFindAllHistoryAodr12Response(rsp *http.Response) (*FindAllHistoryAodr12Response, error) {
+// ParseFindAllHistoryAodr16Response parses an HTTP response from a FindAllHistoryAodr16WithResponse call
+func ParseFindAllHistoryAodr16Response(rsp *http.Response) (*FindAllHistoryAodr16Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllHistoryAodr12Response{
+	response := &FindAllHistoryAodr16Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9431,15 +14397,15 @@ func ParseFindAllHistoryAodr12Response(rsp *http.Response) (*FindAllHistoryAodr1
 	return response, nil
 }
 
-// ParseCountHistory12Response parses an HTTP response from a CountHistory12WithResponse call
-func ParseCountHistory12Response(rsp *http.Response) (*CountHistory12Response, error) {
+// ParseCountHistory16Response parses an HTTP response from a CountHistory16WithResponse call
+func ParseCountHistory16Response(rsp *http.Response) (*CountHistory16Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CountHistory12Response{
+	response := &CountHistory16Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9447,15 +14413,15 @@ func ParseCountHistory12Response(rsp *http.Response) (*CountHistory12Response, e
 	return response, nil
 }
 
-// ParseQueryhelp26Response parses an HTTP response from a Queryhelp26WithResponse call
-func ParseQueryhelp26Response(rsp *http.Response) (*Queryhelp26Response, error) {
+// ParseQueryhelp31Response parses an HTTP response from a Queryhelp31WithResponse call
+func ParseQueryhelp31Response(rsp *http.Response) (*Queryhelp31Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Queryhelp26Response{
+	response := &Queryhelp31Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9463,15 +14429,15 @@ func ParseQueryhelp26Response(rsp *http.Response) (*Queryhelp26Response, error) 
 	return response, nil
 }
 
-// ParseFindAllTuples25Response parses an HTTP response from a FindAllTuples25WithResponse call
-func ParseFindAllTuples25Response(rsp *http.Response) (*FindAllTuples25Response, error) {
+// ParseFindAllTuples29Response parses an HTTP response from a FindAllTuples29WithResponse call
+func ParseFindAllTuples29Response(rsp *http.Response) (*FindAllTuples29Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllTuples25Response{
+	response := &FindAllTuples29Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9489,15 +14455,15 @@ func ParseFindAllTuples25Response(rsp *http.Response) (*FindAllTuples25Response,
 	return response, nil
 }
 
-// ParseFind24Response parses an HTTP response from a Find24WithResponse call
-func ParseFind24Response(rsp *http.Response) (*Find24Response, error) {
+// ParseFind25Response parses an HTTP response from a Find25WithResponse call
+func ParseFind25Response(rsp *http.Response) (*Find25Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Find24Response{
+	response := &Find25Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9515,15 +14481,15 @@ func ParseFind24Response(rsp *http.Response) (*Find24Response, error) {
 	return response, nil
 }
 
-// ParseFindAllWithStream7Response parses an HTTP response from a FindAllWithStream7WithResponse call
-func ParseFindAllWithStream7Response(rsp *http.Response) (*FindAllWithStream7Response, error) {
+// ParseFindAllWithStream9Response parses an HTTP response from a FindAllWithStream9WithResponse call
+func ParseFindAllWithStream9Response(rsp *http.Response) (*FindAllWithStream9Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllWithStream7Response{
+	response := &FindAllWithStream9Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9541,15 +14507,15 @@ func ParseFindAllWithStream7Response(rsp *http.Response) (*FindAllWithStream7Res
 	return response, nil
 }
 
-// ParseCountDuplicate3Response parses an HTTP response from a CountDuplicate3WithResponse call
-func ParseCountDuplicate3Response(rsp *http.Response) (*CountDuplicate3Response, error) {
+// ParseCountDuplicate6Response parses an HTTP response from a CountDuplicate6WithResponse call
+func ParseCountDuplicate6Response(rsp *http.Response) (*CountDuplicate6Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CountDuplicate3Response{
+	response := &CountDuplicate6Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9557,89 +14523,15 @@ func ParseCountDuplicate3Response(rsp *http.Response) (*CountDuplicate3Response,
 	return response, nil
 }
 
-// ParseFindAllHistory13Response parses an HTTP response from a FindAllHistory13WithResponse call
-func ParseFindAllHistory13Response(rsp *http.Response) (*FindAllHistory13Response, error) {
+// ParseFindAllHistory17Response parses an HTTP response from a FindAllHistory17WithResponse call
+func ParseFindAllHistory17Response(rsp *http.Response) (*FindAllHistory17Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllHistory13Response{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []EphemerisFull
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseFindAllHistoryAodr13Response parses an HTTP response from a FindAllHistoryAodr13WithResponse call
-func ParseFindAllHistoryAodr13Response(rsp *http.Response) (*FindAllHistoryAodr13Response, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FindAllHistoryAodr13Response{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseCountHistory13Response parses an HTTP response from a CountHistory13WithResponse call
-func ParseCountHistory13Response(rsp *http.Response) (*CountHistory13Response, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CountHistory13Response{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseQueryhelp29Response parses an HTTP response from a Queryhelp29WithResponse call
-func ParseQueryhelp29Response(rsp *http.Response) (*Queryhelp29Response, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &Queryhelp29Response{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseFindAllTuples28Response parses an HTTP response from a FindAllTuples28WithResponse call
-func ParseFindAllTuples28Response(rsp *http.Response) (*FindAllTuples28Response, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FindAllTuples28Response{
+	response := &FindAllHistory17Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9657,15 +14549,89 @@ func ParseFindAllTuples28Response(rsp *http.Response) (*FindAllTuples28Response,
 	return response, nil
 }
 
-// ParseFindAllWithStream8Response parses an HTTP response from a FindAllWithStream8WithResponse call
-func ParseFindAllWithStream8Response(rsp *http.Response) (*FindAllWithStream8Response, error) {
+// ParseFindAllHistoryAodr17Response parses an HTTP response from a FindAllHistoryAodr17WithResponse call
+func ParseFindAllHistoryAodr17Response(rsp *http.Response) (*FindAllHistoryAodr17Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllWithStream8Response{
+	response := &FindAllHistoryAodr17Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseCountHistory17Response parses an HTTP response from a CountHistory17WithResponse call
+func ParseCountHistory17Response(rsp *http.Response) (*CountHistory17Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CountHistory17Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseQueryhelp34Response parses an HTTP response from a Queryhelp34WithResponse call
+func ParseQueryhelp34Response(rsp *http.Response) (*Queryhelp34Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &Queryhelp34Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseFindAllTuples32Response parses an HTTP response from a FindAllTuples32WithResponse call
+func ParseFindAllTuples32Response(rsp *http.Response) (*FindAllTuples32Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllTuples32Response{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []EphemerisFull
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAllWithStream10Response parses an HTTP response from a FindAllWithStream10WithResponse call
+func ParseFindAllWithStream10Response(rsp *http.Response) (*FindAllWithStream10Response, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAllWithStream10Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9683,15 +14649,15 @@ func ParseFindAllWithStream8Response(rsp *http.Response) (*FindAllWithStream8Res
 	return response, nil
 }
 
-// ParseCreate29Response parses an HTTP response from a Create29WithResponse call
-func ParseCreate29Response(rsp *http.Response) (*Create29Response, error) {
+// ParseCreate32Response parses an HTTP response from a Create32WithResponse call
+func ParseCreate32Response(rsp *http.Response) (*Create32Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Create29Response{
+	response := &Create32Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9699,15 +14665,15 @@ func ParseCreate29Response(rsp *http.Response) (*Create29Response, error) {
 	return response, nil
 }
 
-// ParseCountREST26Response parses an HTTP response from a CountREST26WithResponse call
-func ParseCountREST26Response(rsp *http.Response) (*CountREST26Response, error) {
+// ParseCountREST27Response parses an HTTP response from a CountREST27WithResponse call
+func ParseCountREST27Response(rsp *http.Response) (*CountREST27Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CountREST26Response{
+	response := &CountREST27Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9731,15 +14697,15 @@ func ParseGetFile1Response(rsp *http.Response) (*GetFile1Response, error) {
 	return response, nil
 }
 
-// ParseFindAllHistory14Response parses an HTTP response from a FindAllHistory14WithResponse call
-func ParseFindAllHistory14Response(rsp *http.Response) (*FindAllHistory14Response, error) {
+// ParseFindAllHistory18Response parses an HTTP response from a FindAllHistory18WithResponse call
+func ParseFindAllHistory18Response(rsp *http.Response) (*FindAllHistory18Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllHistory14Response{
+	response := &FindAllHistory18Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9757,15 +14723,15 @@ func ParseFindAllHistory14Response(rsp *http.Response) (*FindAllHistory14Respons
 	return response, nil
 }
 
-// ParseFindAllHistoryAodr14Response parses an HTTP response from a FindAllHistoryAodr14WithResponse call
-func ParseFindAllHistoryAodr14Response(rsp *http.Response) (*FindAllHistoryAodr14Response, error) {
+// ParseFindAllHistoryAodr18Response parses an HTTP response from a FindAllHistoryAodr18WithResponse call
+func ParseFindAllHistoryAodr18Response(rsp *http.Response) (*FindAllHistoryAodr18Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllHistoryAodr14Response{
+	response := &FindAllHistoryAodr18Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9773,15 +14739,15 @@ func ParseFindAllHistoryAodr14Response(rsp *http.Response) (*FindAllHistoryAodr1
 	return response, nil
 }
 
-// ParseCountHistory14Response parses an HTTP response from a CountHistory14WithResponse call
-func ParseCountHistory14Response(rsp *http.Response) (*CountHistory14Response, error) {
+// ParseCountHistory18Response parses an HTTP response from a CountHistory18WithResponse call
+func ParseCountHistory18Response(rsp *http.Response) (*CountHistory18Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CountHistory14Response{
+	response := &CountHistory18Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9789,15 +14755,15 @@ func ParseCountHistory14Response(rsp *http.Response) (*CountHistory14Response, e
 	return response, nil
 }
 
-// ParseQueryhelp30Response parses an HTTP response from a Queryhelp30WithResponse call
-func ParseQueryhelp30Response(rsp *http.Response) (*Queryhelp30Response, error) {
+// ParseQueryhelp35Response parses an HTTP response from a Queryhelp35WithResponse call
+func ParseQueryhelp35Response(rsp *http.Response) (*Queryhelp35Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Queryhelp30Response{
+	response := &Queryhelp35Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9805,15 +14771,15 @@ func ParseQueryhelp30Response(rsp *http.Response) (*Queryhelp30Response, error) 
 	return response, nil
 }
 
-// ParseFindAllTuples29Response parses an HTTP response from a FindAllTuples29WithResponse call
-func ParseFindAllTuples29Response(rsp *http.Response) (*FindAllTuples29Response, error) {
+// ParseFindAllTuples33Response parses an HTTP response from a FindAllTuples33WithResponse call
+func ParseFindAllTuples33Response(rsp *http.Response) (*FindAllTuples33Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FindAllTuples29Response{
+	response := &FindAllTuples33Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -9831,15 +14797,15 @@ func ParseFindAllTuples29Response(rsp *http.Response) (*FindAllTuples29Response,
 	return response, nil
 }
 
-// ParseFind28Response parses an HTTP response from a Find28WithResponse call
-func ParseFind28Response(rsp *http.Response) (*Find28Response, error) {
+// ParseFind29Response parses an HTTP response from a Find29WithResponse call
+func ParseFind29Response(rsp *http.Response) (*Find29Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &Find28Response{
+	response := &Find29Response{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
