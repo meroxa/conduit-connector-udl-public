@@ -3,8 +3,6 @@ package connector
 import (
 	"encoding/json"
 
-	"fmt"
-
 	"github.com/meroxa/conduit-connector-udl/udl"
 )
 
@@ -23,32 +21,53 @@ func flattenMap(inputMap map[string]interface{}, flattenedMap map[string]interfa
 	}
 }
 
-func toUDLAis(raw []byte) (udl.AISIngest, error) {
+func toUDLAis(raw []byte) udl.AISIngest {
 	originalMap := make(map[string]interface{})
 	json.Unmarshal(raw, &originalMap)
 
-	flattenedMap := make(map[string]interface{})
-	flattenMap(originalMap, flattenedMap, "")
-	fmt.Println(fmt.Sprintf("flattenedMap: %s", flattenedMap))
-	fmt.Println(fmt.Sprintf("flattenedMap static data: %s", flattenedMap["staticData"]))
-	fmt.Println(fmt.Sprintf("flattenedMap static data name: %s", flattenedMap["staticData.name"]))
+	var vesselData VesselData
+	json.Unmarshal(raw, &vesselData)
 
-	jsonData, _ := json.Marshal(flattenedMap)
-
+	UDLClassification := "U"
 	var ais udl.AISIngest
-	// ais.Lat = flattenedMap["lastPositionUpdate.longitude"]
-	// ais.Lat = originalMap["lastPositionUpdate"]
-	// ais.ShipName = originalMap["staticData"]["name"]
-	// shipName := flattenedMap["staticData.name"].(string)
-	// ais.ShipName = &shipName
-	// err := json.Unmarshal(raw, &ais)
 
-	// TODO: Make these as part of config
-	error := json.Unmarshal(jsonData, &ais)
+	ais.Id = &vesselData.ID
+	ais.ClassificationMarking = UDLClassification
+	ais.Ts = vesselData.UpdateTimestamp
+	ais.Mmsi = &vesselData.StaticData.MMSI
+	ais.ShipName = vesselData.StaticData.Name
+	ais.ShipType = &vesselData.StaticData.ShipType
+	ais.CallSign = &vesselData.StaticData.CallSign
+	ais.VesselFlag = &vesselData.StaticData.Flag
+	ais.Lat = &vesselData.LastPositionUpdate.Latitude
+	ais.Lon = &vesselData.LastPositionUpdate.Longitude
+	hiAccuracy := vesselData.LastPositionUpdate.Accuracy == "HIGH"
+	ais.PosHiAccuracy = &hiAccuracy
+	ais.TrueHeading = &vesselData.LastPositionUpdate.Heading
+	ais.Course = &vesselData.LastPositionUpdate.Course
+	ais.NavStatus = &vesselData.LastPositionUpdate.NavigationalStatus
+	dimensionsSlice := []float64{
+		vesselData.StaticData.Dimensions.A,
+		vesselData.StaticData.Dimensions.B,
+		vesselData.StaticData.Dimensions.C,
+		vesselData.StaticData.Dimensions.D,
+	}
+
+	ais.AntennaRefDimensions = &dimensionsSlice
+	ais.Length = &vesselData.StaticData.Dimensions.Length
+	ais.Width = &vesselData.StaticData.Dimensions.Width
+	ais.Draught = &vesselData.CurrentVoyage.Draught
+	ais.DestinationETA = &vesselData.CurrentVoyage.ETA
+
+	if port, ok := originalMap["currentVoyage"].(map[string]interface{})["matchedPort"]; ok {
+		if unlocode, ok := port.(map[string]interface{})["port"].(map[string]interface{})["unlocode"].(string); ok {
+			ais.CurrentPortLOCODE = &unlocode
+		}
+	}
+
 	ais.DataMode = "TEST"
 	ais.Source = "Spire"
-	ais.ClassificationMarking = "U"
-	return ais, error
+	return ais
 }
 
 func toUDLElset(raw []byte) (udl.ElsetIngest, error) {
