@@ -21,6 +21,12 @@ func (Config) Parameters() map[string]sdk.Parameter {
 			Type:        sdk.ParameterTypeString,
 			Validations: []sdk.Validation{},
 		},
+		"dataType": {
+			Default:     "AIS",
+			Description: "The Data Type that is being submitted to the UDL. Acceptable values are AIS, ELSET, and EPHEMERIS.",
+			Type:        sdk.ParameterTypeString,
+			Validations: []sdk.Validation{},
+		},
 		"endpoint": {
 			Default:     "",
 			Description: "The target UDL endpoint.",

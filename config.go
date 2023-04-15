@@ -11,11 +11,14 @@ const (
 	HTTPBasicAuthUsername = "httpBasicAuthUsername"
 	HTTPBasicAuthPassword = "httpBasicAuthPassword"
 	DataMode              = "dataMode"
+	DataType              = "dataType"
 	BaseURL               = "baseURL"
 	Endpoint              = "endpoint"
 )
 
 var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
+
+var DataTypeValues = []string{"AIS", "ELSET", "EPHEMERIS"}
 
 type Config struct {
 	// The HTTP Basic Auth Username to use when accessing the UDL.
@@ -24,6 +27,8 @@ type Config struct {
 	HTTPBasicAuthPassword string `validate:"required"`
 	// The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.
 	DataMode string `default:"TEST"`
+	// The Data Type that is being submitted to the UDL. Acceptable values are AIS, ELSET, and EPHEMERIS.
+	DataType string `default:"AIS"`
 	// The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.
 	BaseURL string `default:"https://unifieddatalibrary.com"`
 	// The target UDL endpoint.
@@ -45,6 +50,20 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 		dm = c.Parameters()[DataMode].Default
 	}
 
+	// validate supported data type
+	dt, ok := cfg[DataType]
+	fmt.Printf("dt: %s", dt)
+	fmt.Println("")
+	fmt.Printf("ok: %t", ok)
+	fmt.Println("")
+	if ok {
+		if !supportedStringValues(dt, DataTypeValues) {
+			return Config{}, errors.New(fmt.Sprintf("unsupported data type (%s)", dt))
+		}
+	} else {
+		dt = c.Parameters()[DataType].Default
+	}
+
 	// validate/parse base URL
 	u, ok := cfg[BaseURL]
 	fmt.Printf("baseURL: %s", u)
@@ -59,18 +78,10 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 
 	// validate HTTP Basic Auth credentials
 	if u, ok := cfg[HTTPBasicAuthUsername]; u == "" || !ok {
-		fmt.Printf("username: %s", u)
-		fmt.Println("")
-		fmt.Printf("ok: %t", ok)
-		fmt.Println("")
 		return Config{}, errors.New("missing or invalid credentials")
 	}
 
 	if p, ok := cfg[HTTPBasicAuthPassword]; p == "" || !ok {
-		fmt.Printf("password: %s", p)
-		fmt.Println("")
-		fmt.Printf("ok: %t", ok)
-		fmt.Println("")
 		return Config{}, errors.New("missing or invalid credentials")
 	}
 
@@ -78,6 +89,7 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 		HTTPBasicAuthUsername: cfg[HTTPBasicAuthUsername],
 		HTTPBasicAuthPassword: cfg[HTTPBasicAuthPassword],
 		DataMode:              dm,
+		DataType:              dt,
 		BaseURL:               u,
 	}
 
@@ -87,12 +99,8 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 func supportedStringValues(check string, supported []string) bool {
 	for _, ds := range supported {
 		if strings.ToUpper(strings.TrimSpace(check)) == ds {
-			s := fmt.Sprintf("%s is equal to %s", check, ds)
-			fmt.Println(s)
 			return true
 		}
-		s := fmt.Sprintf("%s is not equal to %s", check, ds)
-		fmt.Println(s)
 	}
 	return false
 }
