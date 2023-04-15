@@ -2,6 +2,8 @@ package connector
 
 import (
 	"encoding/json"
+	"log"
+	"time"
 
 	"github.com/meroxa/conduit-connector-udl/udl"
 )
@@ -21,19 +23,23 @@ func flattenMap(inputMap map[string]interface{}, flattenedMap map[string]interfa
 	}
 }
 
-func toUDLAis(raw []byte) udl.AISIngest {
-	originalMap := make(map[string]interface{})
-	json.Unmarshal(raw, &originalMap)
-
+func toUDLAis(raw []byte) (udl.AISIngest, error) {
 	var vesselData VesselData
-	json.Unmarshal(raw, &vesselData)
+	err := json.Unmarshal(raw, &vesselData)
 
 	UDLClassification := "U"
 	var ais udl.AISIngest
 
+	layout := "2006-01-02T15:04:05.999Z"
+
+	ts, tsErr := time.Parse(layout, vesselData.UpdateTimestamp)
+	if tsErr != nil {
+		log.Fatalf("Error parsing timestamp: %v", tsErr)
+	}
+	ais.Ts = ts
+
 	ais.Id = &vesselData.ID
 	ais.ClassificationMarking = UDLClassification
-	ais.Ts = vesselData.UpdateTimestamp
 	ais.Mmsi = &vesselData.StaticData.MMSI
 	ais.ShipName = vesselData.StaticData.Name
 	ais.ShipType = &vesselData.StaticData.ShipType
@@ -57,17 +63,21 @@ func toUDLAis(raw []byte) udl.AISIngest {
 	ais.Length = &vesselData.StaticData.Dimensions.Length
 	ais.Width = &vesselData.StaticData.Dimensions.Width
 	ais.Draught = &vesselData.CurrentVoyage.Draught
-	ais.DestinationETA = &vesselData.CurrentVoyage.ETA
 
-	if port, ok := originalMap["currentVoyage"].(map[string]interface{})["matchedPort"]; ok {
-		if unlocode, ok := port.(map[string]interface{})["port"].(map[string]interface{})["unlocode"].(string); ok {
-			ais.CurrentPortLOCODE = &unlocode
-		}
+	eta, etaErr := time.Parse(layout, vesselData.CurrentVoyage.ETA)
+	if etaErr != nil {
+		ais.DestinationETA = nil
+	} else {
+		ais.DestinationETA = &eta
+	}
+
+	if &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode != nil {
+		ais.CurrentPortLOCODE = &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode
 	}
 
 	ais.DataMode = "TEST"
 	ais.Source = "Spire"
-	return ais
+	return ais, err
 }
 
 func toUDLElset(raw []byte) (udl.ElsetIngest, error) {
