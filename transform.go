@@ -8,21 +8,6 @@ import (
 	"github.com/meroxa/conduit-connector-udl/udl"
 )
 
-func flattenMap(inputMap map[string]interface{}, flattenedMap map[string]interface{}, parentKey string) {
-	for key, value := range inputMap {
-		newKey := key
-		if parentKey != "" {
-			newKey = parentKey + "." + key
-		}
-		switch v := value.(type) {
-		case map[string]interface{}:
-			flattenMap(v, flattenedMap, newKey)
-		default:
-			flattenedMap[newKey] = value
-		}
-	}
-}
-
 func toUDLAis(raw []byte) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
