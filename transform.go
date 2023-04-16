@@ -8,7 +8,7 @@ import (
 	"github.com/meroxa/conduit-connector-udl/udl"
 )
 
-func toUDLAis(raw []byte) (udl.AISIngest, error) {
+func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
 
@@ -65,7 +65,7 @@ func toUDLAis(raw []byte) (udl.AISIngest, error) {
 	return ais, err
 }
 
-func toUDLElset(raw []byte) (udl.ElsetIngest, error) {
+func ToUDLElset(raw []byte) (udl.ElsetIngest, error) {
 	var elset udl.ElsetIngest
 	err := json.Unmarshal(raw, &elset)
 	return elset, err
