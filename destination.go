@@ -64,18 +64,20 @@ func (d *Destination) Open(ctx context.Context) error {
 
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
 	dataType := d.config.DataType
+	dataTypeValuesStr := strings.Join(DataTypeValues, "', '")
 
 	// Check if dataType is one of the acceptable data types listed in DataTypeValues and return an error if it's not
 	if !SupportedStringValues(dataType, DataTypeValues) {
-		dataTypeValuesStr := strings.Join(DataTypeValues, "', '")
 		return 0, fmt.Errorf("invalid data type: %s; expecting the data type to be on of the following values: '%s'", dataType, dataTypeValuesStr)
 	}
 
 	switch dataType {
 	case "AIS":
 		return writeAisToUDL(ctx, records, d)
-	default:
+	case "Elset":
 		return writeElsetToUDL(ctx, records, d)
+	default:
+		return 0, fmt.Errorf("unsupported data type: %s;", dataType)
 	}
 }
 
