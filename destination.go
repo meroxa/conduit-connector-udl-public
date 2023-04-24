@@ -65,7 +65,7 @@ func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, err
 	dataType := d.config.DataType
 
 	// Check if dataType is "AIS" or "Elset" and return an error if it's not
-	if dataType != "AIS" && dataType != "Elset" {
+	if !SupportedStringValues(dataType, DataTypeValues) {
 		return 0, fmt.Errorf("invalid data type: %s, expecting 'AIS' or 'Elset'", dataType)
 	}
 

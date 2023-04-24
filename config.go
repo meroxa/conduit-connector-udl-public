@@ -18,7 +18,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"strings"
 )
 
 const (
@@ -28,10 +27,6 @@ const (
 	DataType              = "dataType"
 	BaseURL               = "baseURL"
 )
-
-var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
-
-var DataTypeValues = []string{"AIS", "ELSET"}
 
 type Config struct {
 	// The HTTP Basic Auth Username to use when accessing the UDL.
@@ -50,7 +45,7 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 	// validate supported data mode
 	dm, ok := cfg[DataMode]
 	if ok {
-		if !supportedStringValues(dm, DataModeValues) {
+		if !SupportedStringValues(dm, DataModeValues) {
 			return Config{}, errors.New(fmt.Sprintf("unsupported data mode (%s)", dm))
 		}
 	} else {
@@ -60,7 +55,7 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 	// validate supported data type
 	dt, ok := cfg[DataType]
 	if ok {
-		if !supportedStringValues(dt, DataTypeValues) {
+		if !SupportedStringValues(dt, DataTypeValues) {
 			return Config{}, errors.New(fmt.Sprintf("unsupported data type (%s)", dt))
 		}
 	} else {
@@ -96,13 +91,4 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 	}
 
 	return parsed, nil
-}
-
-func supportedStringValues(check string, supported []string) bool {
-	for _, ds := range supported {
-		if strings.ToUpper(strings.TrimSpace(check)) == ds {
-			return true
-		}
-	}
-	return false
 }
