@@ -27,7 +27,6 @@ const (
 	DataMode              = "dataMode"
 	DataType              = "dataType"
 	BaseURL               = "baseURL"
-	Endpoint              = "endpoint"
 )
 
 var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
@@ -45,8 +44,6 @@ type Config struct {
 	DataType string `default:"AIS"`
 	// The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.
 	BaseURL string `default:"https://unifieddatalibrary.com"`
-	// The target UDL endpoint.
-	Endpoint UDLEndpoint `validate:"required"`
 }
 
 func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, error) {

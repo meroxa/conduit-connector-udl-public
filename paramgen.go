@@ -27,14 +27,6 @@ func (Config) Parameters() map[string]sdk.Parameter {
 			Type:        sdk.ParameterTypeString,
 			Validations: []sdk.Validation{},
 		},
-		"endpoint": {
-			Default:     "",
-			Description: "The target UDL endpoint.",
-			Type:        sdk.ParameterTypeString,
-			Validations: []sdk.Validation{
-				sdk.ValidationRequired{},
-			},
-		},
 		"httpBasicAuthPassword": {
 			Default:     "",
 			Description: "The HTTP Basic Auth Password to use when accessing the UDL.",

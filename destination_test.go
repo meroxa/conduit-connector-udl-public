@@ -45,7 +45,7 @@ func TestParameters(t *testing.T) {
 	is := is.New(t)
 	d := Destination{}
 	params := d.Parameters()
-	is.Equal(len(params), 6) // Assumes there are 6 parameters in the config
+	is.Equal(len(params), 5) // Assumes there are 6 parameters in the config
 }
 
 func TestConfigure(t *testing.T) {
@@ -58,7 +58,6 @@ func TestConfigure(t *testing.T) {
 		"httpBasicAuthPassword": "pass",
 		"dataType":              "AIS",
 		"dataMode":              "TEST",
-		"endPoint":              "AIS",
 	})
 	is.NoErr(err)
 	is.Equal(dest.config.BaseURL, "https://example.com")
@@ -84,7 +83,6 @@ func TestOpen(t *testing.T) {
 		"httpBasicAuthPassword": "pass",
 		"dataType":              "AIS",
 		"dataMode":              "TEST",
-		"endPoint":              "AIS",
 	})
 	is.NoErr(err)
 	err = dest.Open(ctx)
