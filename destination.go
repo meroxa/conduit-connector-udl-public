@@ -62,7 +62,6 @@ func (d *Destination) Open(ctx context.Context) error {
 }
 
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
-	sdk.Logger(ctx).Debug().Msgf("data type: %s", d.config.DataType)
 	dataType := d.config.DataType
 
 	// Check if dataType is "AIS" or "Elset" and return an error if it's not

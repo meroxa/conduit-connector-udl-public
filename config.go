@@ -49,10 +49,6 @@ type Config struct {
 func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, error) {
 	// validate supported data mode
 	dm, ok := cfg[DataMode]
-	fmt.Printf("dm: %s", dm)
-	fmt.Println("")
-	fmt.Printf("ok: %t", ok)
-	fmt.Println("")
 	if ok {
 		if !supportedStringValues(dm, DataModeValues) {
 			return Config{}, errors.New(fmt.Sprintf("unsupported data mode (%s)", dm))
@@ -63,10 +59,6 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 
 	// validate supported data type
 	dt, ok := cfg[DataType]
-	fmt.Printf("dt: %s", dt)
-	fmt.Println("")
-	fmt.Printf("ok: %t", ok)
-	fmt.Println("")
 	if ok {
 		if !supportedStringValues(dt, DataTypeValues) {
 			return Config{}, errors.New(fmt.Sprintf("unsupported data type (%s)", dt))
@@ -77,7 +69,6 @@ func (c *Destination) ParseDestinationConfig(cfg map[string]string) (Config, err
 
 	// validate/parse base URL
 	u, ok := cfg[BaseURL]
-	fmt.Printf("baseURL: %s", u)
 	if ok {
 		_, err := url.Parse(u)
 		if err != nil {
