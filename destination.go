@@ -69,10 +69,12 @@ func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, err
 		return 0, fmt.Errorf("invalid data type: %s, expecting 'AIS' or 'Elset'", dataType)
 	}
 
-	if dataType == "AIS" {
+	switch dataType {
+	case "AIS":
 		return writeAisToUDL(ctx, records, d)
+	default:
+		return writeElsetToUDL(ctx, records, d)
 	}
-	return writeElsetToUDL(ctx, records, d)
 }
 
 func generateBasicAuth(username, password string) (*securityprovider.SecurityProviderBasicAuth, error) {
