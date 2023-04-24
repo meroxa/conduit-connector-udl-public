@@ -31,7 +31,7 @@ const (
 
 var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
 
-var DataTypeValues = []string{"AIS", "ELSET", "EPHEMERIS"}
+var DataTypeValues = []string{"AIS", "ELSET"}
 
 type Config struct {
 	// The HTTP Basic Auth Username to use when accessing the UDL.
@@ -40,7 +40,7 @@ type Config struct {
 	HTTPBasicAuthPassword string `validate:"required"`
 	// The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.
 	DataMode string `default:"TEST"`
-	// The Data Type that is being submitted to the UDL. Acceptable values are AIS, ELSET, and EPHEMERIS.
+	// The Data Type that is being submitted to the UDL. Acceptable values are AIS and ELSET.
 	DataType string `default:"AIS"`
 	// The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.
 	BaseURL string `default:"https://unifieddatalibrary.com"`

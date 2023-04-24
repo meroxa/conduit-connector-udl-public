@@ -23,7 +23,7 @@ func (Config) Parameters() map[string]sdk.Parameter {
 		},
 		"dataType": {
 			Default:     "AIS",
-			Description: "The Data Type that is being submitted to the UDL. Acceptable values are AIS, ELSET, and EPHEMERIS.",
+			Description: "The Data Type that is being submitted to the UDL. Acceptable values are AIS and ELSET.",
 			Type:        sdk.ParameterTypeString,
 			Validations: []sdk.Validation{},
 		},
