@@ -17,6 +17,7 @@ package connector
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
@@ -64,9 +65,10 @@ func (d *Destination) Open(ctx context.Context) error {
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
 	dataType := d.config.DataType
 
-	// Check if dataType is "AIS" or "Elset" and return an error if it's not
+	// Check if dataType is one of the acceptable data types listed in DataTypeValues and return an error if it's not
 	if !SupportedStringValues(dataType, DataTypeValues) {
-		return 0, fmt.Errorf("invalid data type: %s, expecting 'AIS' or 'Elset'", dataType)
+		dataTypeValuesStr := strings.Join(DataTypeValues, "', '")
+		return 0, fmt.Errorf("invalid data type: %s; expecting the data type to be on of the following values: '%s'", dataType, dataTypeValuesStr)
 	}
 
 	switch dataType {
