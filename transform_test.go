@@ -70,7 +70,7 @@ func TestToUDLAis(t *testing.T) {
 	is.Equal(*ais.Id, "1")
 	is.Equal(ais.ClassificationMarking, "U")
 	is.Equal(*ais.Mmsi, int64(123456789))
-	is.Equal(ais.ShipName, "Vessel Name")
+	is.Equal(*ais.ShipName, "Vessel Name")
 	is.Equal(*ais.ShipType, "Cargo")
 	is.Equal(*ais.CallSign, "CALLSIGN")
 	is.Equal(*ais.VesselFlag, "US")

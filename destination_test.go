@@ -22,7 +22,7 @@ import (
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/matryer/is"
 
-	"github.com/meroxa/conduit-connector-udl/udl"
+	"github.com/meroxa/udl-go"
 )
 
 type mockClient struct {
@@ -163,6 +163,6 @@ func TestWriteWithInvalidDataType(t *testing.T) {
 	dest.client = &mockClient{}
 	records := []sdk.Record{}
 	num, err := dest.Write(ctx, records)
-	is.Equal(err.Error(), "invalid data type: INVALID, expecting 'AIS' or 'Elset'")
+	is.Equal(err.Error(), "invalid data type: INVALID; expecting the data type to be on of the following values: 'AIS', 'ELSET'")
 	is.Equal(num, 0)
 }
