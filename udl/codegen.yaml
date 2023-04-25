@@ -1,7 +1,0 @@
-package: udl
-generate:
-  models: true
-  client: true
-output: udl.gen.go
-output-options:
-  include-tags: [Elset, Ephemeris, AIS]

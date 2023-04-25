@@ -19,7 +19,7 @@ import (
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 
-	"github.com/meroxa/conduit-connector-udl/udl"
+	"github.com/meroxa/udl-go"
 )
 
 func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (int, error) {

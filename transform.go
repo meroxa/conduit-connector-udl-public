@@ -19,7 +19,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/meroxa/conduit-connector-udl/udl"
+	"github.com/meroxa/udl-go"
 )
 
 func ToUDLAis(raw []byte) (udl.AISIngest, error) {
@@ -40,7 +40,7 @@ func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 	ais.Id = &vesselData.ID
 	ais.ClassificationMarking = UDLClassification
 	ais.Mmsi = &vesselData.StaticData.MMSI
-	ais.ShipName = vesselData.StaticData.Name
+	ais.ShipName = &vesselData.StaticData.Name
 	ais.ShipType = &vesselData.StaticData.ShipType
 	ais.CallSign = &vesselData.StaticData.CallSign
 	ais.VesselFlag = &vesselData.StaticData.Flag

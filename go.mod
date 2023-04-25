@@ -6,6 +6,8 @@ require (
 	github.com/conduitio/conduit-connector-sdk v0.5.2
 	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/golang/mock v1.6.0
+	github.com/matryer/is v1.4.1
+	github.com/meroxa/udl-go v0.0.0-20230411154317-11b5221c27aa
 )
 
 require (
@@ -25,7 +27,6 @@ require (
 	github.com/imdario/mergo v0.3.15 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/labstack/echo/v4 v4.9.1 // indirect
-	github.com/matryer/is v1.4.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
