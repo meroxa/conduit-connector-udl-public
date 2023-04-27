@@ -29,6 +29,7 @@ func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (i
 		sdk.Logger(ctx).Debug().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {
+			sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
 			return 0, err
 		}
 	}
@@ -50,6 +51,7 @@ func writeElsetToUDL(ctx context.Context, records []sdk.Record, d *Destination) 
 		elset, err := ToUDLElset(r.Payload.After.Bytes())
 		sdk.Logger(ctx).Debug().Msgf("elset: %+v", elset)
 		if err != nil {
+			sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
 			return 0, err
 		}
 		elsets = append(elsets, elset)
@@ -57,6 +59,7 @@ func writeElsetToUDL(ctx context.Context, records []sdk.Record, d *Destination) 
 
 	resp, err := d.client.FiledropUdlElsetPostId(ctx, elsets)
 	if err != nil || resp.StatusCode > 300 {
+		sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
 		return 0, err
 	}
 
