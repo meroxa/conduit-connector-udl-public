@@ -26,6 +26,7 @@ func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
 
+	// The Spire AIS data being set to the UDL is unclassified
 	UDLClassification := "U"
 	var ais udl.AISIngest
 
@@ -63,6 +64,7 @@ func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 	ais.Width = &vesselData.StaticData.Dimensions.Width
 	ais.Draught = &vesselData.CurrentVoyage.Draught
 
+	// Not every vessel has vesselData.CurrentVoyage.ETA; so those vessels will result in a DestinationETA being set to nil
 	eta, etaErr := time.Parse(layout, vesselData.CurrentVoyage.ETA)
 	if etaErr != nil {
 		ais.DestinationETA = nil
