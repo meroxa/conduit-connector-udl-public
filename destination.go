@@ -73,9 +73,9 @@ func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, err
 
 	switch dataType {
 	case "AIS":
-		return writeAisToUDL(ctx, records, d)
+		return d.writeAisToUDL(ctx, records)
 	case "Elset":
-		return writeElsetToUDL(ctx, records, d)
+		return d.writeElsetToUDL(ctx, records)
 	default:
 		return 0, fmt.Errorf("unsupported data type: %s;", dataType)
 	}

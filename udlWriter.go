@@ -22,7 +22,7 @@ import (
 	"github.com/meroxa/udl-go"
 )
 
-func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (int, error) {
+func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var aisData []udl.AISIngest
 	for _, r := range records {
 		ais, err := ToUDLAis(r.Payload.After.Bytes())
@@ -44,7 +44,7 @@ func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (i
 	return len(aisData), nil
 }
 
-func writeElsetToUDL(ctx context.Context, records []sdk.Record, d *Destination) (int, error) {
+func (d *Destination) writeElsetToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var elsets []udl.ElsetIngest
 	for _, r := range records {
 		sdk.Logger(ctx).Debug().Msgf("record: %+v", r)
