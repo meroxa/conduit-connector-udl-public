@@ -29,14 +29,14 @@ func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (i
 		sdk.Logger(ctx).Debug().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {
-			sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
+			sdk.Logger(ctx).Err(err).Msgf("ToUDLAis failed")
 			return 0, err
 		}
 	}
 
 	resp, err := d.client.FiledropUdlAisPostId(ctx, aisData)
 	if err != nil || resp.StatusCode >= 300 {
-		sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
+		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
 		return 0, err
 	}
 	sdk.Logger(ctx).Debug().Msgf("resp: %+v", resp)
@@ -51,7 +51,7 @@ func writeElsetToUDL(ctx context.Context, records []sdk.Record, d *Destination) 
 		elset, err := ToUDLElset(r.Payload.After.Bytes())
 		sdk.Logger(ctx).Debug().Msgf("elset: %+v", elset)
 		if err != nil {
-			sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
+			sdk.Logger(ctx).Err(err).Msgf("ToUDLElset failed")
 			return 0, err
 		}
 		elsets = append(elsets, elset)
@@ -59,7 +59,7 @@ func writeElsetToUDL(ctx context.Context, records []sdk.Record, d *Destination) 
 
 	resp, err := d.client.FiledropUdlElsetPostId(ctx, elsets)
 	if err != nil || resp.StatusCode > 300 {
-		sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
+		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlElsetPostId failed with status code: %v", resp.StatusCode)
 		return 0, err
 	}
 
