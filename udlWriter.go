@@ -35,7 +35,7 @@ func writeAisToUDL(ctx context.Context, records []sdk.Record, d *Destination) (i
 	}
 
 	resp, err := d.client.FiledropUdlAisPostId(ctx, aisData)
-	if err != nil || resp.StatusCode > 300 {
+	if err != nil || resp.StatusCode >= 300 {
 		sdk.Logger(ctx).Debug().Msgf("err: %+v", err)
 		return 0, err
 	}
