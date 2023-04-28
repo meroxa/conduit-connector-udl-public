@@ -27,5 +27,3 @@ A UDL username and password is required to use this connector
 | `dataMode`              | The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE. | false    | TEST          |
 | `dataType`              | The Data Type that is being submitted to the UDL. Acceptable values are AIS, ELSET, and EPHEMERIS.                  | false    | AIS           |
 | `baseURL`               | The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.                               | false    | AIS           | https://unifieddatalibrary.com |
-
-## Known Issues & Limitations
