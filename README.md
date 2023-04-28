@@ -6,12 +6,6 @@
 
 Run `make build` to build the connector.
 
-## Testing
-
-Run `make test` to run all the unit tests. Run `make test-integration` to run the integration tests.
-
-The Docker compose file at `test/docker-compose.yml` can be used to run the required resource locally.
-
 ## Destination
 
 The destination connector pushes data to the Unified Data Library (UDL). The connection supports various data types as specified by the UDL and pushes to those respective endpoints
