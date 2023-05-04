@@ -15,10 +15,11 @@
 package connector
 
 import (
+	"context"
 	"encoding/json"
-	"log"
 	"time"
 
+	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/meroxa/udl-go"
 )
 
@@ -34,7 +35,8 @@ func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 
 	ts, tsErr := time.Parse(layout, vesselData.UpdateTimestamp)
 	if tsErr != nil {
-		log.Fatalf("Error parsing timestamp: %v", tsErr)
+		sdk.Logger(context.Background()).Err(err).Msgf("Error parsing timestamp")
+		return udl.AISIngest{}, err
 	}
 	ais.Ts = ts
 
