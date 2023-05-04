@@ -45,7 +45,7 @@ func TestParameters(t *testing.T) {
 	is := is.New(t)
 	d := Destination{}
 	params := d.Parameters()
-	is.Equal(len(params), 5) // Assumes there are 6 parameters in the config
+	is.Equal(len(params), 5) // Assumes there are 5 parameters in the config
 }
 
 func TestConfigure(t *testing.T) {
