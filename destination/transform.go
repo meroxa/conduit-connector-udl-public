@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package connector
+package destination
 
 import (
 	"context"
@@ -23,7 +23,7 @@ import (
 	"github.com/meroxa/udl-go"
 )
 
-func ToUDLAis(raw []byte) (udl.AISIngest, error) {
+func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
 
@@ -78,7 +78,7 @@ func ToUDLAis(raw []byte) (udl.AISIngest, error) {
 		ais.CurrentPortLOCODE = &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode
 	}
 
-	ais.DataMode = "TEST"
+	ais.DataMode = dataMode
 	ais.Source = "Spire"
 	return ais, err
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package connector
+package destination
 
 import (
 	"testing"
@@ -63,7 +63,7 @@ func TestToUDLAis(t *testing.T) {
 	}`)
 
 	// Call the toUDLAis function with the test input
-	ais, err := ToUDLAis(raw)
+	ais, err := ToUDLAis(raw, "TEST")
 	is.NoErr(err) // Check for no errors
 
 	// Verify the output fields

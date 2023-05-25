@@ -1,4 +1,4 @@
-// Copyright © 2022 Meroxa, Inc.
+// Copyright © 2023 Meroxa, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package connector
+//go:generate paramgen -output=paramgen_dest.go Config
+
+package destination
 
 import (
-	sdk "github.com/conduitio/conduit-connector-sdk"
-	"github.com/meroxa/conduit-connector-udl/destination"
+	"github.com/meroxa/conduit-connector-udl/config"
 )
 
-var Connector = sdk.Connector{
-	NewSpecification: Specification,
-	NewDestination:   destination.NewDestination,
+// Config represents S3 configuration with Destination specific configurations
+type Config struct {
+	config.Config
 }

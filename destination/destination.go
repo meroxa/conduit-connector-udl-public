@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package connector
+package destination
 
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
@@ -27,7 +26,7 @@ import (
 
 type Destination struct {
 	sdk.UnimplementedDestination
-	config Config
+	Config Config
 	client udl.ClientInterface
 }
 
@@ -36,25 +35,25 @@ func NewDestination() sdk.Destination {
 }
 
 func (d *Destination) Parameters() map[string]sdk.Parameter {
-	return d.config.Parameters()
+	return d.Config.Parameters()
 }
 
 func (d *Destination) Configure(ctx context.Context, cfg map[string]string) error {
 	sdk.Logger(ctx).Debug().Msg("Configuring Destination connector...")
-	parsedCfg, err := d.ParseDestinationConfig(cfg)
+	err := sdk.Util.ParseConfig(cfg, &d.Config)
 	if err != nil {
+		sdk.Logger(context.Background()).Err(err).Msgf("invalid config")
 		return err
 	}
-	d.config = parsedCfg
 	return nil
 }
 
 func (d *Destination) Open(ctx context.Context) error {
-	authProvider, err := generateBasicAuth(d.config.HTTPBasicAuthUsername, d.config.HTTPBasicAuthPassword)
+	authProvider, err := generateBasicAuth(d.Config.HTTPBasicAuthUsername, d.Config.HTTPBasicAuthPassword)
 	if err != nil {
 		return err
 	}
-	c, err := udl.NewClient(d.config.BaseURL, udl.WithRequestEditorFn(authProvider.Intercept))
+	c, err := udl.NewClient(d.Config.BaseURL, udl.WithRequestEditorFn(authProvider.Intercept))
 	if err != nil {
 		return err
 	}
@@ -63,13 +62,7 @@ func (d *Destination) Open(ctx context.Context) error {
 }
 
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
-	dataType := d.config.DataType
-	dataTypeValuesStr := strings.Join(DataTypeValues, "', '")
-
-	// Check if dataType is one of the acceptable data types listed in DataTypeValues and return an error if it's not
-	if !SupportedStringValues(dataType, DataTypeValues) {
-		return 0, fmt.Errorf("invalid data type: %s; expecting the data type to be on of the following values: '%s'", dataType, dataTypeValuesStr)
-	}
+	dataType := d.Config.DataType
 
 	switch dataType {
 	case "AIS":

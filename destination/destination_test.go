@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package connector
+package destination
 
 import (
 	"context"
@@ -23,6 +23,7 @@ import (
 	"github.com/matryer/is"
 
 	"github.com/meroxa/udl-go"
+	// "config"
 )
 
 type mockClient struct {
@@ -30,11 +31,6 @@ type mockClient struct {
 }
 
 func (c *mockClient) FiledropUdlAisPostId(ctx context.Context, body udl.FiledropUdlAisPostIdJSONRequestBody, reqEditors ...udl.RequestEditorFn) (*http.Response, error) {
-	// Add your custom logic or validations here if needed
-	// For example, you can print the request body and other information:
-	// fmt.Println("request.body:")
-	// fmt.Println(body[0])
-
 	// Since this is a mock function, you can simply return a successful HTTP response without making an actual API call
 	return &http.Response{
 		StatusCode: http.StatusOK,
@@ -60,17 +56,7 @@ func TestConfigure(t *testing.T) {
 		"dataMode":              "TEST",
 	})
 	is.NoErr(err)
-	is.Equal(dest.config.BaseURL, "https://example.com")
-}
-
-func TestConfigureWithInvalidConfig(t *testing.T) {
-	is := is.New(t)
-	dest := Destination{}
-	ctx := context.Background()
-	err := dest.Configure(ctx, map[string]string{
-		"invalid_key": "invalid_value",
-	})
-	is.True(err != nil)
+	is.Equal(dest.Config.BaseURL, "https://example.com")
 }
 
 func TestOpen(t *testing.T) {
@@ -147,7 +133,7 @@ func TestWrite(t *testing.T) {
 	is := is.New(t)
 	dest := Destination{}
 	ctx := context.Background()
-	dest.config.DataType = "AIS"
+	dest.Config.DataType = "AIS"
 	dest.client = &mockClient{}
 	records := []sdk.Record{{Payload: sdk.Change{After: sdk.RawData(validJSON)}}}
 	num, err := dest.Write(ctx, records)
@@ -159,7 +145,7 @@ func TestWriteWithInvalidDataType(t *testing.T) {
 	is := is.New(t)
 	dest := Destination{}
 	ctx := context.Background()
-	dest.config.DataType = "INVALID"
+	dest.Config.DataType = "INVALID"
 	dest.client = &mockClient{}
 	records := []sdk.Record{}
 	num, err := dest.Write(ctx, records)

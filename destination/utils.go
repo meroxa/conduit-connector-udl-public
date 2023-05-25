@@ -1,4 +1,4 @@
-package connector
+package destination
 
 import "strings"
 
