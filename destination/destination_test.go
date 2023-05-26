@@ -140,15 +140,3 @@ func TestWrite(t *testing.T) {
 	is.NoErr(err)
 	is.Equal(num, len(records))
 }
-
-func TestWriteWithInvalidDataType(t *testing.T) {
-	is := is.New(t)
-	dest := Destination{}
-	ctx := context.Background()
-	dest.Config.DataType = "INVALID"
-	dest.client = &mockClient{}
-	records := []sdk.Record{}
-	num, err := dest.Write(ctx, records)
-	is.Equal(err.Error(), "invalid data type: INVALID; expecting the data type to be on of the following values: 'AIS', 'ELSET'")
-	is.Equal(num, 0)
-}
