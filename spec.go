@@ -16,12 +16,16 @@ package connector
 
 import sdk "github.com/conduitio/conduit-connector-sdk"
 
+// version is set during the build process with ldflags (see Makefile).
+// Default version matches default from runtime/debug.
+var version = "(devel)"
+
 func Specification() sdk.Specification {
 	return sdk.Specification{
 		Name:        "udl",
 		Summary:     "A UDL (Unified Data Library) connector for Conduit, written in Go.",
 		Description: "A UDL (Unified Data Library) connector for Conduit, written in Go.",
-		Version:     "v0.1.0",
+		Version:     version,
 		Author:      "Meroxa, Inc.",
 	}
 }
