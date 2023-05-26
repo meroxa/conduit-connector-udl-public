@@ -20,7 +20,6 @@ import (
 	"github.com/meroxa/conduit-connector-udl/config"
 )
 
-// Config represents S3 configuration with Destination specific configurations
 type Config struct {
 	config.Config
 }

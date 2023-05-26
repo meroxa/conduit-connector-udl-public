@@ -23,7 +23,6 @@ import (
 	"github.com/matryer/is"
 
 	"github.com/meroxa/udl-go"
-	// "config"
 )
 
 type mockClient struct {
