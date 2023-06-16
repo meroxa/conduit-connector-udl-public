@@ -67,10 +67,11 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode) (udl.AISIngest, error)
 	ais.Draught = &vesselData.CurrentVoyage.Draught
 
 	// Not every vessel has vesselData.CurrentVoyage.ETA; so those vessels will result in a DestinationETA being set to nil
-	eta, etaErr := time.Parse(layout, vesselData.CurrentVoyage.ETA)
-	if etaErr != nil {
-		ais.DestinationETA = nil
-	} else {
+	if vesselData.CurrentVoyage.ETA != "" {
+		eta, etaErr := time.Parse(layout, vesselData.CurrentVoyage.ETA)
+		if etaErr != nil {
+			ais.DestinationETA = nil
+		}
 		ais.DestinationETA = &eta
 	}
 
