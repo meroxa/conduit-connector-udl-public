@@ -69,6 +69,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode) (udl.AISIngest, error)
 	// Not every vessel has vesselData.CurrentVoyage.ETA; so those vessels will result in a DestinationETA being set to nil
 	if vesselData.CurrentVoyage.ETA != "" {
 		eta, etaErr := time.Parse(layout, vesselData.CurrentVoyage.ETA)
+		// The UDL endpoint doesn't require DestinationETA to be populated to accept a valid payload; so we set it to nil instead of erroring out
 		if etaErr != nil {
 			ais.DestinationETA = nil
 		}
