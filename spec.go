@@ -18,7 +18,7 @@ import sdk "github.com/conduitio/conduit-connector-sdk"
 
 // version is set during the build process with ldflags (see Makefile).
 // Default version matches default from runtime/debug.
-var version = "v0.1.1"
+var version = "v0.1.0"
 
 func Specification() sdk.Specification {
 	return sdk.Specification{
