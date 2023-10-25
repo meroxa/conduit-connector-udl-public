@@ -15,12 +15,12 @@
 package destination
 
 type Dimensions struct {
-	A      float64 `json:"a"`
-	B      float64 `json:"b"`
-	C      float64 `json:"c"`
-	D      float64 `json:"d"`
-	Length float64 `json:"length"`
-	Width  float64 `json:"width"`
+	A      float64 `json:"a, omitempty"`
+	B      float64 `json:"b, omitempty"`
+	C      float64 `json:"c, omitempty"`
+	D      float64 `json:"d, omitempty"`
+	Length float64 `json:"length, omitempty"`
+	Width  float64 `json:"width, omitempty"`
 }
 
 type StaticData struct {
@@ -47,7 +47,7 @@ type LastPositionUpdate struct {
 	Maneuver           string  `json:"maneuver"`
 	NavigationalStatus string  `json:"navigationalStatus"`
 	ROT                float64 `json:"rot"`
-	Speed              float64 `json:"speed"`
+	Speed              float64 `json:"speed, omitempty"`
 	Timestamp          string  `json:"timestamp"`
 	UpdateTimestamp    string  `json:"updateTimestamp"`
 }

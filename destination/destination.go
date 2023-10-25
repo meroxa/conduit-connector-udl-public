@@ -74,6 +74,13 @@ func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, err
 	}
 }
 
+func (d *Destination) Teardown(ctx context.Context) error {
+	// Teardown signals to the plugin that there will be no more calls to any
+	// other function. After Teardown returns, the plugin should be ready for a
+	// graceful shutdown.
+	return nil
+}
+
 func generateBasicAuth(username, password string) (*securityprovider.SecurityProviderBasicAuth, error) {
 	return securityprovider.NewSecurityProviderBasicAuth(username, password)
 }
