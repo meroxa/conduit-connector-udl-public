@@ -25,7 +25,7 @@ import (
 func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var aisData []udl.AISIngest
 	for _, r := range records {
-		ais, err := ToUDLAis(r.Payload.After.Bytes(), udl.AISIngestDataMode(d.Config.DataMode))
+		ais, err := ToUDLAis(r.Payload.After.Bytes(), udl.AISIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
 		sdk.Logger(ctx).Debug().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {

@@ -15,6 +15,12 @@ func (Config) Parameters() map[string]sdk.Parameter {
 			Type:        sdk.ParameterTypeString,
 			Validations: []sdk.Validation{},
 		},
+		"classificationMarking": {
+			Default:     "U",
+			Description: "Classification marking of the data in IC/CAPCO Portion-marked format. The default is U",
+			Type:        sdk.ParameterTypeString,
+			Validations: []sdk.Validation{},
+		},
 		"dataMode": {
 			Default:     "TEST",
 			Description: "The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.",

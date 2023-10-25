@@ -13,6 +13,7 @@ var exampleConfig = map[string]string{
 	"httpBasicAuthPassword": "pass",
 	"dataType":              "AIS",
 	"dataMode":              "TEST",
+	"classificationMarking": "U",
 }
 
 func TestParseConfig(t *testing.T) {
@@ -25,6 +26,7 @@ func TestParseConfig(t *testing.T) {
 		HTTPBasicAuthPassword: "pass",
 		DataMode:              "TEST",
 		DataType:              "AIS",
+		ClassificationMarking: "U",
 	}
 	is.NoErr(err)
 	is.Equal(want, got)
