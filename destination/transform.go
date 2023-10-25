@@ -23,12 +23,10 @@ import (
 	"github.com/meroxa/udl-go"
 )
 
-func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode) (udl.AISIngest, error) {
+func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking string) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
 
-	// The Spire AIS data being set to the UDL is unclassified
-	UDLClassification := "U"
 	var ais udl.AISIngest
 
 	layout := "2006-01-02T15:04:05.999Z"
@@ -41,7 +39,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode) (udl.AISIngest, error)
 	ais.Ts = ts
 
 	ais.Id = &vesselData.ID
-	ais.ClassificationMarking = UDLClassification
+	ais.ClassificationMarking = classificationMarking
 	ais.Mmsi = &vesselData.StaticData.MMSI
 	ais.ShipName = &vesselData.StaticData.Name
 	ais.ShipType = &vesselData.StaticData.ShipType

@@ -20,6 +20,7 @@ const (
 	DataMode              = "dataMode"
 	DataType              = "dataType"
 	BaseURL               = "baseURL"
+	ClassificationMarking = "classificationMarking"
 )
 
 type Config struct {
@@ -33,4 +34,6 @@ type Config struct {
 	DataType string `validate:"inclusion=AIS|ELSET" default:"AIS"`
 	// The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.
 	BaseURL string `default:"https://unifieddatalibrary.com"`
+	// Classification marking of the data in IC/CAPCO Portion-marked format. The default is U
+	ClassificationMarking string `default:"U"`
 }

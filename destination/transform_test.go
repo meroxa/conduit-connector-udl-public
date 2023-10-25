@@ -63,7 +63,7 @@ func TestToUDLAis(t *testing.T) {
 	}`)
 
 	// Call the toUDLAis function with the test input
-	ais, err := ToUDLAis(raw, "TEST")
+	ais, err := ToUDLAis(raw, "TEST", "U")
 	is.NoErr(err) // Check for no errors
 
 	// Verify the output fields
