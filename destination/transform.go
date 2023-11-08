@@ -17,6 +17,7 @@ package destination
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"time"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
@@ -80,6 +81,8 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 
 	ais.DataMode = dataMode
 	ais.Source = "Spire"
+
+	log.Printf("ais struct output: %+v", ais)
 	return ais, err
 }
 
