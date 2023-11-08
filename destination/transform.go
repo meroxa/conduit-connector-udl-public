@@ -83,6 +83,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 	ais.Source = "Spire"
 
 	log.Printf("ais struct output: %+v", ais)
+	sdk.Logger(context.Background()).Info().Msgf("ais struct output: %+v", ais)
 	return ais, err
 }
 
