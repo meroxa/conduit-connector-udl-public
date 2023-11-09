@@ -44,7 +44,9 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 	ais.Mmsi = &vesselData.StaticData.MMSI
 	ais.ShipName = &vesselData.StaticData.Name
 	ais.ShipType = &vesselData.StaticData.ShipType
-	ais.CallSign = &vesselData.StaticData.CallSign
+	if vesselData.StaticData.CallSign != "" {
+		ais.CallSign = &vesselData.StaticData.CallSign
+	}
 	ais.VesselFlag = &vesselData.StaticData.Flag
 	ais.Lat = &vesselData.LastPositionUpdate.Latitude
 	ais.Lon = &vesselData.LastPositionUpdate.Longitude
@@ -76,6 +78,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 	}
 
 	if &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode != nil {
+		sdk.Logger(context.Background()).Info().Msgf("vesselData.CurrentVoyage.MatchedPort.Port.Unlocode: %+v", vesselData.CurrentVoyage.MatchedPort.Port.Unlocode)
 		ais.CurrentPortLOCODE = &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode
 	}
 
