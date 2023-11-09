@@ -48,6 +48,8 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 		ais.CallSign = &vesselData.StaticData.CallSign
 	}
 	ais.VesselFlag = &vesselData.StaticData.Flag
+	sdk.Logger(context.Background()).Info().Msgf("vesselData.LastPositionUpdate.Latitude: %+v", vesselData.LastPositionUpdate.Latitude)
+	sdk.Logger(context.Background()).Info().Msgf("vesselData.LastPositionUpdate.Longitude: %+v", vesselData.LastPositionUpdate.Longitude)
 	ais.Lat = &vesselData.LastPositionUpdate.Latitude
 	ais.Lon = &vesselData.LastPositionUpdate.Longitude
 	hiAccuracy := vesselData.LastPositionUpdate.Accuracy == "HIGH"
