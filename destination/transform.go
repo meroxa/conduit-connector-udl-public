@@ -77,7 +77,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 		ais.DestinationETA = &eta
 	}
 
-	if &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode != nil {
+	if vesselData.CurrentVoyage.MatchedPort.Port.Unlocode != "" {
 		sdk.Logger(context.Background()).Info().Msgf("vesselData.CurrentVoyage.MatchedPort.Port.Unlocode: %+v", vesselData.CurrentVoyage.MatchedPort.Port.Unlocode)
 		ais.CurrentPortLOCODE = &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode
 	}
