@@ -39,7 +39,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
 		return 0, err
 	}
-	sdk.Logger(ctx).Info().Msgf("UDL Spire endpoint response: %+v", resp)
+	sdk.Logger(ctx).Info().Msgf("Spire to AIS UDL response: %+v", resp)
 
 	return len(aisData), nil
 }
