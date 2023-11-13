@@ -24,6 +24,15 @@ import (
 	"github.com/meroxa/udl-go"
 )
 
+func allNonZero(slice []float64) bool {
+	for _, v := range slice {
+		if v == 0 {
+			return false
+		}
+	}
+	return true
+}
+
 func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking string) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
@@ -39,24 +48,52 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 	}
 	ais.Ts = ts
 
-	ais.Id = &vesselData.ID
+	if vesselData.ID != "" {
+		ais.Id = &vesselData.ID
+	}
 	ais.ClassificationMarking = classificationMarking
-	ais.Mmsi = &vesselData.StaticData.MMSI
-	ais.ShipName = &vesselData.StaticData.Name
-	ais.ShipType = &vesselData.StaticData.ShipType
+	if vesselData.StaticData.MMSI != 0 {
+		ais.Mmsi = &vesselData.StaticData.MMSI
+	}
+	if vesselData.StaticData.Name != "" {
+		ais.ShipName = &vesselData.StaticData.Name
+	}
+	if vesselData.StaticData.ShipType != "" {
+		ais.ShipType = &vesselData.StaticData.ShipType
+	}
 	if vesselData.StaticData.CallSign != "" {
 		ais.CallSign = &vesselData.StaticData.CallSign
 	}
-	ais.VesselFlag = &vesselData.StaticData.Flag
-	sdk.Logger(context.Background()).Info().Msgf("vesselData.LastPositionUpdate.Latitude: %+v", vesselData.LastPositionUpdate.Latitude)
-	sdk.Logger(context.Background()).Info().Msgf("vesselData.LastPositionUpdate.Longitude: %+v", vesselData.LastPositionUpdate.Longitude)
-	ais.Lat = &vesselData.LastPositionUpdate.Latitude
-	ais.Lon = &vesselData.LastPositionUpdate.Longitude
+
+	if vesselData.StaticData.Flag != "" {
+		ais.VesselFlag = &vesselData.StaticData.Flag
+	}
+	if vesselData.StaticData.Flag != "" {
+		ais.VesselFlag = &vesselData.StaticData.Flag
+	}
+
+	if vesselData.LastPositionUpdate.Latitude != 0.0 {
+		ais.Lat = &vesselData.LastPositionUpdate.Latitude
+	}
+
+	if vesselData.LastPositionUpdate.Longitude != 0.0 {
+		ais.Lon = &vesselData.LastPositionUpdate.Longitude
+	}
 	hiAccuracy := vesselData.LastPositionUpdate.Accuracy == "HIGH"
 	ais.PosHiAccuracy = &hiAccuracy
-	ais.TrueHeading = &vesselData.LastPositionUpdate.Heading
-	ais.Course = &vesselData.LastPositionUpdate.Course
-	ais.NavStatus = &vesselData.LastPositionUpdate.NavigationalStatus
+
+	if vesselData.LastPositionUpdate.Heading != 0.0 {
+		ais.TrueHeading = &vesselData.LastPositionUpdate.Heading
+	}
+
+	if vesselData.LastPositionUpdate.Course != 0.0 {
+		ais.Course = &vesselData.LastPositionUpdate.Course
+	}
+
+	if vesselData.LastPositionUpdate.NavigationalStatus != "" {
+		ais.NavStatus = &vesselData.LastPositionUpdate.NavigationalStatus
+	}
+
 	dimensionsSlice := []float64{
 		vesselData.StaticData.Dimensions.A,
 		vesselData.StaticData.Dimensions.B,
@@ -64,10 +101,21 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 		vesselData.StaticData.Dimensions.D,
 	}
 
-	ais.AntennaRefDimensions = &dimensionsSlice
-	ais.Length = &vesselData.StaticData.Dimensions.Length
-	ais.Width = &vesselData.StaticData.Dimensions.Width
-	ais.Draught = &vesselData.CurrentVoyage.Draught
+	if allNonZero(dimensionsSlice) {
+		ais.AntennaRefDimensions = &dimensionsSlice
+	}
+
+	if vesselData.StaticData.Dimensions.Length != 0.0 {
+		ais.Length = &vesselData.StaticData.Dimensions.Length
+	}
+
+	if vesselData.StaticData.Dimensions.Width != 0.0 {
+		ais.Width = &vesselData.StaticData.Dimensions.Width
+	}
+
+	if vesselData.CurrentVoyage.Draught != 0.0 {
+		ais.Draught = &vesselData.CurrentVoyage.Draught
+	}
 
 	// Not every vessel has vesselData.CurrentVoyage.ETA; so those vessels will result in a DestinationETA being set to nil
 	if vesselData.CurrentVoyage.ETA != "" {
