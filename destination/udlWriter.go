@@ -26,7 +26,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 	var aisData []udl.AISIngest
 	for _, r := range records {
 		ais, err := ToUDLAis(r.Payload.After.Bytes(), udl.AISIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
-		sdk.Logger(ctx).Debug().Msgf("ais output: %+v", ais)
+		sdk.Logger(ctx).Info().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLAis failed")
@@ -39,7 +39,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
 		return 0, err
 	}
-	sdk.Logger(ctx).Debug().Msgf("resp: %+v", resp)
+	sdk.Logger(ctx).Info().Msgf("UDL Spire endpoint response: %+v", resp)
 
 	return len(aisData), nil
 }
