@@ -27,7 +27,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 	var aisData []udl.AISIngest
 	for _, r := range records {
 		ais, err := ToUDLAis(r.Payload.After.Bytes(), udl.AISIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
-		sdk.Logger(ctx).Info().Msgf("ais output: %+v", ais)
+		// sdk.Logger(ctx).Info().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLAis failed")
