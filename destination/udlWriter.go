@@ -17,7 +17,6 @@ package destination
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 
@@ -41,9 +40,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 		sdk.Logger(ctx).Err(err).Msgf("Failed to generate json")
 	}
 
-	fmt.Printf("%s\n", prettyJSON)
-
-	sdk.Logger(ctx).Info().Msgf("aisData payload: %+v", prettyJSON)
+	sdk.Logger(ctx).Info().Msgf("aisData payload: %s", prettyJSON)
 	resp, err := d.client.FiledropUdlAisPostId(ctx, aisData)
 	if err != nil || resp.StatusCode >= 300 {
 		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
