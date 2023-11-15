@@ -26,7 +26,6 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 	var aisData []udl.AISIngest
 	for _, r := range records {
 		ais, err := ToUDLAis(r.Payload.After.Bytes(), udl.AISIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
-		sdk.Logger(ctx).Debug().Msgf("ais output: %+v", ais)
 		aisData = append(aisData, ais)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLAis failed")
@@ -39,7 +38,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
 		return 0, err
 	}
-	sdk.Logger(ctx).Debug().Msgf("resp: %+v", resp)
+	sdk.Logger(ctx).Info().Msgf("Spire to AIS UDL response: %+v", resp)
 
 	return len(aisData), nil
 }
@@ -47,9 +46,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 func (d *Destination) writeElsetToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var elsets []udl.ElsetIngest
 	for _, r := range records {
-		sdk.Logger(ctx).Debug().Msgf("record: %+v", r)
 		elset, err := ToUDLElset(r.Payload.After.Bytes())
-		sdk.Logger(ctx).Debug().Msgf("elset: %+v", elset)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLElset failed")
 			return 0, err
