@@ -23,9 +23,9 @@ import (
 	"github.com/meroxa/udl-go"
 )
 
-func allNonZero(slice []float64) bool {
+func allZero(slice []float64) bool {
 	for _, v := range slice {
-		if v == 0 {
+		if v != 0 {
 			return false
 		}
 	}
@@ -100,7 +100,7 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 		vesselData.StaticData.Dimensions.D,
 	}
 
-	if allNonZero(dimensionsSlice) {
+	if !allZero(dimensionsSlice) {
 		ais.AntennaRefDimensions = &dimensionsSlice
 	}
 

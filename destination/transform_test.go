@@ -111,21 +111,21 @@ func TestToUDLElset(t *testing.T) {
 	is.Equal(elset.Epoch, expectedTimestamp)
 }
 
-func TestAllNonZero(t *testing.T) {
+func TestAllZero(t *testing.T) {
 	testCases := []struct {
 		name   string
 		input  []float64
 		expect bool
 	}{
-		{"All zeros", []float64{0, 0, 0, 0}, false},
+		{"All zeros", []float64{0, 0, 0, 0}, true},
 		{"One non-zero", []float64{0, 1, 0, 0}, false},
-		{"One zero", []float64{4, 5, 6, 0}, false},
-		{"All non-zeros", []float64{1, 2, 3, 4}, true},
+		{"One zero", []float64{1, 1, 0, 1}, false},
+		{"All non-zeros", []float64{1, 2, 3, 4}, false},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := allNonZero(tc.input)
+			result := allZero(tc.input)
 			if result != tc.expect {
 				t.Errorf("Expected %v, but got %v", tc.expect, result)
 			}
