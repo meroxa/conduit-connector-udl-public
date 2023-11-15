@@ -127,15 +127,12 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 	}
 
 	if vesselData.CurrentVoyage.MatchedPort.Port.Unlocode != "" {
-		sdk.Logger(context.Background()).Info().Msgf("vesselData.CurrentVoyage.MatchedPort.Port.Unlocode: %+v", vesselData.CurrentVoyage.MatchedPort.Port.Unlocode)
 		ais.CurrentPortLOCODE = &vesselData.CurrentVoyage.MatchedPort.Port.Unlocode
 	}
 
 	ais.DataMode = dataMode
 	ais.Source = "Spire"
 
-	// log.Printf("ais struct output: %+v", ais)
-	// sdk.Logger(context.Background()).Info().Msgf("ais struct output: %+v", ais)
 	return ais, err
 }
 

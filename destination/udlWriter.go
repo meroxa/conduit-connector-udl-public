@@ -16,7 +16,6 @@ package destination
 
 import (
 	"context"
-	"encoding/json"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 
@@ -34,12 +33,6 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 		}
 	}
 
-	prettyJSON, err := json.MarshalIndent(aisData, "", "    ")
-	if err != nil {
-		sdk.Logger(ctx).Err(err).Msgf("Failed to generate json")
-	}
-
-	sdk.Logger(ctx).Info().Msgf("aisData payload: %s", prettyJSON)
 	resp, err := d.client.FiledropUdlAisPostId(ctx, aisData)
 	if err != nil || resp.StatusCode >= 300 {
 		sdk.Logger(ctx).Err(err).Msgf("FiledropUdlAisPostId failed with status code: %v", resp.StatusCode)
@@ -53,9 +46,7 @@ func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (
 func (d *Destination) writeElsetToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var elsets []udl.ElsetIngest
 	for _, r := range records {
-		sdk.Logger(ctx).Debug().Msgf("record: %+v", r)
 		elset, err := ToUDLElset(r.Payload.After.Bytes())
-		sdk.Logger(ctx).Debug().Msgf("elset: %+v", elset)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLElset failed")
 			return 0, err
