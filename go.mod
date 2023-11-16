@@ -3,7 +3,7 @@ module github.com/meroxa/conduit-connector-udl
 go 1.18
 
 require (
-	github.com/conduitio/conduit-connector-sdk v0.6.0
+	github.com/conduitio/conduit-connector-sdk v0.7.2
 	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/matryer/is v1.4.1
 	github.com/meroxa/udl-go v0.0.0-20230411154317-11b5221c27aa
