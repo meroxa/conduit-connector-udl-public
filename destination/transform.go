@@ -16,7 +16,9 @@ package destination
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
+	"log"
 	"time"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
@@ -140,4 +142,42 @@ func ToUDLElset(raw []byte) (udl.ElsetIngest, error) {
 	var elset udl.ElsetIngest
 	err := json.Unmarshal(raw, &elset)
 	return elset, err
+}
+
+func ToUDLEphemeris(raw []byte, dataMode udl.EphemerisIngestDataMode, classificationMarking string) (UDLReport, error) {
+	// parse raw lines to sp3 report
+	sp3Report, err := Parse(raw)
+	if err != nil {
+		log.Printf("error parsing decoded bytes: %s", err)
+	}
+
+	log.Printf("name: %s Timestamp: %s  FlightModuleNumber: %d", sp3Report.SatelliteName, sp3Report.Entries[0].Timestamp, sp3Report.Entries[0].Position.FlightModuleNumber)
+
+	// convert to UDL Report
+	//ur, err := SP3cToUDL(sp3Report)
+	ur, err := SP3cToUDL(sp3Report)
+	if err != nil {
+		log.Printf("error converting to udl report: %s", err)
+	}
+
+	return ur, err
+
+}
+
+func KeyPayload(rawKey string) (string, error) {
+	// get the key payload
+	keyMap := make(map[string]interface{})
+
+	err := json.Unmarshal([]byte(rawKey), &keyMap)
+	if err != nil {
+		return "", err
+	}
+
+	// decode key
+	decoded, err := base64.StdEncoding.DecodeString(keyMap["payload"].(string))
+	if err != nil {
+		log.Printf("error: %s; raw key payload: %+v", err, keyMap)
+	}
+
+	return string(decoded), nil
 }

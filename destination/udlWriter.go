@@ -16,11 +16,60 @@ package destination
 
 import (
 	"context"
+	"errors"
+	"log"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 
+	"fmt"
+	"strings"
+
 	"github.com/meroxa/udl-go"
 )
+
+func OpenCDCPayload(rawPayload map[string]interface{}) string {
+	p := rawPayload["payload"].(map[string]interface{})
+	a := p["after"].(map[string]interface{})
+	return a["opencdc.rawData"].(string)
+}
+
+func (d *Destination) writeEphemerisToUDL(ctx context.Context, records []sdk.Record) (int, error) {
+	// var ephemerisData []udl.EphemerisIngest
+	for _, r := range records {
+		ephmerisRecord, err := ToUDLEphemeris(r.Payload.After.Bytes(), udl.EphemerisIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
+		sdk.Logger(ctx).Info().Msgf("ephmerisRecord: %+v", ephmerisRecord)
+		// ephemerisData = append(ephemerisData, ephmerisRecord)
+		if err != nil {
+			sdk.Logger(ctx).Err(err).Msgf("ToUDLEphemeris failed")
+			return 0, err
+		}
+
+		params := &udl.FiledropEphemPostIdParams{
+			IdOnOrbit:       ephmerisRecord.ID,
+			Classification:  d.Config.ClassificationMarking,
+			DataMode:        "TEST",
+			HasMnvr:         false,
+			Type:            "ROUTINE",
+			Category:        "EXTERNAL",
+			EphemFormatType: "NASA",
+			Source:          "Spire",
+		}
+		bodyReader := strings.NewReader(ephmerisRecord.String())
+		response, err := d.client.FiledropEphemPostIdWithBody(ctx, params, "applications/json", bodyReader)
+		if err != nil {
+			return 0, err
+		}
+		fmt.Printf("Submitted Ephemeris Request Parameters - IdOnOrbit: %s, Classification: %s, DataMode: %s, HasMnvr: %t, Type: %s, Category: %s, EphemFormatType: %s, Source: %s", params.IdOnOrbit, params.Classification, params.DataMode, params.HasMnvr, params.Type, params.Category, params.EphemFormatType, params.Source)
+
+		if response.StatusCode > 300 {
+			return 0, errors.New(fmt.Sprintf("unsuccessful status code returned %d; response: %+v", response.StatusCode, response.Body))
+		}
+
+		log.Printf("Spire to Ephemeris UDL response: %+v:", response)
+	}
+
+	return 1, nil
+}
 
 func (d *Destination) writeAisToUDL(ctx context.Context, records []sdk.Record) (int, error) {
 	var aisData []udl.AISIngest

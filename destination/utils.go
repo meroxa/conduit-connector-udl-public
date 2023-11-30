@@ -4,7 +4,7 @@ import "strings"
 
 var DataModeValues = []string{"TEST", "REAL", "SIMULATED", "EXERCISE"}
 
-var DataTypeValues = []string{"AIS", "ELSET"}
+var DataTypeValues = []string{"AIS", "ELSET", "EPHEMERIS"}
 
 func SupportedStringValues(check string, supported []string) bool {
 	for _, ds := range supported {

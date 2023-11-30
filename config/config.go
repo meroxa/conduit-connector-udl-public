@@ -31,7 +31,7 @@ type Config struct {
 	// The Data Mode to use when submitting requests to the UDL. Acceptable values are REAL, TEST, SIMULATED and EXERCISE.
 	DataMode string `validate:"inclusion=REAL|TEST|SIMULATED|EXERCISE" default:"TEST"`
 	// The Data Type that is being submitted to the UDL. Acceptable values are AIS and ELSET.
-	DataType string `validate:"inclusion=AIS|ELSET" default:"AIS"`
+	DataType string `validate:"inclusion=AIS|ELSET|EPHEMERIS" default:"AIS"`
 	// The Base URL to use to access the UDL. The default is https://unifieddatalibrary.com.
 	BaseURL string `default:"https://unifieddatalibrary.com"`
 	// Classification marking of the data in IC/CAPCO Portion-marked format. The default is U

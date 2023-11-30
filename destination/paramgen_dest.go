@@ -34,7 +34,7 @@ func (Config) Parameters() map[string]sdk.Parameter {
 			Description: "The Data Type that is being submitted to the UDL. Acceptable values are AIS and ELSET.",
 			Type:        sdk.ParameterTypeString,
 			Validations: []sdk.Validation{
-				sdk.ValidationInclusion{List: []string{"AIS", "ELSET"}},
+				sdk.ValidationInclusion{List: []string{"AIS", "ELSET", "EPHEMERIS"}},
 			},
 		},
 		"httpBasicAuthPassword": {
