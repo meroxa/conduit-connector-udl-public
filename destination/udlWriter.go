@@ -37,7 +37,7 @@ func (d *Destination) writeEphemerisToUDL(ctx context.Context, records []sdk.Rec
 	// var ephemerisData []udl.EphemerisIngest
 	for _, r := range records {
 		ephmerisRecord, err := ToUDLEphemeris(r.Payload.After.Bytes(), udl.EphemerisIngestDataMode(d.Config.DataMode), d.Config.ClassificationMarking)
-		sdk.Logger(ctx).Info().Msgf("ephmerisRecord: %+v", ephmerisRecord)
+		// sdk.Logger(ctx).Info().Msgf("ephmerisRecord: %+v", ephmerisRecord)
 		// ephemerisData = append(ephemerisData, ephmerisRecord)
 		if err != nil {
 			sdk.Logger(ctx).Err(err).Msgf("ToUDLEphemeris failed")
