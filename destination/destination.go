@@ -17,7 +17,6 @@ package destination
 import (
 	"context"
 	"fmt"
-	"log"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
@@ -65,7 +64,6 @@ func (d *Destination) Open(ctx context.Context) error {
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
 	dataType := d.Config.DataType
 
-	log.Printf("dataType selected: %s\n", d.Config.DataType)
 	sdk.Logger(context.Background()).Info().Msgf("dataType selected: %s", d.Config.DataType)
 	switch dataType {
 	case "AIS":

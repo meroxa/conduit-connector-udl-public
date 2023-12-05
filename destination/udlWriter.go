@@ -17,7 +17,6 @@ package destination
 import (
 	"context"
 	"errors"
-	"log"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 
@@ -59,13 +58,14 @@ func (d *Destination) writeEphemerisToUDL(ctx context.Context, records []sdk.Rec
 		if err != nil {
 			return 0, err
 		}
-		fmt.Printf("Submitted Ephemeris Request Parameters - IdOnOrbit: %s, Classification: %s, DataMode: %s, HasMnvr: %t, Type: %s, Category: %s, EphemFormatType: %s, Source: %s", params.IdOnOrbit, params.Classification, params.DataMode, params.HasMnvr, params.Type, params.Category, params.EphemFormatType, params.Source)
+
+		sdk.Logger(context.Background()).Info().Msgf("Submitted Ephemeris Request Parameters - IdOnOrbit: %s, Classification: %s, DataMode: %s, HasMnvr: %t, Type: %s, Category: %s, EphemFormatType: %s, Source: %s", params.IdOnOrbit, params.Classification, params.DataMode, params.HasMnvr, params.Type, params.Category, params.EphemFormatType, params.Source)
 
 		if response.StatusCode > 300 {
 			return 0, errors.New(fmt.Sprintf("unsuccessful status code returned %d; response: %+v", response.StatusCode, response.Body))
 		}
 
-		log.Printf("Spire to Ephemeris UDL response: %+v:", response)
+		sdk.Logger(context.Background()).Info().Msgf("Spire to Ephemeris UDL response: %+v:", response)
 	}
 
 	return 1, nil
