@@ -40,6 +40,8 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 
 	var ais udl.AISIngest
 
+	sdk.Logger(context.Background()).Debug().Msgf("vesselData: %+v", vesselData)
+
 	layout := "2006-01-02T15:04:05.999Z"
 
 	ts, tsErr := time.Parse(layout, vesselData.UpdateTimestamp)
