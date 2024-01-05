@@ -19,6 +19,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"log"
+	"reflect"
+	"strings"
 	"time"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
@@ -34,9 +36,38 @@ func allZero(slice []float64) bool {
 	return true
 }
 
+func replaceUnderscoresWithSpaces(s string) string {
+	return strings.ReplaceAll(s, "_", " ")
+}
+
+func replaceUnderscoresInStruct(v interface{}) {
+	val := reflect.ValueOf(v).Elem()
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+		switch field.Kind() {
+		case reflect.String:
+			// Replace underscores with spaces and set the new value
+			newValue := strings.ReplaceAll(field.String(), "_", " ")
+			if field.CanSet() {
+				field.SetString(newValue)
+			}
+		case reflect.Struct:
+			// Recursively process nested structs
+			replaceUnderscoresInStruct(field.Addr().Interface())
+			// Optionally handle other container types like slices, arrays, maps, etc.
+		}
+	}
+}
+
 func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking string) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
+	if err != nil {
+		return udl.AISIngest{}, err
+	}
+
+	// Replace underscores with spaces in vesselData strings
+	replaceUnderscoresInStruct(&vesselData)
 
 	var ais udl.AISIngest
 
