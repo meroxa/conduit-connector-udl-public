@@ -32,6 +32,76 @@ func allZero(slice []float64) bool {
 	return true
 }
 
+var spireToNavcenShipTypeMapping = map[string]string{
+	"ANTI POLLUTION":      "Other",
+	"CAR CARRIER":         "Cargo",
+	"COMBINATION CARRIER": "Combination Carrier",
+	"CONTAINER":           "Container",
+	"DIVE VESSEL":         "Other",
+	"DREDGER":             "Other",
+	"DRY BULK":            "Cargo",
+	"FISHING":             "Fishing",
+	"GAS CARRIER":         "Gas Carrier",
+	"GENERAL CARGO":       "Cargo",
+	"GENERAL TANKER":      "General Tanker",
+	"HIGH SPEED CRAFT":    "Other",
+	"LAW ENFORCEMENT":     "Special Craft",
+	"LIVESTOCK":           "Livestock Carrier",
+	"LNG CARRIER":         "LNG Carrier",
+	"MEDICAL TRANS":       "Special Craft",
+	"MILITARY OPS":        "Other",
+	"OFFSHORE":            "Offshore Vessel",
+	"OTHER":               "Other",
+	"PASSENGER":           "Passenger",
+	"PILOT VESSEL":        "Special Craft",
+	"PLEASURE CRAFT":      "Other",
+	"PORT TENDER":         "Special Craft",
+	"REEFER":              "Cargo",
+	"ROLL ON ROLL OFF":    "Cargo",
+	"SAILING":             "Other",
+	"SEARCH AND RESCUE":   "Special Craft",
+	"SPECIAL CRAFT":       "Special Craft",
+	"TANKER CHEMICALS":    "Tanker Chemicals",
+	"TANKER CRUDE":        "Tanker Crude",
+	"TANKER PRODUCT":      "Tanker Product",
+	"TUG":                 "Tug",
+	"VEHICLE PASSENGER":   "Vehicle Passenger",
+}
+
+var cargoTypeMapping = map[string]string{
+	"CAR CARRIER":      "Carrier",
+	"DRY BULK":         "Dry Bulk",
+	"GENERAL CARGO":    "General Cargo",
+	"REEFER":           "Reefer",
+	"ROLL ON ROLL OFF": "Roll on Roll off Cargo",
+}
+
+var engagedIn = []string{"ANTI POLLUTION", "DIVE VESSEL", "DREDGER", "HIGH SPEED CRAFT", "MILITARY OPS", "OTHER", "PLEASURE CRAFT", "SAILING"}
+var specialCraft = []string{"LAW ENFORCEMENT", "MEDICAL TRANS", "PILOT VESSEL", "PORT TENDER", "SEARCH AND RESCUE", "SPECIAL CRAFT"}
+var cargoType = []string{"CAR CARRIER", "DRY BULK", "GENERAL CARGO", "REEFER", "ROLL ON ROLL OFF"}
+
+func setAISShipSubType(vesselData VesselData, ais *udl.AISIngest) {
+	if containsString(engagedIn, vesselData.StaticData.ShipType) {
+		sdk.Logger(context.Background()).Debug().Msgf("%s is in the engagedIn\n", vesselData.StaticData.ShipType)
+		if vesselData.StaticData.ShipSubType != "" {
+			sdk.Logger(context.Background()).Debug().Msgf("ShipSubType: %s", vesselData.StaticData.ShipSubType)
+			ais.EngagedIn = &vesselData.StaticData.ShipSubType
+		}
+	}
+	if containsString(specialCraft, vesselData.StaticData.ShipType) {
+		sdk.Logger(context.Background()).Debug().Msgf("%s is in the specialCraft\n", vesselData.StaticData.ShipType)
+		specialCraftValue := toTitleCase(vesselData.StaticData.ShipType)
+		sdk.Logger(context.Background()).Debug().Msgf("specialCraftValue - %s\n", specialCraftValue)
+		ais.SpecialCraft = &specialCraftValue
+	}
+	if containsString(cargoType, vesselData.StaticData.ShipType) {
+		sdk.Logger(context.Background()).Debug().Msgf("%s is in the cargoType\n", vesselData.StaticData.ShipType)
+		cargoTypeValue := cargoTypeMapping[vesselData.StaticData.ShipType]
+		sdk.Logger(context.Background()).Debug().Msgf("cargoTypeValue - %s\n", cargoTypeValue)
+		ais.CargoType = &cargoTypeValue
+	}
+}
+
 func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking string) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
@@ -58,7 +128,13 @@ func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking 
 		ais.ShipName = &vesselData.StaticData.Name
 	}
 	if vesselData.StaticData.ShipType != "" {
-		ais.ShipType = &vesselData.StaticData.ShipType
+		navCenShipType := spireToNavcenShipTypeMapping[vesselData.StaticData.ShipType]
+		ais.ShipType = &navCenShipType
+
+		sdk.Logger(context.Background()).Info().Msgf("ais shipType: %s", *ais.ShipType)
+		sdk.Logger(context.Background()).Info().Msgf("ShipType: %s", vesselData.StaticData.ShipType)
+		setAISShipSubType(vesselData, &ais)
+
 	}
 	if vesselData.StaticData.CallSign != "" {
 		ais.CallSign = &vesselData.StaticData.CallSign

@@ -31,7 +31,7 @@ func TestToUDLAis(t *testing.T) {
 		"StaticData": {
 			"MMSI": 123456789,
 			"Name": "Vessel Name",
-			"ShipType": "Cargo",
+			"ShipType": "GENERAL CARGO",
 			"CallSign": "CALLSIGN",
 			"Flag": "US",
 			"Dimensions": {
