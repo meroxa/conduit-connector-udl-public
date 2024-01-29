@@ -80,7 +80,7 @@ func extractSatelliteName(raw []byte) (string, error) {
 	lineNum := 0
 
 	// skip to Satellite Name
-	for lineNum < 21 {
+	for lineNum <= 21 {
 		if !scanner.Scan() {
 			return "", errors.New("invalid input")
 		}
