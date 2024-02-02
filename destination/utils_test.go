@@ -27,11 +27,3 @@ func TestToTitleCase(t *testing.T) {
 	is.Equal(toTitleCase("HELLO WORLD"), "Hello World")
 	is.Equal(toTitleCase("title Case"), "Title Case")
 }
-
-func TestContainsString(t *testing.T) {
-	is := is.New(t)
-
-	slice := []string{"Red", "Green", "Blue"}
-	is.True(containsString(slice, "Red"))     // should find "Red"
-	is.True(!containsString(slice, "Yellow")) // should not find "Yellow"
-}

@@ -17,6 +17,7 @@ package destination
 import (
 	"context"
 	"encoding/json"
+	"slices"
 	"time"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
@@ -81,20 +82,20 @@ var specialCraft = []string{"LAW ENFORCEMENT", "MEDICAL TRANS", "PILOT VESSEL", 
 var cargoType = []string{"CAR CARRIER", "DRY BULK", "GENERAL CARGO", "REEFER", "ROLL ON ROLL OFF"}
 
 func setAISShipSubType(vesselData VesselData, ais *udl.AISIngest) {
-	if containsString(engagedIn, vesselData.StaticData.ShipType) {
+	if slices.Contains(engagedIn, vesselData.StaticData.ShipType) {
 		sdk.Logger(context.Background()).Debug().Msgf("%s is in the engagedIn\n", vesselData.StaticData.ShipType)
 		if vesselData.StaticData.ShipSubType != "" {
 			sdk.Logger(context.Background()).Debug().Msgf("ShipSubType: %s", vesselData.StaticData.ShipSubType)
 			ais.EngagedIn = &vesselData.StaticData.ShipSubType
 		}
 	}
-	if containsString(specialCraft, vesselData.StaticData.ShipType) {
+	if slices.Contains(specialCraft, vesselData.StaticData.ShipType) {
 		sdk.Logger(context.Background()).Debug().Msgf("%s is in the specialCraft\n", vesselData.StaticData.ShipType)
 		specialCraftValue := toTitleCase(vesselData.StaticData.ShipType)
 		sdk.Logger(context.Background()).Debug().Msgf("specialCraftValue - %s\n", specialCraftValue)
 		ais.SpecialCraft = &specialCraftValue
 	}
-	if containsString(cargoType, vesselData.StaticData.ShipType) {
+	if slices.Contains(cargoType, vesselData.StaticData.ShipType) {
 		sdk.Logger(context.Background()).Debug().Msgf("%s is in the cargoType\n", vesselData.StaticData.ShipType)
 		cargoTypeValue := cargoTypeMapping[vesselData.StaticData.ShipType]
 		sdk.Logger(context.Background()).Debug().Msgf("cargoTypeValue - %s\n", cargoTypeValue)

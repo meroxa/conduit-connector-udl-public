@@ -30,12 +30,3 @@ func toTitleCase(str string) string {
 	// Rejoin words into a string
 	return strings.Join(words, " ")
 }
-
-func containsString(slice []string, str string) bool {
-	for _, item := range slice {
-		if item == str {
-			return true
-		}
-	}
-	return false
-}
