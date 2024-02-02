@@ -64,11 +64,14 @@ func (d *Destination) Open(ctx context.Context) error {
 func (d *Destination) Write(ctx context.Context, records []sdk.Record) (int, error) {
 	dataType := d.Config.DataType
 
+	sdk.Logger(context.Background()).Debug().Msgf("dataType selected: %s", d.Config.DataType)
 	switch dataType {
 	case "AIS":
 		return d.writeAisToUDL(ctx, records)
 	case "Elset":
 		return d.writeElsetToUDL(ctx, records)
+	case "EPHEMERIS":
+		return d.writeEphemerisToUDL(ctx, records)
 	default:
 		return 0, fmt.Errorf("unsupported data type: %s;", dataType)
 	}

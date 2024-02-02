@@ -16,6 +16,7 @@ package destination
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"slices"
 	"time"
@@ -23,15 +24,6 @@ import (
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/meroxa/udl-go"
 )
-
-func allZero(slice []float64) bool {
-	for _, v := range slice {
-		if v != 0 {
-			return false
-		}
-	}
-	return true
-}
 
 var spireToNavcenShipTypeMapping = map[string]string{
 	"ANTI POLLUTION":      "Other",
@@ -106,8 +98,16 @@ func setAISShipSubType(vesselData VesselData, ais *udl.AISIngest) {
 func ToUDLAis(raw []byte, dataMode udl.AISIngestDataMode, classificationMarking string) (udl.AISIngest, error) {
 	var vesselData VesselData
 	err := json.Unmarshal(raw, &vesselData)
+	if err != nil {
+		return udl.AISIngest{}, err
+	}
+
+	// Replace underscores with spaces in vesselData strings
+	replaceUnderscoresInStruct(&vesselData)
 
 	var ais udl.AISIngest
+
+	sdk.Logger(context.Background()).Debug().Msgf("vesselData: %+v", vesselData)
 
 	layout := "2006-01-02T15:04:05.999Z"
 
@@ -217,4 +217,42 @@ func ToUDLElset(raw []byte) (udl.ElsetIngest, error) {
 	var elset udl.ElsetIngest
 	err := json.Unmarshal(raw, &elset)
 	return elset, err
+}
+
+func ToUDLEphemeris(raw []byte, dataMode udl.EphemerisIngestDataMode, classificationMarking string) (UDLReport, error) {
+	// parse raw lines to sp3 report
+	sp3Report, err := Parse(raw)
+	if err != nil {
+		sdk.Logger(context.Background()).Err(err).Msgf("error parsing decoded bytes: %s", err)
+	}
+
+	sdk.Logger(context.Background()).Debug().Msgf("name: %s Timestamp: %s  FlightModuleNumber: %d", sp3Report.SatelliteName, sp3Report.Entries[0].Timestamp, sp3Report.Entries[0].Position.FlightModuleNumber)
+
+	// convert to UDL Report
+	//ur, err := SP3cToUDL(sp3Report)
+	ur, err := SP3cToUDL(sp3Report)
+	if err != nil {
+		sdk.Logger(context.Background()).Err(err).Msgf("error converting to udl report: %s", err)
+	}
+
+	return ur, err
+
+}
+
+func KeyPayload(rawKey string) (string, error) {
+	// get the key payload
+	keyMap := make(map[string]interface{})
+
+	err := json.Unmarshal([]byte(rawKey), &keyMap)
+	if err != nil {
+		return "", err
+	}
+
+	// decode key
+	decoded, err := base64.StdEncoding.DecodeString(keyMap["payload"].(string))
+	if err != nil {
+		sdk.Logger(context.Background()).Err(err).Msgf("error: %s; raw key payload: %+v", err, keyMap)
+	}
+
+	return string(decoded), nil
 }
