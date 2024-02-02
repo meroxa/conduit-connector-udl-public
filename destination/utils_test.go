@@ -72,6 +72,7 @@ func TestReplaceUnderscoresWithSpaces(t *testing.T) {
 	is.Equal(replaceUnderscoresWithSpaces("hello_world"), "hello world")
 	is.Equal(replaceUnderscoresWithSpaces("_"), " ")
 	is.Equal(replaceUnderscoresWithSpaces(""), "")
+}
 
 func TestToTitleCase(t *testing.T) {
 	is := is.New(t)

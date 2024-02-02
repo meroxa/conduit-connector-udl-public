@@ -48,7 +48,8 @@ func replaceUnderscoresInStruct(v interface{}) {
 			// Optionally handle other container types like slices, arrays, maps, etc.
 		}
 	}
-  
+}
+
 func toTitleCase(str string) string {
 	// Convert the entire string to lowercase
 	str = strings.ToLower(str)
