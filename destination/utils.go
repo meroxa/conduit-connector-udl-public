@@ -48,4 +48,20 @@ func replaceUnderscoresInStruct(v interface{}) {
 			// Optionally handle other container types like slices, arrays, maps, etc.
 		}
 	}
+  
+func toTitleCase(str string) string {
+	// Convert the entire string to lowercase
+	str = strings.ToLower(str)
+
+	// Use strings.Fields to obtain a slice of words
+	words := strings.Fields(str)
+
+	// Iterate over words and capitalize the first letter of each one
+	for i, word := range words {
+		words[i] = strings.Title(word)
+	}
+
+	// Rejoin words into a string
+	return strings.Join(words, " ")
+
 }
