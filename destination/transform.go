@@ -77,20 +77,20 @@ func setAISShipSubType(vesselData VesselData, ais *udl.AISIngest) {
 	if slices.Contains(engagedIn, vesselData.StaticData.ShipType) {
 		sdk.Logger(context.Background()).Debug().Msgf("%s is in the engagedIn\n", vesselData.StaticData.ShipType)
 		if vesselData.StaticData.ShipSubType != "" {
-			sdk.Logger(context.Background()).Debug().Msgf("ShipSubType: %s", vesselData.StaticData.ShipSubType)
+			sdk.Logger(context.Background()).Debug().Msgf("EngagedIn ShipSubType: %s", vesselData.StaticData.ShipSubType)
 			ais.EngagedIn = &vesselData.StaticData.ShipSubType
 		}
 	}
 	if slices.Contains(specialCraft, vesselData.StaticData.ShipType) {
-		sdk.Logger(context.Background()).Debug().Msgf("%s is in the specialCraft\n", vesselData.StaticData.ShipType)
+		// sdk.Logger(context.Background()).Debug().Msgf("%s is in the specialCraft\n", vesselData.StaticData.ShipType)
 		specialCraftValue := toTitleCase(vesselData.StaticData.ShipType)
-		sdk.Logger(context.Background()).Debug().Msgf("specialCraftValue - %s\n", specialCraftValue)
+		// sdk.Logger(context.Background()).Debug().Msgf("specialCraftValue - %s\n", specialCraftValue)
 		ais.SpecialCraft = &specialCraftValue
 	}
 	if slices.Contains(cargoType, vesselData.StaticData.ShipType) {
-		sdk.Logger(context.Background()).Debug().Msgf("%s is in the cargoType\n", vesselData.StaticData.ShipType)
+		// sdk.Logger(context.Background()).Debug().Msgf("%s is in the cargoType\n", vesselData.StaticData.ShipType)
 		cargoTypeValue := cargoTypeMapping[vesselData.StaticData.ShipType]
-		sdk.Logger(context.Background()).Debug().Msgf("cargoTypeValue - %s\n", cargoTypeValue)
+		// sdk.Logger(context.Background()).Debug().Msgf("cargoTypeValue - %s\n", cargoTypeValue)
 		ais.CargoType = &cargoTypeValue
 	}
 }
