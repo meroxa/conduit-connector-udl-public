@@ -17,7 +17,7 @@
 package destination
 
 import (
-	"github.com/meroxa/conduit-connector-udl/config"
+	"github.com/meroxa/conduit-connector-udl-public/config"
 )
 
 type Config struct {

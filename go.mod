@@ -1,4 +1,4 @@
-module github.com/meroxa/conduit-connector-udl
+module github.com/meroxa/conduit-connector-udl-public
 
 go 1.18
 

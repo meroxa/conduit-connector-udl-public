@@ -16,7 +16,7 @@ package udl
 
 import (
 	sdk "github.com/conduitio/conduit-connector-sdk"
-	"github.com/meroxa/conduit-connector-udl/destination"
+	"github.com/meroxa/conduit-connector-udl-public/destination"
 )
 
 var Connector = sdk.Connector{
