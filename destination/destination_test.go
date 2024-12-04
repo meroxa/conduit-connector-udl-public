@@ -22,7 +22,7 @@ import (
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/matryer/is"
 
-	"github.com/meroxa/udl-go"
+	"github.com/meroxa/conduit-connector-udl-public/udl"
 )
 
 type mockClient struct {

@@ -16,14 +16,12 @@ package destination
 
 import (
 	"context"
-	"errors"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
+	"github.com/meroxa/conduit-connector-udl-public/udl"
 
 	"fmt"
 	"strings"
-
-	"github.com/meroxa/udl-go"
 )
 
 func OpenCDCPayload(rawPayload map[string]interface{}) string {
@@ -62,7 +60,7 @@ func (d *Destination) writeEphemerisToUDL(ctx context.Context, records []sdk.Rec
 		sdk.Logger(context.Background()).Info().Msgf("Submitted Ephemeris Request Parameters - IdOnOrbit: %s, Classification: %s, DataMode: %s, HasMnvr: %t, Type: %s, Category: %s, EphemFormatType: %s, Source: %s", params.IdOnOrbit, params.Classification, params.DataMode, params.HasMnvr, params.Type, params.Category, params.EphemFormatType, params.Source)
 
 		if response.StatusCode > 300 {
-			return 0, errors.New(fmt.Sprintf("unsuccessful status code returned %d; response: %+v", response.StatusCode, response.Body))
+			return 0, fmt.Errorf(fmt.Sprintf("unsuccessful status code returned %d; response: %+v", response.StatusCode, response.Body))
 		}
 
 		sdk.Logger(context.Background()).Info().Msgf("Spire to Ephemeris UDL response: %+v:", response)

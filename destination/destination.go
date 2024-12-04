@@ -20,8 +20,7 @@ import (
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
-
-	"github.com/meroxa/udl-go"
+	"github.com/meroxa/conduit-connector-udl-public/udl"
 )
 
 type Destination struct {

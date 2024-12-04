@@ -22,7 +22,7 @@ import (
 	"time"
 
 	sdk "github.com/conduitio/conduit-connector-sdk"
-	"github.com/meroxa/udl-go"
+	"github.com/meroxa/conduit-connector-udl-public/udl"
 )
 
 var spireToNavcenShipTypeMapping = map[string]string{
